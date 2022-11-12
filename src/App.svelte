@@ -6,7 +6,15 @@
 </svelte:head>
 
 <style>
+  img {
+    max-width: 100%;
+    max-height: 100%; 
+    object-fit: contain;
+  } 
   .remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
+  .demo-container{
+    width: 1000px;
+  }
   :global(.svlt-grid-shadow) {
     /* Back shadow */
     background: pink;
@@ -26,23 +34,23 @@
 </style>
 
 
-<button on:click={add}>Add (random size)</button>
-<button on:click={addAt}>Add random (x=0,y=0)</button>
-<label>
-  <input type="checkbox" bind:checked={adjustAfterRemove} />
-  Adjust elements after removing an item
-</label>
-
+<button on:click={add_horizontal}>Horizontal road</button>
+<button on:click={add_vertical}>Vertical road</button>
+<button on:click={add_cross}>Cross road</button>
 <div class=demo-container>
-  <Grid bind:items={items} rowHeight={100} let:item let:dataItem {cols}>
+  <Grid bind:items={items}  gap={[0,0]} rowHeight={100} let:item let:dataItem {cols}>
     <div class=demo-widget>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <span on:pointerdown={e => e.stopPropagation()}
         on:click={() => remove(dataItem)}
         class=remove
+        style="color:red"
         >
-        ✕
+        X
       </span>
-      <p>{dataItem.id}</p>
+     <img src= {dataItem.src} alt="" />
+     <p style="color:red">{dataItem[10].x}</p>
+     <p style="color:red">{dataItem[10].y}</p>
     </div>
   </Grid>
 </div>
@@ -52,47 +60,26 @@ import Grid from "svelte-grid";
 import gridHelp from "svelte-grid/build/helper/index.mjs";
 // import { openSource } from "./github.js";
 
-const COLS = 6;
+const COLS = 10;
 
 const id = () => "_" + Math.random().toString(36).substr(2, 9);
 
-const randomNumberInRange = (min, max) => Math.random() * (max - min) + min;
+let items = [];
 
-let items = [
-  {
-    [COLS]: gridHelp.item({
-      x: 0,
-      y: 0,
-      w: 2,
-      h: 2,
-    }),
-    id: id(),
-  },
+const cols = [[1100, COLS]];
 
-  {
-    [COLS]: gridHelp.item({
-      x: 2,
-      y: 0,
-      w: 2,
-      h: 2,
-    }),
-    id: id(),
-  },
-];
-
-const cols = [[1100, 6]];
-
-function add() {
+function add(picture){
   let newItem = {
-    6: gridHelp.item({
-      w: Math.round(randomNumberInRange(1, 4)),
-      h: Math.round(randomNumberInRange(1, 4)),
+    [COLS]: gridHelp.item({
+      w: 1,
+      h: 1,
       x: 0,
       y: 0,
+      resizable: false,
     }),
     id: id(),
+    src:picture,
   };
-
   let findOutPosition = gridHelp.findSpace(newItem, items, COLS);
 
   newItem = {
@@ -101,34 +88,27 @@ function add() {
       ...newItem[COLS],
       ...findOutPosition,
     },
-  };
+};
 
-  items = [...items, ...[newItem]];
+items = [...items, ...[newItem]];
 }
 
-const addAt = () => {
-  let newItem = {
-    6: gridHelp.item({
-      w: Math.round(randomNumberInRange(1, 4)),
-      h: Math.round(randomNumberInRange(1, 4)),
-      x: 0,
-      y: 0,
-    }),
-    id: id(),
-  };
+function add_horizontal() {
+  const picture="roads/horizontal_road.png"
+  add(picture)
+}
+function add_vertical() {
+  const picture="roads/vertical_road.png"
+  add(picture)
+}
 
-  items = [...[newItem], ...items];
-
-  items = gridHelp.adjust(items, COLS);
-};
+function add_cross() {
+  const picture="roads/cross_road.png"
+  add(picture)
+}
 
 const remove = (item) => {
   items = items.filter((value) => value.id !== item.id);
-
-  if (adjustAfterRemove) {
-    items = gridHelp.adjust(items, COLS);
-  }
 };
 
-let adjustAfterRemove = false;
 </script>
