@@ -53,9 +53,13 @@
      <p style="color:red">{dataItem[10].y}</p>
     </div>
   </Grid>
+  <div>
+    <Topology></Topology>
+  </div>
 </div>
 
 <script>
+import Topology from "./lib/Topology.svelte";
 import Grid from "svelte-grid";
 import gridHelp from "svelte-grid/build/helper/index.mjs";
 // import { openSource } from "./github.js";
