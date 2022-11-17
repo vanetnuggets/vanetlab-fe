@@ -12,7 +12,7 @@
 </style>
 
 <div class=demo-container>
-  <List/>
+  <List_Nodes/>
   <div>
     <Topology></Topology>
   </div>
@@ -20,7 +20,7 @@
 
 <script>
 import Topology from "./lib/Topology.svelte";
-import List from './lib/DragDrop/List.svelte';
+import List_Nodes from './lib/DragDrop/List_Nodes.svelte';
 	
 	
 </script>
