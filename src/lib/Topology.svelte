@@ -7,7 +7,7 @@
 
     let data = {
         "node_count": 0,
-        "node_containers": containers,
+        "node_containers": [],
         "container_settings": {},
     }
 
@@ -17,10 +17,11 @@
         name = ""
     }
     function showAll() {
-        console.log(data)
         containers.forEach(e => {
-            console.log(e.name, data_c[e.id])
+            data.node_containers.push(e.name)
+            data.container_settings[e.name] = data_c[e.id]
         });
+        console.log(JSON.stringify(data))
     }
 </script>
 <button on:click={showAll}>
