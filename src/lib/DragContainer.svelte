@@ -1,9 +1,8 @@
 <style>
 .area {
-  max-width: 1010px;
-  height: 600px;
   background-color: yellow;
   position: relative;
+  height: 100%;
 }
 </style>
 
@@ -18,12 +17,14 @@
   import { onMount } from 'svelte';
 
   onMount(() => {
-    let csize = {
+    // OOK OOK OOK OOK SOM ORAGNUTAN
+    setInterval(() => {
+      let csize = {
       "width": document.getElementById('draggable_area').offsetWidth,
       "height": document.getElementById('draggable_area').offsetHeight
     }
-    console.log(csize);
     store_container_size.update(_ => csize)
+    }, 1000);
   });
 
 

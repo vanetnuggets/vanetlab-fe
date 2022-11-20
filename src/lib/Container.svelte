@@ -25,6 +25,7 @@
         console.log(container);
     }
 </script>
+
 <div>
     <p> This is: {name} </p>
     <input bind:value={container.type} placeholder="Type of container">

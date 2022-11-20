@@ -1,29 +1,39 @@
 <style>
-  .demo-container{
-    position: relative;
-    max-width: 1010px;
-  }
   .green {
     background-color: green;
   }
 </style>
 
-<div class=demo-container>
-  <RightDrawer>
-  {#if elem_rdrawer == 'node_info'}
-    <NodeInfo></NodeInfo>
-  {:else if elem_rdrawer == 'container_info' }
-    <ContainerInfo></ContainerInfo>
-  {/if}
-  </RightDrawer>
+<AppLayout>
+  <span slot="right">
+    <RightDrawer>
+    {#if elem_rdrawer == 'node_info'}
+      <NodeInfo></NodeInfo>
+    {:else if elem_rdrawer == 'container_info' }
+      <ContainerInfo></ContainerInfo>
+    {/if}
+    </RightDrawer>
+  </span>
 
-  <DragContainer/>
-  <div class="green">
-    <Topology></Topology>
-  </div>
-</div>
+  <span slot="left">
+    <LeftDrawer>
+      <Topology></Topology>
+    </LeftDrawer>
+  </span>
+  
+  <span slot="top">
+    <TopBar></TopBar>
+  </span>
+
+  <span slot="content">
+    <DragContainer/>
+  </span>
+</AppLayout>
 
 <script>
+import TopBar from "./lib/borderplate/TopBar.svelte";
+import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";
+import AppLayout from "./lib/layouts/AppLayout.svelte";
 import Topology from "./lib/Topology.svelte";
 import DragContainer from './lib/DragContainer.svelte';
 import RightDrawer from "./lib/layouts/RightDrawer.svelte";
