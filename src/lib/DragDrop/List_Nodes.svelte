@@ -1,6 +1,5 @@
 <script>
 	import Node from './Node.svelte';
-	export let container_size;
 	let nodes = [];
 	let last_id = 0
 
@@ -26,5 +25,5 @@
 
 <button on:click={add_node}>Add node</button>
 {#each nodes as node}
-	<Node on:click={e=>{console.log('test')}} bind:node={node} container_size={container_size} remove_from_list={remove}/>
+	<Node on:click={e=>{console.log('test')}} bind:node={node} remove_from_list={remove}/>
 {/each}

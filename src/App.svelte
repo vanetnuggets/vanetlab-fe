@@ -1,10 +1,7 @@
 <style>
   .demo-container{
-    width: 1000px;
     position: relative;
-  }
-  .yellow {
-    background-color: yellow;
+    max-width: 1010px;
   }
   .green {
     background-color: green;
@@ -19,9 +16,8 @@
     <ContainerInfo></ContainerInfo>
   {/if}
   </RightDrawer>
-  <div class="yellow">
-    <DragContainer/>
-  </div>
+
+  <DragContainer/>
   <div class="green">
     <Topology></Topology>
   </div>

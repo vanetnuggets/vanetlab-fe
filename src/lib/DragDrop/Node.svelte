@@ -1,5 +1,5 @@
 <script>
-	import { show_rdrawer, node_info } from '../../store/store.js';
+	import { store_container_size, show_rdrawer, node_info } from '../../store/store.js';
 	let node_size = 50;
 
 	export let node={
@@ -7,7 +7,11 @@
 		"top":0,
 		"id":0
 	} 
-	export let container_size;
+	
+	let cont_size;
+	store_container_size.subscribe(val => {
+		cont_size = val;
+	})
 
 	export let remove_from_list; 
 	let moving = false;
@@ -25,8 +29,8 @@
 			node.left = Math.max(0, node.left+e.movementX);
 			node.top = Math.max(0, node.top+e.movementY);
 
-			node.left = Math.min(container_size.width-node_size, node.left)
-			node.top = Math.min(container_size.height-node_size, node.top)
+			node.left = Math.min(cont_size.width-node_size, node.left)
+			node.top = Math.min(cont_size.height-node_size, node.top)
 		}
 	}
 	function remove(){

@@ -7,6 +7,7 @@
   color: white;
   position: fixed;
   right: 0;
+  z-index: 20;
 }
 </style>
 
