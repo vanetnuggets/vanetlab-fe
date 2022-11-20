@@ -26,11 +26,35 @@
     }
 </script>
 
-<div>
-    <p> This is: {name} </p>
-    <input bind:value={container.type} placeholder="Type of container">
-    
-    <form>
+<style>
+.parent {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid navy;
+    padding: 10px;
+}
+
+.child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+input  {
+    height: 20px;
+}
+select  {
+    height: 26px;
+}
+
+</style>
+
+<div class="parent">
+    <div class="child">
+        <p> This is: {name} </p>
+        <input bind:value={container.type} placeholder="Type of container">
+    </div>
+    <div class="child">
         <p>Data rate: </p>
         <input type=number bind:value={container.data_rate.value} min=1 max=1024>
         <select bind:value={container.data_rate.format}>
@@ -40,9 +64,9 @@
                 </option>
             {/each}
         </select>
-    </form>
+    </div>
     
-    <form>
+    <div class="child">
         <p>Delay: </p>
         <input type=number bind:value={container.delay.value} min=1 max=10000>
         <select bind:value={container.delay.format}>
@@ -52,7 +76,7 @@
                 </option>
             {/each}
         </select>
-    </form>
+    </div>
     
     <input bind:value={container.network_address} placeholder="Network adress">
     <input bind:value={container.network_mask} placeholder="Network mask">

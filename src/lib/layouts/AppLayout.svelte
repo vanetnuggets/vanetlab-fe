@@ -12,8 +12,10 @@
       <slot name="content">
       </slot>
     </div>
-    <slot class="myright" name="right">
-    </slot>
+    <div class="myright">
+      <slot name="right">
+      </slot>
+    </div>
   </div>
 </div>
 
@@ -32,11 +34,15 @@
 }
 
 .myright {
-  position: fixed;
-  right: 0;
-  flex: 0 0 auto;
-  height: 100vh;
+  overflow-y: scroll;
+  background-color: blueviolet;
 }
+
+.myleft {
+  overflow-y: scroll;
+  background-color: brown;
+}
+
 
 .mycontent {
   position: relative;

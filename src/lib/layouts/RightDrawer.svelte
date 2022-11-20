@@ -3,7 +3,6 @@
 .drawer {
   background-color: blueviolet;
   color: white;
-  height: 100%;
 }
 </style>
 
