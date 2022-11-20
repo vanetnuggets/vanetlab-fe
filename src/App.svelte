@@ -8,19 +8,28 @@
 <style>
   .demo-container{
     width: 1000px;
+    position: relative;
+  }
+  .yellow {
+    background-color: yellow;
+  }
+  .green {
+    background-color: green;
   }
 </style>
 
 <div class=demo-container>
-  <List_Nodes/>
-  <div>
+  <div class="yellow">
+    <DragContainer class="yellow"/>
+  </div>
+  <div class="green">
     <Topology></Topology>
   </div>
 </div>
 
 <script>
 import Topology from "./lib/Topology.svelte";
-import List_Nodes from './lib/DragDrop/List_Nodes.svelte';
+import DragContainer from './lib/DragContainer.svelte';
 	
 	
 </script>

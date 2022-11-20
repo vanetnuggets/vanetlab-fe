@@ -1,22 +1,11 @@
 <script>
 	import Node from './Node.svelte';
-	
+	export let container_size;
 	let nodes = [];
+	let last_id = 0
 
 	function id(){
-		let end = true;
-		while(true){
-			let id = "_" + Math.random().toString(36).substr(2, 9);
-			nodes.forEach(e => {
-				if(id == e.id){
-					end = false;
-				}
-			});
-			if(end){
-				return id
-			}
-			end = true;
-		}
+		return last_id++;
 	}  
 
 	function add_node(){
@@ -24,7 +13,7 @@
 			left:50,
 			top:50,
 			id: id()
-  		};
+  	};
 		nodes.push(newNode);
 		nodes=nodes
 	}
@@ -37,5 +26,5 @@
 
 <button on:click={add_node}>Add node</button>
 {#each nodes as node}
-	<Node bind:node={node} remove_from_list={remove}/>
+	<Node bind:node={node} container_size={container_size} remove_from_list={remove}/>
 {/each}
