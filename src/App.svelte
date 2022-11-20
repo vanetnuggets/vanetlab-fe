@@ -1,10 +1,3 @@
-<svelte:head>
-  <title>Example — Add/Remove</title>
-  <meta name="description" content="Svelte-grid — Example — Add/Remove" />
-  <meta name="keywords" content="draggable,resizable,grid,layout,responsive,breakpoints,Svelte,svelte,svelte.js,sveltejs,usage,example,examples,samples,add,remove,dynamic" />
-  <meta name="author" content="Vahe Araqelyan" />
-</svelte:head>
-
 <style>
   .demo-container{
     width: 1000px;
@@ -19,8 +12,15 @@
 </style>
 
 <div class=demo-container>
+  <RightDrawer>
+  {#if elem_rdrawer == 'node_info'}
+    <NodeInfo></NodeInfo>
+  {:else if elem_rdrawer == 'container_info' }
+    <ContainerInfo></ContainerInfo>
+  {/if}
+  </RightDrawer>
   <div class="yellow">
-    <DragContainer class="yellow"/>
+    <DragContainer/>
   </div>
   <div class="green">
     <Topology></Topology>
@@ -30,6 +30,14 @@
 <script>
 import Topology from "./lib/Topology.svelte";
 import DragContainer from './lib/DragContainer.svelte';
-	
-	
+import RightDrawer from "./lib/layouts/RightDrawer.svelte";
+import ContainerInfo from "./lib/topology/ContainerInfo.svelte";
+import NodeInfo from "./lib/topology/NodeInfo.svelte";
+import { show_rdrawer } from './store/store.js';
+
+let elem_rdrawer;
+show_rdrawer.subscribe(value => {
+  elem_rdrawer = value;
+  console.log(elem_rdrawer);
+})
 </script>

@@ -1,4 +1,5 @@
 <script>
+	import { show_rdrawer, node_info } from '../../store/store.js';
 	let node_size = 50;
 
 	export let node={
@@ -31,7 +32,14 @@
 	function remove(){
 		remove_from_list(node.id)
 	}
-	
+
+	function on_click() {
+		let a = {
+			'id': node.id
+		}
+		show_rdrawer.update(_ => 'node_info');
+		node_info.update(_ => a);
+	}
 </script>
 
 <style>
@@ -50,15 +58,12 @@
 		border-radius: 100%;
 		margin: auto;
 	}
-	.nodetext {
-
-	}
 	.remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
 </style>
 
-<svelte:window on:mouseup={stop} on:mousemove={move}/>
+<svelte:window on:mouseup={stop} on:mousemove={move} />
 
-<section on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
+<section on:click={on_click} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
 	{node.id}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span on:pointerdown={e => e.stopPropagation()}
