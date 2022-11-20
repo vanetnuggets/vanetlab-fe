@@ -2,6 +2,8 @@
   <slot name="top">
   </slot>
 
+  
+
   <div class="lol">
     
     <div class="myleft">
@@ -17,6 +19,10 @@
       </slot>
     </div>
   </div>
+  <div class="mybottom">
+    <slot name="bottom">
+    </slot>
+  </div>
 </div>
 
 <style>
@@ -24,10 +30,14 @@
   flex: 0 0 25px;
 }
 
+.mybottom {
+  flex: 0 0 25px;
+}
+
 .lol {
   display: flex; 
   flex-direction: row;
-  max-height: calc(100vh - 25px);
+  max-height: calc(100vh - 50px);
   max-width: 100%;
   height: 100vh;
   align-items: stretch;

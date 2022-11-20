@@ -25,13 +25,18 @@
     <TopBar></TopBar>
   </span>
 
+  <span slot="bottom">
+    <BottomBar></BottomBar>
+  </span>
+
   <span slot="content">
     <DragContainer/>
   </span>
 </AppLayout>
 
 <script>
-import TopBar from "./lib/borderplate/TopBar.svelte";
+import BottomBar from "./lib/layouts/BottomBar.svelte";
+import TopBar from "./lib/layouts/TopBar.svelte";
 import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";
 import AppLayout from "./lib/layouts/AppLayout.svelte";
 import Topology from "./lib/Topology.svelte";
