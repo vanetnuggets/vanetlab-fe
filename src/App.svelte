@@ -17,7 +17,7 @@
 
   <span slot="left">
     <LeftDrawer>
-      <Topology></Topology>
+      <Scenario/>
     </LeftDrawer>
   </span>
   
@@ -39,7 +39,7 @@ import BottomBar from "./lib/layouts/BottomBar.svelte";
 import TopBar from "./lib/layouts/TopBar.svelte";
 import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";
 import AppLayout from "./lib/layouts/AppLayout.svelte";
-import Topology from "./lib/Topology.svelte";
+import Scenario from "./lib/scenario/Scenario.svelte";
 import DragContainer from './lib/DragContainer.svelte';
 import RightDrawer from "./lib/layouts/RightDrawer.svelte";
 import ContainerInfo from "./lib/topology/ContainerInfo.svelte";

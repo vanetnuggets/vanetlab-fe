@@ -1,21 +1,10 @@
 <script>
     import { slide } from 'svelte/transition'
+    import { onMount } from 'svelte';
+    export let name
 
-    export let name;
-    export let container = {
-        "type": "",
-        "data_rate": {
-            "value": 0,
-            "format": ""
-        },
-        "delay": {
-            "value": 0,
-            "format": ""
-        },
-        "network_address": "",
-        "network_mask": "",
-        "log_pcap": false
-    }
+    export let container
+    
     let units_rate = [
         "kbps","mbps","gbps"
     ];

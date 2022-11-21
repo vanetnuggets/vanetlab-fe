@@ -6,3 +6,9 @@ export const store_container_size = writable({
   width: 50,
   height: 50
 })
+
+export const topology = writable({
+  "node_count": 0,
+  "node_containers": [],
+})
+export const containers = writable([])
