@@ -3,7 +3,7 @@
     
     let containers = []
     let data_c = []
-    let name
+    let name = ""
 
     let data = {
         "node_count": 0,
@@ -12,9 +12,14 @@
     }
 
     function addContainer(){
-        containers.push({id: containers.length, name: name})
-        containers = containers;
-        name = ""
+        if (name.trim() != '') {
+            console.log(name)
+            containers.push({id: containers.length, name: name})
+            containers = containers;
+            name = ""
+        } else {
+            alert("Názov kontajnera nesmie byť prázdny")
+        }
     }
     function showAll() {
         containers.forEach(e => {
@@ -24,14 +29,18 @@
         console.log(JSON.stringify(data))
     }
 </script>
+
+
 <button on:click={showAll}>
     show
 </button>
+<div>
+    <input bind:value={name} placeholder="Type container's name">
+    <button on:click={addContainer}>
+        Add container
+    </button>
+</div>
 
-<input bind:value={name} placeholder="Type container's name">
-<button on:click={addContainer}>
-    Add container
-</button>
 
 {#each containers as c (c.id) }
     <Container name={c.name} bind:container={data_c[c.id]}/>
