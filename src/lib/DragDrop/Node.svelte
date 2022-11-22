@@ -5,7 +5,8 @@
 	export let node={
 		"left":0,
 		"top":0,
-		"id":0
+		"id":0,
+		"containers":[]
 	} 
 	
 	let cont_size;
@@ -31,18 +32,18 @@
 
 			node.left = Math.min(cont_size.width-node_size, node.left)
 			node.top = Math.min(cont_size.height-node_size, node.top)
+			update()
 		}
 	}
 	function remove(){
-		remove_from_list(node.id)
+		remove_from_list(node.id);
+		show_rdrawer.update(_ => 'container_info');
+
 	}
 
-	function on_click() {
-		let a = {
-			'id': node.id
-		}
+	function update() {
 		show_rdrawer.update(_ => 'node_info');
-		node_info.update(_ => a);
+		node_info.update(_ => node);
 	}
 </script>
 
@@ -67,7 +68,8 @@
 
 <svelte:window on:mouseup={stop} on:mousemove={move} />
 
-<section on:click={on_click} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<section on:click={update} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
 	{node.id}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span on:pointerdown={e => e.stopPropagation()}

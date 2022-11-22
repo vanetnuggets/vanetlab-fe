@@ -1,6 +1,8 @@
 <script>
+    
     import { slide } from 'svelte/transition'
-    import { nodes } from '../../store/store.js';
+    import { nodes,show_rdrawer, node_info } from '../../store/store.js';
+    import Node from '../dragdrop/Node.svelte';
     export let name
     export let container
     
@@ -14,6 +16,8 @@
     let isShown = false
     let isNodeArrayVisible = false
 
+    let check = false
+
     function clickHandler() {
         isShown = !isShown
     }
@@ -24,6 +28,23 @@
 
     function createContainer() {
         console.log(container);
+    }
+
+    function ContainerToNode(node_id){
+        
+        $nodes.forEach(n => {
+            if(n.id==node_id){
+                if(!check)
+                    n.containers = n.containers.filter((value) => value !== container.name);
+                else
+                    n.containers = [...n.containers, container.name ]
+                show_rdrawer.update(_ => 'node_info');
+		        node_info.update(_ => n);
+            }
+        });
+        
+        
+
     }
 </script>
 
@@ -109,7 +130,7 @@ ul {
             <ul>
                 {#each $nodes as n (n.id) }
                 <li>
-                    <input type=checkbox bind:group={container.nodes} name="nodes" value={n.id}>
+                    <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
                     Node: {n.id}
                 </li> 
                 {/each}
