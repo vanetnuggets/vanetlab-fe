@@ -45,10 +45,13 @@ import RightDrawer from "./lib/layouts/RightDrawer.svelte";
 import ContainerInfo from "./lib/topology/ContainerInfo.svelte";
 import NodeInfo from "./lib/topology/NodeInfo.svelte";
 import { show_rdrawer } from './store/store.js';
+import Sipky from './lib/sipky/sipky'
 
 let elem_rdrawer;
 show_rdrawer.subscribe(value => {
   elem_rdrawer = value;
   console.log(elem_rdrawer);
 })
+
+let sipky = new Sipky();
 </script>
