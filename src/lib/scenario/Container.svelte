@@ -49,7 +49,7 @@ button {
 
 </style>
 
-<div class="parent">
+<div class="parent" style="background:pink">
     <div class="child">
         <button on:click={clickHandler}>{name}</button>
     </div>

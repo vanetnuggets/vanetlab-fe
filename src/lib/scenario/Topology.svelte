@@ -46,20 +46,22 @@
     }
 </script>
 
-
-<div>
-    <input bind:value={name} placeholder="Type container's name">
-    <button on:click={addContainer}>
-        Add container
+<div style="background:green">
+    <div>
+        <input bind:value={name} placeholder="Type container's name">
+        <button on:click={addContainer}>
+            Add container
+        </button>
+    </div>
+    
+    <button on:click={showAll}>
+        #debug
     </button>
+    
+    
+    {#each $containers as c (c.id) }
+        <Container name={c.name} bind:container={$containers[c.id]}/>
+    {/each}
 </div>
 
-<button on:click={showAll}>
-    #debug
-</button>
-
-
-{#each $containers as c (c.id) }
-    <Container name={c.name} bind:container={$containers[c.id]}/>
-{/each}
 
