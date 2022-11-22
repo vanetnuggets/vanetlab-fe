@@ -1,7 +1,6 @@
 <script>
     import Container from "./Container.svelte";
     import { containers, topology } from '../../store/store.js';
-    $containers
     let name = ""
     
     $topology = {
@@ -26,7 +25,8 @@
                 },
                 "network_address": "",
                 "network_mask": "",
-                "log_pcap": false
+                "log_pcap": false,
+                "nodes": []
             }]
             $topology.node_containers = [...$topology.node_containers, name]
             console.log("done")
@@ -41,7 +41,7 @@
             let data = e
             show[e.name] = data
         });
-        console.log(JSON.stringify(show))
+        console.log(JSON.stringify({"topology":show}))
     }
 </script>
 

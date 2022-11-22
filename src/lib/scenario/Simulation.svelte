@@ -26,7 +26,8 @@
             "start": {
                 "value": 0,
                 "format": ""
-            }
+            },
+            "network": ""
         }]
         console.log($apps.server)
     }
