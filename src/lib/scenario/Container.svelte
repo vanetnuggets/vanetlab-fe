@@ -2,7 +2,6 @@
     
     import { slide } from 'svelte/transition'
     import { nodes,show_rdrawer, node_info } from '../../store/store.js';
-    import Node from '../dragdrop/Node.svelte';
     export let name
     export let container
     

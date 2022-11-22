@@ -1,7 +1,6 @@
 <script>
 	import Node from './Node.svelte';
-	import { containers, nodes } from '../../store/store.js';
-	$nodes
+	import { nodes } from '../../store/store.js';
 	let last_id = 0
 
 	function id(){

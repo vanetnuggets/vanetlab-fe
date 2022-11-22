@@ -26,4 +26,5 @@
     store_container_size.update(_ => csize)
     }, 1000);
   });
+
 </script>

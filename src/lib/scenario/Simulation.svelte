@@ -23,16 +23,21 @@
     function addServer(){
         $apps.server = [...$apps.server, {
             "id": $apps.server.length,
+            "name": "",
+            "port": "",
             "start": {
                 "value": 0,
                 "format": ""
             },
-            "network": ""
+            "stop": {
+                "value": 0,
+                "format": ""
+            },
+            "network": "",
+            "node": ""
         }]
         console.log($apps.server)
     }
-
-    $apps
 
 
 </script>
