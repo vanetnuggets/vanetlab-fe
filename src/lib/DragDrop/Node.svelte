@@ -69,9 +69,8 @@
 <svelte:window on:mouseup={stop} on:mousemove={move} />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<section on:click={update} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
+<section id="{node.id.toString()}" on:click={update} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
 	{node.id}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span on:pointerdown={e => e.stopPropagation()}
 		on:click={() => remove()}
 	 class=remove style="color:red">
