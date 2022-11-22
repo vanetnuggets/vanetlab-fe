@@ -1,8 +1,8 @@
 <script>
-    import { topology, nodes } from '../../store/store.js';
+    import { topology, containers } from '../../store/store.js';
 
     export let app
-
+    
     let format = [
         "ms", "s", "min"
     ]
@@ -51,13 +51,19 @@
     </div>
     <div style="display:ruby">
         <p>Node: </p>
+        {#if app.network != ""}
         <select bind:value={app.node}>
-            {#each $nodes as node}
+            {#each $containers as c}
+                {#if c.name == app.network}
+                {#each c.nodes as node}
                 <option value={node}>
-                    {node.id}
+                    {node}
                 </option>
+                {/each}
+                {/if}
             {/each}
         </select>
+        {/if}
     </div>
     <button on:click={debug}>AAAAAAa</button>
 </div>

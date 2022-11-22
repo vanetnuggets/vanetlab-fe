@@ -39,6 +39,35 @@
         console.log($apps.server)
     }
 
+    function addClient() {
+        $apps.client = [...$apps.client, {
+            "id": $apps.client.length,
+            "name": "",
+            "port": "",
+            "start": {
+                "value": 0,
+                "format": ""
+            },
+            "stop": {
+                "value": 0,
+                "format": ""
+            },
+            "network": "",
+            "node": "",
+            "server": {
+                "node": "",
+                "network": ""
+            },
+            "interval": {
+                "value": 0,
+                "format": ""
+            },
+            "max_packets": 0,
+            "packet_size": 0
+        }]
+        console.log($apps.client)
+    }
+
 
 </script>
 
@@ -59,7 +88,7 @@
     </div>
     {#if isClientVisible}
     <div transition:slide class="somebs">
-        <p>nothing yet</p>
+        <button on:click={addClient}>Add client app</button>
         {#each $apps.client as c (c.id) }
         <ClientApp bind:app={$apps.client[c.id]}/>
         {/each}
