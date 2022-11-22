@@ -1,6 +1,6 @@
 <script>
 	import Node from './Node.svelte';
-	import { nodes } from '../../store/store.js';
+	import { containers, nodes } from '../../store/store.js';
 	$nodes
 	let last_id = 0
 
@@ -12,8 +12,9 @@
 		let newNode = {
 			left:50,
 			top:50,
-			id: id()
-  	};
+			id: id(),
+			containers:[]
+  		};
 		$nodes = [...$nodes, newNode]
 	}
 	
