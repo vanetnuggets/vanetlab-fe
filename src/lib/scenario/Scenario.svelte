@@ -3,6 +3,8 @@
     import Simulation from "./Simulation.svelte"
     import Topology from "./Topology.svelte"
 
+    import { topology, containers, apps } from '../../store/store.js';
+
     let isTopologyVisible = false
     let TopologyBntText = "Show topology settings"
     let isSimulationVisible = false
@@ -17,6 +19,31 @@
     function handleSimulation() {
         isSimulationVisible = !isSimulationVisible;
         SimulationBntText = isSimulationVisible ? "Hide simulation settings" : "Show simulation settings"
+    }
+
+    function print(){
+        let top = $topology
+        let cons = $containers
+        let simu = $apps
+        top["container_setings"] = {}
+        cons.forEach(element => {
+            top["container_setings"][element.name] = element
+        })
+        let sim = {
+            "server": {},
+            "client": {}
+        }
+        simu.server.forEach(e => {
+           sim.server[e.name] = e
+        })
+        simu.client.forEach(e => {
+           sim.client[e.name] = e
+        })
+        let data = {
+            "topology": top,
+            "simulation": sim
+        }
+        console.log(JSON.stringify(data))
     }
 </script>
 
@@ -41,6 +68,10 @@
         <Simulation/>
     </div>
     {/if}
+
+    <div>
+        <button on:click={print}>Print scenario</button>
+    </div>
 </div>
 
 <style>

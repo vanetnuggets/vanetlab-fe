@@ -27,8 +27,8 @@
             <ul>
                 {#each $apps.server as s (s.id) }
                 <li>
-                    <input type=checkbox bind:group={app.server} name="server" value={s.id}>
-                    Server: {s.id}
+                    <input type=radio bind:group={app.server} name="server" value={s.name}>
+                    Server: {s.name}
                 </li> 
                 {/each}
             </ul>
