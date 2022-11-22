@@ -1,18 +1,37 @@
 <script>
-    import { topology } from '../../store/store.js';
+    import { topology, nodes } from '../../store/store.js';
 
     export let app
 
     let format = [
         "ms", "s", "min"
     ]
+
+    function debug() {
+        console.log(JSON.stringify(app))
+    }
 </script>
 
 <div style="background:green;display:grid">
     <div style="display:ruby">
+        <p>Name: </p>
+        <input bind:value={app.name} placeholder="Type app's name">
+    </div>
+    <div style="display:ruby">
         <p>Start: </p>
         <input type=number bind:value={app.start.value} min=1 max=1024>
         <select bind:value={app.start.format}>
+            {#each format as unit}
+                <option value={unit}>
+                    {unit}
+                </option>
+            {/each}
+        </select>
+    </div>
+    <div style="display:ruby">
+        <p>Stop: </p>
+        <input type=number bind:value={app.stop.value} min=1 max=1024>
+        <select bind:value={app.stop.format}>
             {#each format as unit}
                 <option value={unit}>
                     {unit}
@@ -30,4 +49,15 @@
             {/each}
         </select>
     </div>
+    <div style="display:ruby">
+        <p>Node: </p>
+        <select bind:value={app.node}>
+            {#each $nodes as node}
+                <option value={node}>
+                    {node.id}
+                </option>
+            {/each}
+        </select>
+    </div>
+    <button on:click={debug}>AAAAAAa</button>
 </div>
