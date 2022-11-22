@@ -1,6 +1,5 @@
 <script>
     import { slide } from 'svelte/transition'
-    import { onMount } from 'svelte';
     export let name
 
     export let container

@@ -1,5 +1,8 @@
 <script>
     import { slide } from 'svelte/transition'
+    import { apps } from '../../store/store.js';
+    import ClientApp from './ClientApp.svelte';
+    import ServerApp from './ServerApp.svelte';
 
     let isClientVisible = false
     let ClientBntText = "Show client's apps settings"
@@ -16,6 +19,21 @@
         isServerVisible = !isServerVisible;
         ServerBntText = isServerVisible ? "Hide server's apps settings" : "Show server's apps settings"
     }
+
+    function addServer(){
+        $apps.server = [...$apps.server, {
+            "id": $apps.server.length,
+            "start": {
+                "value": 0,
+                "format": ""
+            }
+        }]
+        console.log($apps.server)
+    }
+
+    $apps
+
+
 </script>
 
 <div style="background:purple">
@@ -24,7 +42,10 @@
     </div>
     {#if isServerVisible}
     <div transition:slide class="somebs">
-        <p>nothing yet</p>
+        <button on:click={addServer}>Add server app</button>
+        {#each $apps.server as s (s.id) }
+        <ServerApp bind:app={$apps.server[s.id]}/>
+        {/each}
     </div>
     {/if}
     <div>
@@ -33,6 +54,9 @@
     {#if isClientVisible}
     <div transition:slide class="somebs">
         <p>nothing yet</p>
+        {#each $apps.client as c (c.id) }
+        <ClientApp bind:app={$apps.client[c.id]}/>
+        {/each}
     </div>
     {/if}
 </div>

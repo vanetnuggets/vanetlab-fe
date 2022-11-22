@@ -39,7 +39,6 @@
         let show = $topology
         $containers.forEach(e => {
             let data = e
-
             show[e.name] = data
         });
         console.log(JSON.stringify(show))
@@ -57,7 +56,6 @@
     <button on:click={showAll}>
         #debug
     </button>
-    
     
     {#each $containers as c (c.id) }
         <Container name={c.name} bind:container={$containers[c.id]}/>

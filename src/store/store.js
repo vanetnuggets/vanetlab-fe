@@ -12,3 +12,8 @@ export const topology = writable({
   "node_containers": [],
 })
 export const containers = writable([])
+
+export const apps = writable({
+  "server": [],
+  "client": []
+})
