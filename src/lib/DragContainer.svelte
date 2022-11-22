@@ -11,7 +11,7 @@
 </div>
 
 <script>
-  import ListNodes from './DragDrop/List_Nodes.svelte';
+  import ListNodes from './DragDrop/ListNodes.svelte';
   import { store_container_size, show_rdrawer } from '../store/store.js';
   
   import { onMount } from 'svelte';

@@ -1,8 +1,7 @@
 <script>
     import { slide } from 'svelte/transition'
-    import { onMount } from 'svelte';
+    import { nodes } from '../../store/store.js';
     export let name
-
     export let container
     
     let units_rate = [
@@ -13,9 +12,14 @@
     ]
 
     let isShown = false
+    let isNodeArrayVisible = false
 
     function clickHandler() {
         isShown = !isShown
+    }
+
+    function handleArray() {
+        isNodeArrayVisible = !isNodeArrayVisible
     }
 
     function createContainer() {
@@ -47,9 +51,15 @@ button {
     width: 360px;
 }
 
+ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
 </style>
 
-<div class="parent">
+<div class="parent" style="background:pink">
     <div class="child">
         <button on:click={clickHandler}>{name}</button>
     </div>
@@ -92,6 +102,21 @@ button {
         <label>
             <input type=checkbox bind:checked={container.log_pcap}> Log .pcap
         </label>
+
+        <div>
+            <button on:click={handleArray}>Show nodes</button>
+            {#if isNodeArrayVisible}
+            <ul>
+                {#each $nodes as n (n.id) }
+                <li>
+                    <input type=checkbox bind:group={container.nodes} name="nodes" value={n.id}>
+                    Node: {n.id}
+                </li> 
+                {/each}
+            </ul>
+            {/if}
+        </div>
+
         <div>
             <button on:click={createContainer}>
                 #debug

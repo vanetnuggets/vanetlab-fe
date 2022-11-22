@@ -1,6 +1,7 @@
 <script>
 	import Node from './Node.svelte';
-	let nodes = [];
+	import { nodes } from '../../store/store.js';
+	$nodes
 	let last_id = 0
 
 	function id(){
@@ -13,17 +14,16 @@
 			top:50,
 			id: id()
   	};
-		nodes.push(newNode);
-		nodes=nodes
+		$nodes = [...$nodes, newNode]
 	}
 	
 	function remove(node_id) {
-		nodes = nodes.filter((value) => value.id !== node_id);
+		$nodes = $nodes.filter((value) => value.id !== node_id);
 	};
 </script>
 
 
 <button on:click={add_node}>Add node</button>
-{#each nodes as node}
+{#each $nodes as node}
 	<Node on:click={e=>{console.log('test')}} bind:node={node} remove_from_list={remove}/>
 {/each}
