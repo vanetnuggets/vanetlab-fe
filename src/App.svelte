@@ -40,7 +40,7 @@ import TopBar from "./lib/layouts/TopBar.svelte";
 import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";
 import AppLayout from "./lib/layouts/AppLayout.svelte";
 import Scenario from "./lib/scenario/Scenario.svelte";
-import DragContainer from './lib/DragContainer.svelte';
+import DragContainer from './lib/dragdrop/DragContainer.svelte';
 import RightDrawer from "./lib/layouts/RightDrawer.svelte";
 import ContainerInfo from "./lib/topology/ContainerInfo.svelte";
 import NodeInfo from "./lib/topology/NodeInfo.svelte";

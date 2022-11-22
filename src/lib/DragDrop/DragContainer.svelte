@@ -6,13 +6,13 @@
 }
 </style>
 
-<div id="draggable_area" class="area" on:click={test}>
+<div id="draggable_area" class="area">
   <ListNodes/>
 </div>
 
 <script>
-  import ListNodes from './DragDrop/ListNodes.svelte';
-  import { store_container_size, show_rdrawer } from '../store/store.js';
+  import ListNodes from './ListNodes.svelte';
+  import { store_container_size } from '../../store/store.js';
   
   import { onMount } from 'svelte';
 
@@ -26,13 +26,4 @@
     store_container_size.update(_ => csize)
     }, 1000);
   });
-
-
-      
-  
-  function test() {
-    // Toto funguje aj ked kliknem na kruzok, takze nic
-    // Mozno do kruzku dat setTimeout, ale nejsme opice ci ?
-    // show_rdrawer.update(n => null);
-  }
 </script>
