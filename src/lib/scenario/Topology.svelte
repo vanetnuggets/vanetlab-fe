@@ -25,6 +25,7 @@
                 },
                 "network_address": "",
                 "network_mask": "",
+                "network_name": "",
                 "log_pcap": false,
                 "nodes": []
             }]
