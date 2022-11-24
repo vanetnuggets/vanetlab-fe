@@ -25,7 +25,7 @@
         isNodeArrayVisible = !isNodeArrayVisible
     }
 
-    function createContainer() {
+    function debug() {
         console.log(container);
     }
 
@@ -117,6 +117,10 @@ ul {
             <p>Maska siete: </p>
             <input bind:value={container.network_mask} placeholder="Network mask">
         </div>
+        <div class="child">
+            <p>Názov siete: </p>
+            <input bind:value={container.network_name} placeholder="Network name">
+        </div>
         
         
         <label>
@@ -130,7 +134,7 @@ ul {
                 {#each $nodes as n (n.id) }
                 <li>
                     <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
-                    Node: {n.id}
+                    Node #{n.id}
                 </li> 
                 {/each}
             </ul>
@@ -138,7 +142,7 @@ ul {
         </div>
 
         <div>
-            <button on:click={createContainer}>
+            <button on:click={debug}>
                 #debug
             </button>
         </div>
