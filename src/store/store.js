@@ -12,6 +12,7 @@ export const topology = writable({
   "node_containers": [],
 })
 export const containers = writable([])
+export const visibleContainer = writable("wtf")
 
 export const nodes = writable([])
 

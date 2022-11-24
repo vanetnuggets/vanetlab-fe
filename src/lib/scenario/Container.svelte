@@ -1,7 +1,7 @@
 <script>
     
     import { slide } from 'svelte/transition'
-    import { nodes,show_rdrawer, node_info } from '../../store/store.js';
+    import { nodes,show_rdrawer, node_info, visibleContainer } from '../../store/store.js';
     export let name
     export let container
     
@@ -19,18 +19,31 @@
 
     function clickHandler() {
         isShown = !isShown
+        if (isShown) 
+            visibleContainer.set(container.name)
     }
 
     function handleArray() {
         isNodeArrayVisible = !isNodeArrayVisible
     }
 
+    // refactor asi, bolo by to treba vložiť do toho ternárneho operátora v "open" nejako cez =>, ale robilo mi to problémy
+    function wut() {
+        isShown = false
+        return false
+    }
+
+    $: open = ($visibleContainer == container.name) ? 
+                    (isShown) ? 
+                        true 
+                    : false 
+              : wut()
+
     function debug() {
         console.log(container);
     }
 
     function ContainerToNode(node_id){
-        
         $nodes.forEach(n => {
             if(n.id==node_id){
                 if(!check)
@@ -41,9 +54,6 @@
 		        node_info.update(_ => n);
             }
         });
-        
-        
-
     }
 </script>
 
@@ -83,7 +93,7 @@ ul {
     <div class="child">
         <button on:click={clickHandler}>{name}</button>
     </div>
-    {#if isShown}
+    {#if open}
     <div transition:slide>
         <input bind:value={container.type} placeholder="Type of container">
         <div class="child">
