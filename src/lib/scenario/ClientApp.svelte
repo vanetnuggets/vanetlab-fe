@@ -1,5 +1,5 @@
 <script>
-    import { topology, nodes, apps } from '../../store/store.js';
+    import { topology, containers, apps } from '../../store/store.js';
 
     export let app
     let format = [
@@ -68,13 +68,19 @@
     </div>
     <div style="display:ruby">
         <p>Node: </p>
+        {#if app.network != ""}
         <select bind:value={app.node}>
-            {#each $nodes as node}
-                <option value={node.id}>
-                    {node.id}
+            {#each $containers as c}
+                {#if c.name == app.network}
+                {#each c.nodes as node}
+                <option value={node}>
+                    {node}
                 </option>
+                {/each}
+                {/if}
             {/each}
         </select>
+        {/if}
     </div>
     <div style="display:ruby">
         <p>Interval: </p>
