@@ -27,7 +27,6 @@
         isNodeArrayVisible = !isNodeArrayVisible
     }
 
-    // refactor asi, bolo by to treba vložiť do toho ternárneho operátora v "open" nejako cez =>, ale robilo mi to problémy
     function handleOpening() {
         if (isShown) {
             return true
