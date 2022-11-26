@@ -27,17 +27,16 @@
         isNodeArrayVisible = !isNodeArrayVisible
     }
 
-    // refactor asi, bolo by to treba vložiť do toho ternárneho operátora v "open" nejako cez =>, ale robilo mi to problémy
-    function wut() {
+    function handleClosing() {
         isShown = false
         return false
     }
-
+    // maybe ternary is necessary 
     $: open = ($visibleContainer == container.name) ? 
                     (isShown) ? 
-                        true 
-                    : false 
-              : wut()
+                        true
+                    : false
+            : handleClosing()
 
     function debug() {
         console.log(container);
