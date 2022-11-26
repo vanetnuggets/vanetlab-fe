@@ -27,20 +27,16 @@
         isNodeArrayVisible = !isNodeArrayVisible
     }
 
-    function handleOpening() {
-        if (isShown) {
-            return true
-        }
-        return false
-    }
-
     function handleClosing() {
         isShown = false
         return false
     }
-        
-
-    $: open = ($visibleContainer == container.name) ? handleOpening() : handleClosing()
+    // maybe ternary is necessary 
+    $: open = ($visibleContainer == container.name) ? 
+                    (isShown) ? 
+                        true
+                    : false
+            : handleClosing()
 
     function debug() {
         console.log(container);
