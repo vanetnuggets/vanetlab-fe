@@ -28,16 +28,20 @@
     }
 
     // refactor asi, bolo by to treba vložiť do toho ternárneho operátora v "open" nejako cez =>, ale robilo mi to problémy
-    function wut() {
-        isShown = false
+    function handleOpening() {
+        if (isShown) {
+            return true
+        }
         return false
     }
 
-    $: open = ($visibleContainer == container.name) ? 
-                    (isShown) ? 
-                        true 
-                    : false 
-              : wut()
+    function handleClosing() {
+        isShown = false
+        return false
+    }
+        
+
+    $: open = ($visibleContainer == container.name) ? handleOpening() : handleClosing()
 
     function debug() {
         console.log(container);
