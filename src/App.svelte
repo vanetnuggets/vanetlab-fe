@@ -30,11 +30,19 @@
   </span>
 
   <span slot="content">
-    <DragContainer/>
+    <Router routes={{
+      '/': DragContainer,
+      '/dragdrop': DragContainer,
+      '/notfound': NotFound,
+      '*': NotFound
+    }} />
   </span>
 </AppLayout>
 
+
 <script>
+import Router from 'svelte-spa-router'
+import NotFound from "./lib/DragDrop/NotFound.svelte"
 import BottomBar from "./lib/layouts/BottomBar.svelte";
 import TopBar from "./lib/layouts/TopBar.svelte";
 import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";
