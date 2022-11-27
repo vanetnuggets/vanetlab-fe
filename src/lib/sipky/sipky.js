@@ -128,6 +128,7 @@ class Sipky {
         if (this.colors[cont_id] === undefined) {
             this.colors[cont_id] = this._createColor();
         }
+        return this.colors[cont_id];
     }
 
     _createColor() {
