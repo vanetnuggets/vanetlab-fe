@@ -1,12 +1,14 @@
 <script>
-	import { store_container_size, show_rdrawer, node_info } from '../../store/store.js';
+	import { store_container_size, show_rdrawer, node_info, nodes } from '../../store/store.js';
+	import sipky from '../sipky/sipky.js'
 	let node_size = 50;
 
 	export let node={
 		"left":0,
 		"top":0,
 		"id":0,
-		"containers":[]
+		"containers":[],
+		"element": null
 	} 
 	
 	let cont_size;
@@ -14,7 +16,6 @@
 		cont_size = val;
 	})
 
-	export let remove_from_list; 
 	let moving = false;
 	
 	function start() {
@@ -22,7 +23,12 @@
 	}
 	
 	function stop() {
-		moving= false;
+		moving = false;
+		update();
+	}
+
+	function stop_a_little() {
+		moving = false;
 	}
 	
 	function move(e){
@@ -32,18 +38,20 @@
 
 			node.left = Math.min(cont_size.width-node_size, node.left)
 			node.top = Math.min(cont_size.height-node_size, node.top)
-			update()
 		}
 	}
+
 	function remove(){
-		remove_from_list(node.id);
+		$nodes = $nodes.filter((value) => value.id !== node.id);
 		show_rdrawer.update(_ => 'container_info');
+		sipky.on_delete(node.id);
 
 	}
 
 	function update() {
 		show_rdrawer.update(_ => 'node_info');
 		node_info.update(_ => node);
+		sipky.update(node.id);
 	}
 </script>
 
@@ -66,14 +74,35 @@
 	.remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
 </style>
 
-<svelte:window on:mouseup={stop} on:mousemove={move} />
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<section id="{node.id.toString()}" on:click={update} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
-	{node.id}
+
+<div bind:this={node.element}
+			 on:mousemove={move}
+			 on:mousedown={start}
+			 style="left: {node.left}px; top : {node.top}px"
+			 class="node"
+
+
+>
+{node.id}
 	<span on:pointerdown={e => e.stopPropagation()}
 		on:click={() => remove()}
-	 class=remove style="color:red">
+	class=remove style="color:red">
 		X
 	</span>
-</section>
+</div>
+
+<svelte:window on:mouseup={stop} />
+<!--
+	<svelte:window on:mouseup={stop} on:mousemove={move} on:mousedown={on_mousedown} />
+	
+	<section id="{node.id.toString()}" on:click={update} on:mousedown={start} style="left: {node.left}px; top : {node.top}px" class="node">
+		{node.id}
+		<span on:pointerdown={e => e.stopPropagation()}
+			on:click={() => remove()}
+		class=remove style="color:red">
+			X
+		</span>
+	</section>
+
+-->

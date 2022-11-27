@@ -1,68 +1,137 @@
 import { nodes, containers } from "../../store/store";
 import LeaderLine from 'leader-line-new';
 
-export default class Sipky {
+class Sipky {
+    static on_delete(node_id) {
+        throw new Error('Method not implemented.');
+    }
     
     constructor() {
         this.lines = {}
         this.colors = {}
         this.counter = 0
+
+        this.connections = {}
+
+        this.nodes = []
+        let me = this;
+
         nodes.subscribe(val => {
-            for (const [key, line_arrs] of Object.entries(this.lines)) {
-                line_arrs.forEach(line => {
-                    line.position()
-                });
-              }
+            me.nodes = val;
         });
-        containers.subscribe(val => {
-            // array exists and is not empty
-            // console.log(this.lines)
-            val.forEach(container => {
-                let i = container.id
-                let si = i.toString()
-                if (this.colors[si] === undefined){
-                    this.colors[si] = this.createColor()
+
+        containers.subscribe(containers => {
+            for (let container of containers) {
+                let color = me.get_color(container);
+
+                let node_len = container.nodes.length;
+                if (node_len < 2) {
+                    continue;
                 }
-                if (Array.isArray(val) && val.length) {
-                    this.counter = val[i].nodes.length
-                    if (val[i].nodes.length > 1) {
-                        if (this.lines[si] !== undefined) {
-                            this.lines[si].forEach(line => {
-                                line.remove()
-                            });
-                            this.lines[si] = []
-                            // this.lines[si] = []
+
+                for(let node_1 of container.nodes) {
+                    for(let node_2 of container.nodes) {
+                        if (node_1 == node_2) {
+                            continue
                         }
-                        val[i].nodes.forEach(id1 => {
-                            val[i].nodes.slice(-this.counter).forEach(id2 => {
-                                if (id1 != id2) {
-                                    // console.log('arraw btw nodes number: ', id1, id2)
-                                    let new_line = new LeaderLine(
-                                        document.getElementById(id1.toString()),
-                                        document.getElementById(id2.toString()),
-                                        {path: 'straight', endPlug: 'behind', color: this.colors[si]}
-                                    );
-                                    if (this.lines[si] === undefined) {
-                                        this.lines[si] = []
-                                    }
-                                    this.lines[si].push(new_line)
-                                }
-                            });
-                            this.counter -= 1
-                        });
-                    }else {
-                        if (this.lines[si] !== undefined && this.lines[si][0] != null) {
-                            this.lines[si][0].remove()
-                            this.lines[si] = []
-                            // this.lines[si] = []
+                        const [n1, n2] = me.get_friends(node_1, node_2);
+                        if (n1 == null || n2 == null) {
+                            continue
                         }
+                        me.add_line(n1, n2, color);
                     }
                 }
-            });
-        })
+            }
+        });
     }
 
-    createColor() {
+    get_friends(n1, n2) {
+        let node_1 = null;
+        let node_2 = null;
+        for (let node of this.nodes) {
+            if (node.id == n1) {
+                node_1 = node;
+            } else if (node.id == n2) {
+                node_2 = node;
+            }
+        }
+        return [node_1, node_2]
+    }
+
+    add_line(node1, node2, color) {
+        let min = Math.min(node1.id, node2.id).toString();
+        let max = Math.max(node1.id, node2.id).toString();
+        let conn = `${min}_${max}`;
+
+        if (this.lines[conn] !== undefined) {
+            return
+        }
+
+        let new_line = new LeaderLine(
+            node1.element,
+            node2.element,
+            {
+                path: 'straight',
+                endPlug: 'behind',
+                color: color
+            }
+        )
+
+        this.lines[conn] = new_line;
+        
+        if (min in this.connections == false ) {
+            this.connections[min] = []
+        }
+
+        if (max in this.connections == false ) {
+            this.connections[max] = []
+        }
+
+        this.connections[min].push(conn);
+        this.connections[max].push(conn);
+    }
+
+    on_delete(node_id_) {
+        let node_id = node_id_.toString();
+
+        if (node_id in this.connections == false) {
+            return;
+        }
+        let conn_map = this.connections[node_id];
+        
+        for (let conn of conn_map) {
+            const [n1, n2] = conn.split('_');
+
+            this.lines[conn].remove();
+            
+            this.connections[n1] = this.connections[n1].filter(elem => elem != conn);
+            this.connections[n2] = this.connections[n2].filter(elem => elem != conn);
+
+            delete this.lines[conn];
+        }
+    }
+
+    update(id) {
+        let conn_map = this.connections[id];
+        if (conn_map == undefined) {
+            return;
+        } 
+        for (let conn of conn_map) {
+            if (this.lines[conn] != undefined) {
+                this.lines[conn].position()
+            }   
+        }
+    }
+
+    get_color(container) {
+        let cont_id = container.id;
+        if (this.colors[cont_id] === undefined) {
+            this.colors[cont_id] = this._createColor();
+        }
+        return this.colors[cont_id];
+    }
+
+    _createColor() {
         let n1 = this.genNum(0, 255).toString()
         let n2 = this.genNum(0, 255).toString()
         let n3 = this.genNum(0, 255).toString()
@@ -73,3 +142,5 @@ export default class Sipky {
         return Math.random() * (max - min) + min;
     }
 }
+
+export default new Sipky();
