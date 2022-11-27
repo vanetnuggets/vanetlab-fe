@@ -1,7 +1,5 @@
 <style>
-  .green {
-    background-color: green;
-  }
+
 </style>
 
 <AppLayout>

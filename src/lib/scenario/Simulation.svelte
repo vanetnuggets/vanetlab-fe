@@ -71,7 +71,7 @@
 
 </script>
 
-<div style="background:purple">
+<div class="simulation_container">
     <div>
         <button on:click={handleServer} class="somebs">{ServerBntText}</button>
     </div>

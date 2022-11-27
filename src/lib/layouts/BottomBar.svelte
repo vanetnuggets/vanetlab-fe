@@ -1,5 +1,5 @@
 😎 VANETLAB BOTTOM BAR 😎
-<button on:click={sendToBe}>Send scenario</button>
+<button class="btn-light" on:click={sendToBe}>Send scenario</button>
 
 <script>
     import api from '../../services/Api.js'

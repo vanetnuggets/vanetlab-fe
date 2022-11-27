@@ -1,6 +1,8 @@
 <div class="myapp">
+  <div class="mytop">
   <slot name="top">
   </slot>
+  </div>
 
   
 
@@ -26,14 +28,15 @@
 </div>
 
 <style>
+
 .mytop {
-  flex: 0 0 25px;
+  text-align: center;
 }
 
 .mybottom {
-  flex: 0 0 50px;
+  flex: 0 0 40px;
   z-index: 100;
-  background-color: black;
+  text-align: center;
 }
 
 .lol {
@@ -47,12 +50,10 @@
 
 .myright {
   overflow-y: scroll;
-  background-color: blueviolet;
 }
 
 .myleft {
   overflow-y: scroll;
-  background-color: brown;
 }
 
 

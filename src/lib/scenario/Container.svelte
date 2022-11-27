@@ -88,7 +88,7 @@ ul {
 
 </style>
 
-<div class="parent" style="background:pink">
+<div class="topology_container parent">
     <div class="child">
         <button on:click={clickHandler}>{name}</button>
     </div>

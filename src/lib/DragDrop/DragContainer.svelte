@@ -1,12 +1,11 @@
 <style>
 .area {
-  background-color: yellow;
   position: relative;
   height: 100%;
 }
 </style>
 
-<div bind:this={canvas} class="area">
+<div bind:this={canvas} class="area canvas">
   <ListNodes/>
 </div>
 

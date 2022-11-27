@@ -12,7 +12,7 @@
     }
 </script>
 
-<div style="background:green;display:grid">
+<div class="server_container" style="display:grid">
     <div style="display:ruby">
         <p>Name: </p>
         <input bind:value={app.name} placeholder="Type app's name">

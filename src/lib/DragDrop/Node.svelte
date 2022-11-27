@@ -75,7 +75,7 @@
 	.remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
 </style>
 
-
+<svelte:window on:mouseup={stop} />
 
 <div bind:this={node.element}
 			 on:mousemove={move}
@@ -93,7 +93,7 @@
 	</span>
 </div>
 
-<svelte:window on:mouseup={stop} />
+
 <!--
 	<svelte:window on:mouseup={stop} on:mousemove={move} on:mousedown={on_mousedown} />
 	

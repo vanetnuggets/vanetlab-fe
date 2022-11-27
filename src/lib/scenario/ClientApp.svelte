@@ -16,8 +16,8 @@
     }
 </script>
 
-<div style="background:blue;display:grid">
-    <div style="display:ruby">
+<div class="client_container" style="display:grid">
+    <div style="display">
         <p>Name: </p>
         <input bind:value={app.name} placeholder="Type app's name">
     </div>
