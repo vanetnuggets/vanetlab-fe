@@ -9,9 +9,9 @@
         let top = $topology
         let cons = $containers
         let simu = $apps
-        top["container_setings"] = {}
+        top["container_settings"] = {}
         cons.forEach(element => {
-            top["container_setings"][element.name] = element
+            top["container_settings"][element.name] = element
         })
         let sim = {
             "server": {},
@@ -31,7 +31,7 @@
     }
 
     function sendToBe(){
-        api.post("tracjson", generateScenario())
+        api.post("tracejson", generateScenario())
     }
 
 </script>
