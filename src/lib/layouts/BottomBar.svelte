@@ -3,7 +3,7 @@
 
 <script>
     import api from '../../services/Api.js'
-    import { topology, containers, apps } from '../../store/store.js'
+    import { topology, containers, apps, summary } from '../../store/store.js'
 
     function generateScenario(){
         let top = $topology
@@ -30,8 +30,16 @@
         return JSON.stringify(data)
     }
 
-    function sendToBe(){
-        api.post("tracejson", generateScenario())
+    async function sendToBe(){
+        let res = await api.post("tracejson", generateScenario())
+        console.log(res);
+
+        summary.update(_ => {
+            return {
+                logs: res.data.logs,
+                output: res.data.output
+            }
+        });
     }
 
 </script>

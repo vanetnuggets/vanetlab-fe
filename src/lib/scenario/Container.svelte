@@ -6,7 +6,7 @@
     export let container
     
     let units_rate = [
-        "kbps","mbps","gbps"
+        "Kbps","Mbps","Gbps"
     ];
     let units_delay = [
         "ns","ms","s"

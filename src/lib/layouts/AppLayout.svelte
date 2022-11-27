@@ -31,13 +31,15 @@
 }
 
 .mybottom {
-  flex: 0 0 25px;
+  flex: 0 0 50px;
+  z-index: 100;
+  background-color: black;
 }
 
 .lol {
   display: flex; 
   flex-direction: row;
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - 75px);
   max-width: 100%;
   height: 100vh;
   align-items: stretch;

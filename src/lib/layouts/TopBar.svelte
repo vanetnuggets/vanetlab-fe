@@ -1,3 +1,3 @@
-<a href="/#/notfound">NotFound</a>
-<a href="/#/dragdrop">DragDrop</a>
+<a href="/#/summary">Summary</a>
+<a href="/#">DragDrop</a>
 😎 VANETLAT FRONTEND 😎

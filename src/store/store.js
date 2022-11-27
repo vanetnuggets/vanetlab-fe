@@ -16,6 +16,11 @@ export const visibleContainer = writable("")
 
 export const nodes = writable([])
 
+export const summary = writable({
+  logs: [],
+  output: []
+});
+
 export const apps = writable({
   "server": [],
   "client": []
