@@ -12,18 +12,15 @@
 			left:50,
 			top:50,
 			id: id(),
+			element: null,
 			containers:[]
   		};
 		$nodes = [...$nodes, newNode]
 	}
-	
-	function remove(node_id) {
-		$nodes = $nodes.filter((value) => value.id !== node_id);
-	};
 </script>
 
 
 <button on:click={add_node}>Add node</button>
-{#each $nodes as node}
-	<Node on:click={e=>{console.log('test')}} bind:node={node} remove_from_list={remove}/>
+{#each $nodes as node (node.id) }
+	<Node bind:node={node}/>
 {/each}
