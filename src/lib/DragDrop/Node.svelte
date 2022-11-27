@@ -24,7 +24,7 @@
 	
 	function stop() {
 		moving = false;
-		update();
+		
 	}
 
 	function stop_a_little() {
@@ -39,6 +39,7 @@
 			node.left = Math.min(cont_size.width-node_size, node.left)
 			node.top = Math.min(cont_size.height-node_size, node.top)
 		}
+		update();
 	}
 
 	function remove(){
