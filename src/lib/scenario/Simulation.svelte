@@ -24,7 +24,7 @@
         $apps.server = [...$apps.server, {
             "id": $apps.server.length,
             "name": "",
-            "port": "",
+            "port": 0,
             "start": {
                 "value": 0,
                 "format": ""
@@ -43,7 +43,7 @@
         $apps.client = [...$apps.client, {
             "id": $apps.client.length,
             "name": "",
-            "port": "",
+            "port": 0,
             "start": {
                 "value": 0,
                 "format": ""
@@ -71,7 +71,7 @@
 
 </script>
 
-<div style="background:purple">
+<div class="simulation_container">
     <div>
         <button on:click={handleServer} class="somebs">{ServerBntText}</button>
     </div>

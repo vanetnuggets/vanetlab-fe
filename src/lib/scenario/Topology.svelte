@@ -46,7 +46,7 @@
     }
 </script>
 
-<div style="background:green">
+<div class="topology_container_holder">
     <div>
         <input bind:value={name} placeholder="Type container's name">
         <button on:click={addContainer}>

@@ -1,7 +1,5 @@
 <style>
-  .green {
-    background-color: green;
-  }
+
 </style>
 
 <AppLayout>
@@ -30,11 +28,20 @@
   </span>
 
   <span slot="content">
-    <DragContainer/>
+    <Router routes={{
+      '/': DragContainer,
+      '/sandbox': DragContainer,
+      '/summary': Summary,
+      '*': NotFound
+    }} />
   </span>
 </AppLayout>
 
+
 <script>
+import Router from 'svelte-spa-router'
+import NotFound from "./lib/DragDrop/NotFound.svelte"
+import Summary from "./lib/vizualize/Summary.svelte"
 import BottomBar from "./lib/layouts/BottomBar.svelte";
 import TopBar from "./lib/layouts/TopBar.svelte";
 import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";

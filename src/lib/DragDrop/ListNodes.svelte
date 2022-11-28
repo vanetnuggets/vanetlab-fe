@@ -1,10 +1,16 @@
 <script>
 	import Node from './Node.svelte';
-	import { nodes } from '../../store/store.js';
-	let last_id = 0
+	import { nodes, node_id } from '../../store/store.js';
+	
+	let last_id;
+	node_id.subscribe(val => {
+		last_id = val;
+	})
 
 	function id(){
-		return last_id++;
+		let this_id = last_id;
+		node_id.update(n => n + 1);
+		return this_id;
 	}  
 
 	function add_node(){

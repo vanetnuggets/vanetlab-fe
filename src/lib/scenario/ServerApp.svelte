@@ -12,7 +12,7 @@
     }
 </script>
 
-<div style="background:green;display:grid">
+<div class="server_container" style="display:grid">
     <div style="display:ruby">
         <p>Name: </p>
         <input bind:value={app.name} placeholder="Type app's name">
@@ -50,7 +50,7 @@
         </select>
     </div>
     <div style="display:ruby">
-        <p>Node: </p>
+        <p>Node: </p>it 
         {#if app.network != ""}
         <select bind:value={app.node}>
             {#each $containers as c}
@@ -65,5 +65,9 @@
         </select>
         {/if}
     </div>
+    <div style="display:ruby">
+        <p>Port: </p>
+            <input type=number bind:value={app.port} min=1 max=65535>
+        </div>
     <button on:click={debug}>AAAAAAa</button>
 </div>

@@ -1,12 +1,11 @@
 <style>
 .area {
-  background-color: yellow;
   position: relative;
   height: 100%;
 }
 </style>
 
-<div id="draggable_area" class="area">
+<div bind:this={canvas} class="area canvas">
   <ListNodes/>
 </div>
 
@@ -14,17 +13,27 @@
   import ListNodes from './ListNodes.svelte';
   import { store_container_size } from '../../store/store.js';
   
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
+    import sipky from '../sipky/sipky';
+
+  let canvas;
+  let interval_update_size
 
   onMount(() => {
+    sipky.enable();
     // OOK OOK OOK OOK SOM ORAGNUTAN
-    setInterval(() => {
+    interval_update_size = setInterval(() => {
       let csize = {
-      "width": document.getElementById('draggable_area').offsetWidth,
-      "height": document.getElementById('draggable_area').offsetHeight
+      "width": canvas.offsetWidth,
+      "height": canvas.offsetHeight
     }
     store_container_size.update(_ => csize)
     }, 1000);
   });
+
+  onDestroy(() => {
+    sipky.disable();
+    clearInterval(interval_update_size)
+  }) 
 
 </script>

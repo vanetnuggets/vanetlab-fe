@@ -24,7 +24,7 @@
 	
 	function stop() {
 		moving = false;
-		update();
+		
 	}
 
 	function stop_a_little() {
@@ -39,6 +39,7 @@
 			node.left = Math.min(cont_size.width-node_size, node.left)
 			node.top = Math.min(cont_size.height-node_size, node.top)
 		}
+		update();
 	}
 
 	function remove(){
@@ -74,7 +75,7 @@
 	.remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
 </style>
 
-
+<svelte:window on:mouseup={stop} />
 
 <div bind:this={node.element}
 			 on:mousemove={move}
@@ -92,7 +93,7 @@
 	</span>
 </div>
 
-<svelte:window on:mouseup={stop} />
+
 <!--
 	<svelte:window on:mouseup={stop} on:mousemove={move} on:mousedown={on_mousedown} />
 	

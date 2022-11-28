@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 
 export const show_rdrawer = writable("container_info");
 export const node_info = writable({})
+export const node_id = writable(0)
 export const store_container_size = writable({
   width: 50,
   height: 50
@@ -15,6 +16,11 @@ export const containers = writable([])
 export const visibleContainer = writable("")
 
 export const nodes = writable([])
+
+export const summary = writable({
+  logs: [],
+  output: []
+});
 
 export const apps = writable({
   "server": [],

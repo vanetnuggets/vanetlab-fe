@@ -16,8 +16,8 @@
     }
 </script>
 
-<div style="background:blue;display:grid">
-    <div style="display:ruby">
+<div class="client_container" style="display:grid">
+    <div style="display">
         <p>Name: </p>
         <input bind:value={app.name} placeholder="Type app's name">
     </div>
@@ -100,6 +100,10 @@
     <div style="display:ruby">
         <p>Packet size: </p>
         <input bind:value={app.packet_size} placeholder="Type packet size">
+    </div>
+    <div style="display:ruby">
+    <p>Port: </p>
+        <input type=number bind:value={app.port} min=1 max=65535>
     </div>
     <button on:click={debug}>AAAAAAa</button>
 </div>

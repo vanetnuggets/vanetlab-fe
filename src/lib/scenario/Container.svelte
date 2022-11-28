@@ -6,7 +6,7 @@
     export let container
     
     let units_rate = [
-        "kbps","mbps","gbps"
+        "Kbps","Mbps","Gbps"
     ];
     let units_delay = [
         "ns","ms","s"
@@ -88,7 +88,7 @@ ul {
 
 </style>
 
-<div class="parent" style="background:pink">
+<div class="topology_container parent">
     <div class="child">
         <button on:click={clickHandler}>{name}</button>
     </div>

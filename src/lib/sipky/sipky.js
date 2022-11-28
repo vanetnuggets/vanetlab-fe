@@ -12,37 +12,63 @@ class Sipky {
         this.counter = 0
 
         this.connections = {}
+        this.containers = []
 
         this.nodes = []
         let me = this;
+
+        this.active = false;
 
         nodes.subscribe(val => {
             me.nodes = val;
         });
 
         containers.subscribe(containers => {
-            for (let container of containers) {
-                let color = me.get_color(container);
+            me.containers = containers;
+            me.redraw();
+        });
+    }
 
-                let node_len = container.nodes.length;
-                if (node_len < 2) {
-                    continue;
-                }
+    redraw() {
+        for (let container of this.containers) {
+            let color = this.get_color(container);
 
-                for(let node_1 of container.nodes) {
-                    for(let node_2 of container.nodes) {
-                        if (node_1 == node_2) {
-                            continue
-                        }
-                        const [n1, n2] = me.get_friends(node_1, node_2);
-                        if (n1 == null || n2 == null) {
-                            continue
-                        }
-                        me.add_line(n1, n2, color);
+            let node_len = container.nodes.length;
+            if (node_len < 2) {
+                continue;
+            }
+
+            for(let node_1 of container.nodes) {
+                for(let node_2 of container.nodes) {
+                    if (node_1 == node_2) {
+                        continue
                     }
+                    const [n1, n2] = this.get_friends(node_1, node_2);
+                    if (n1 == null || n2 == null) {
+                        continue
+                    }
+                    this.add_line(n1, n2, color);
                 }
             }
-        });
+        }
+    }
+
+    genocide() {
+        for(let line of Object.values(this.lines)) {
+            line.remove()
+        }
+        this.connections = {}
+        this.lines = {}
+    }
+
+    enable() {
+        this.active = true;
+        this.redraw();
+    }
+
+    disable() {
+        this.active = false;
+        this.genocide()
     }
 
     get_friends(n1, n2) {
@@ -59,6 +85,10 @@ class Sipky {
     }
 
     add_line(node1, node2, color) {
+        if (this.active == false) {
+            return
+        }
+
         let min = Math.min(node1.id, node2.id).toString();
         let max = Math.max(node1.id, node2.id).toString();
         let conn = `${min}_${max}`;
@@ -92,6 +122,10 @@ class Sipky {
     }
 
     on_delete(node_id_) {
+        if (this.active == false) {
+            return
+        }
+
         let node_id = node_id_.toString();
 
         if (node_id in this.connections == false) {
@@ -112,6 +146,10 @@ class Sipky {
     }
 
     update(id) {
+        if (this.active == false) {
+            return
+        }
+
         let conn_map = this.connections[id];
         if (conn_map == undefined) {
             return;
