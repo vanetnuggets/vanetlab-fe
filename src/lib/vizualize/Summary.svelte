@@ -23,9 +23,21 @@ summary.subscribe(val => {
 
 async function download(name) {
   let resp = await api.get('trace', {
-    name: name
+    responseType: 'blob',
+    params: {
+      name: name
+    }
   });
-  console.log(resp);
+  const blob = resp.data;
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.style.display = "none";
+  a.href = url;
+        
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url); 
 }
 
 </script>
