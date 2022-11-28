@@ -11,6 +11,9 @@
     let units_delay = [
         "ns","ms","s"
     ]
+    let container_types = [
+        'csma', 'point_to_point'
+    ]
 
     let isShown = false
     let isNodeArrayVisible = false
@@ -94,7 +97,15 @@ ul {
     </div>
     {#if open}
     <div transition:slide>
-        <input bind:value={container.type} placeholder="Type of container">
+        Select type of node container: 
+        <select bind:value={container.type}>
+            {#each container_types as cont_type}
+                <option value={cont_type}>
+                    {cont_type}
+                </option>
+            {/each}
+        </select>
+
         <div class="child">
             <p>Data rate: </p>
             <input type=number bind:value={container.data_rate.value} min=1 max=1024>

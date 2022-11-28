@@ -25,6 +25,7 @@ class Sipky {
 
         containers.subscribe(containers => {
             me.containers = containers;
+            me.genocide();
             me.redraw();
         });
     }
