@@ -28,7 +28,7 @@ export const apps = writable({
 })
 
 export const units = readable({
-  "speed": ["Kbps","Mbps","Gbps"],
+  "rate": ["Kbps","Mbps","Gbps"],
   "delay": ["ns", "ms", "s"]
 }
   

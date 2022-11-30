@@ -1,19 +1,11 @@
 <script>
   import { onMount } from 'svelte';
   import { slide } from 'svelte/transition'
-  import { nodes, show_rdrawer, node_info } from '../../../store/store'
+  import { nodes, show_rdrawer, node_info, units } from '../../../store/store'
 
   export let container
   let isNodeArrayVisible = false
   let check = false
-
-  let units_rate = [
-    "Kbps","Mbps","Gbps"
-  ]
-
-  let units_delay = [
-    "ns","ms","s"
-  ]
 
   function handleArray() {
     isNodeArrayVisible = !isNodeArrayVisible
@@ -36,7 +28,11 @@
     });
   }
 
-  onMount(async () => {
+  async function load(){
+    await new Promise(r => setTimeout(r, 0))
+  }
+
+  onMount(() => {
       delete container["mobility"]
       delete container["AP"]
       delete container["ssid"]
@@ -46,13 +42,13 @@
 
 </script>
 
-
+{#await load() then }
 <div transition:slide>
   <div class="child">
       <p>Data rate: </p>
       <input type=number bind:value={container.data_rate.value} min=1 max=1024>
       <select bind:value={container.data_rate.format}>
-          {#each units_rate as unit}
+          {#each $units.rate as unit}
               <option value={unit}>
                   {unit}
               </option>
@@ -64,7 +60,7 @@
       <p>Delay: </p>
       <input type=number bind:value={container.delay.value} min=1 max=10000>
       <select bind:value={container.delay.format}>
-          {#each units_delay as unit}
+          {#each $units.delay as unit}
               <option value={unit}>
                   {unit}
               </option>
@@ -79,19 +75,21 @@
       <p>Maska siete: </p>
       <input bind:value={container.network_mask} placeholder="Network mask">
   </div>
-  
-  <label>
-    <input type=checkbox bind:checked={container.log_pcap}> Log .pcap
-  </label>
 
-  <label>
-    <input type=checkbox bind:checked={container.log_ascii}> Log ascii trace
-  </label>
+  <div>
+    <label>
+      <input type=checkbox bind:checked={container.log_pcap}> Log .pcap
+    </label>
+    <label>
+      <input type=checkbox bind:checked={container.log_ascii}> Log ascii trace
+    </label>
+  </div>
+  
 
   <div>
       <button on:click={handleArray}>Show nodes</button>
       {#if isNodeArrayVisible}
-      <ul>
+      <ul class="nodes">
           {#each $nodes as n (n.id) }
           <li>
               <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
@@ -107,5 +105,5 @@
           #debug
       </button>
   </div>
-  
 </div>
+{/await}

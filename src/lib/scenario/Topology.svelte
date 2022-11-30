@@ -14,14 +14,6 @@
                 "id": $containers.length, 
                 "name": name,
                 "type": "",
-                "data_rate": {
-                    "value": 0,
-                    "format": ""
-                },
-                "delay": {
-                    "value": 0,
-                    "format": ""
-                },
                 "network_address": "",
                 "network_mask": "",
                 "network_name": "",

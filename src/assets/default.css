@@ -161,3 +161,9 @@ option {
   flex-direction: row;
   align-items: center;
 }
+
+.nodes {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
