@@ -1,35 +1,47 @@
 <script>
-import { slide } from 'svelte/transition'
-import { nodes, show_rdrawer, node_info } from '../../../store/store'
+  import { onMount } from 'svelte';
+  import { slide } from 'svelte/transition'
+  import { nodes, show_rdrawer, node_info } from '../../../store/store'
 
-export let container
-let isNodeArrayVisible = false
-let check = false
+  export let container
+  let isNodeArrayVisible = false
+  let check = false
 
-let units_rate = [
-  "Kbps","Mbps","Gbps"
-];
-let units_delay = [
-  "ns","ms","s"
-]
-function handleArray() {
-  isNodeArrayVisible = !isNodeArrayVisible
-}
-function debug() {
-  console.log(container);
-}
-function ContainerToNode(node_id){
-  $nodes.forEach(n => {
-    if(n.id==node_id){
-      if(!check)
-        n.containers = n.containers.filter((value) => value !== container.name);
-      else
-        n.containers = [...n.containers, container.name ]
-      show_rdrawer.update(_ => 'node_info');
-    node_info.update(_ => n);
-    }
-  });
-}
+  let units_rate = [
+    "Kbps","Mbps","Gbps"
+  ]
+
+  let units_delay = [
+    "ns","ms","s"
+  ]
+
+  function handleArray() {
+    isNodeArrayVisible = !isNodeArrayVisible
+  }
+
+  function debug() {
+    console.log(container);
+  }
+
+  function ContainerToNode(node_id){
+    $nodes.forEach(n => {
+      if(n.id==node_id){
+        if(!check)
+          n.containers = n.containers.filter((value) => value !== container.name);
+        else
+          n.containers = [...n.containers, container.name ]
+        show_rdrawer.update(_ => 'node_info');
+      node_info.update(_ => n);
+      }
+    });
+  }
+
+  onMount(async () => {
+      delete container.mobility
+      delete container.AP
+      delete container.ssid
+    })
+
 </script>
 
 

@@ -3,7 +3,7 @@
   import { slide } from 'svelte/transition'
   import Basic from './containers/basic.svelte'
   import Wifi from './containers/wifi.svelte'
-  import { nodes,show_rdrawer, node_info, visibleContainer } from '../../store/store.js';
+  import { visibleContainer } from '../../store/store.js';
   export let name
   export let container
   
@@ -29,42 +29,15 @@
             true
           : false
       : handleClosing()
-
-  
-
-  
 </script>
 
 <style>
-.parent {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 2px solid navy;
-  padding: 10px;
-}
-
-.child {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-input  {
-  height: 20px;
-}
-select  {
-  height: 26px;
-}
-button {
-  width: 360px;
-}
-
-ul {
-  columns: 2;
-  -webkit-columns: 2;
-  -moz-columns: 2;
-}
-
+  select  {
+    height: 26px;
+  }
+  button {
+    width: 360px;
+  }
 </style>
 
 <div class="topology_container parent">
@@ -73,6 +46,7 @@ ul {
   </div>
   
   {#if open}
+  <div transition:slide>
     Select type of node container:
     <select bind:value={container.type}>
       {#each container_types as cont_type}
@@ -85,8 +59,7 @@ ul {
       <Basic bind:container={container}/>
     {:else if container.type == 'wifi'}
       <Wifi bind:container={container}/>
-    {:else}
     {/if}
-
+  </div>
   {/if}
 </div>

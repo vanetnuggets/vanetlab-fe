@@ -10,14 +10,13 @@
 
     function addContainer(){
         if (name.trim() != '') {
-            console.log(name)
             $containers = [...$containers, {
                 id: $containers.length, 
                 name: name,
                 "type": "",
                 "data_rate": {
-                "value": 0,
-                "format": ""
+                    "value": 0,
+                    "format": ""
                 },
                 "delay": {
                     "value": 0,
@@ -27,11 +26,10 @@
                 "network_mask": "",
                 "network_name": "",
                 "log_pcap": false,
-                "log_Ascii": false,
+                "log_ascii": false,
                 "nodes": []
             }]
             $topology.node_containers = [...$topology.node_containers, name]
-            console.log("done")
             name = ""
         } else {
             alert("Názov kontajnera nesmie byť prázdny")

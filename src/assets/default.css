@@ -148,3 +148,16 @@ option {
   font-size: 13px;
   cursor: pointer;
 }
+
+.parent {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid navy;
+  padding: 10px;
+}
+
+.child {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
