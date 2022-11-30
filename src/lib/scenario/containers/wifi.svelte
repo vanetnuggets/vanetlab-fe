@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { nodes, show_rdrawer, node_info } from '../../../store/store'
 
   export let container
@@ -10,8 +10,12 @@
     container["ssid"] = ""
     container["AP"] = ""
     container["mobility"] = ""
-    delete container["data_rate"]
-    delete container["delay"]
+  })
+
+  onDestroy(() => {
+    delete container["ssid"]
+    delete container["AP"]
+    delete container["mobility"]
   })
 
   function debug() {

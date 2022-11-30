@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { slide } from 'svelte/transition'
   import { nodes, show_rdrawer, node_info, units } from '../../../store/store'
 
@@ -33,12 +33,14 @@
   }
 
   onMount(() => {
-      delete container["mobility"]
-      delete container["AP"]
-      delete container["ssid"]
       container["data_rate"] = { "value": 0, "format": "" }
       container["delay"] = { "value": 0, "format": "" }
     })
+  
+  onDestroy(() => {
+    delete container["data_rate"]
+    delete container["delay"]
+  })
 
 </script>
 
