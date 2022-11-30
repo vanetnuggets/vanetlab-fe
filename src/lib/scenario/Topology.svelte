@@ -27,6 +27,7 @@
                 "network_mask": "",
                 "network_name": "",
                 "log_pcap": false,
+                "log_Ascii": false,
                 "nodes": []
             }]
             $topology.node_containers = [...$topology.node_containers, name]
