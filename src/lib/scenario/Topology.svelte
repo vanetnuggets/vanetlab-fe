@@ -11,8 +11,8 @@
     function addContainer(){
         if (name.trim() != '') {
             $containers = [...$containers, {
-                id: $containers.length, 
-                name: name,
+                "id": $containers.length, 
+                "name": name,
                 "type": "",
                 "data_rate": {
                     "value": 0,

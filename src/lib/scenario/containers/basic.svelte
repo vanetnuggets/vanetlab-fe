@@ -30,16 +30,18 @@
           n.containers = n.containers.filter((value) => value !== container.name);
         else
           n.containers = [...n.containers, container.name ]
-        show_rdrawer.update(_ => 'node_info');
+      show_rdrawer.update(_ => 'node_info');
       node_info.update(_ => n);
       }
     });
   }
 
   onMount(async () => {
-      delete container.mobility
-      delete container.AP
-      delete container.ssid
+      delete container["mobility"]
+      delete container["AP"]
+      delete container["ssid"]
+      container["data_rate"] = { "value": 0, "format": "" }
+      container["delay"] = { "value": 0, "format": "" }
     })
 
 </script>

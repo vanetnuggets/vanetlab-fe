@@ -1,17 +1,40 @@
 <script>
   import { onMount } from 'svelte';
+  import { nodes, show_rdrawer, node_info } from '../../../store/store'
 
-  export let container;
+  export let container
+  let isNodeArrayVisible = false
+  let check = false
 
   onMount(async () => {
-    container["ssid"]=""
-    container["AP"]=""
-    container["mobility"]=""
+    container["ssid"] = ""
+    container["AP"] = ""
+    container["mobility"] = ""
+    delete container["data_rate"]
+    delete container["delay"]
   })
 
   function debug() {
     console.log(container);
   }
+
+  function handleArray() {
+    isNodeArrayVisible = !isNodeArrayVisible
+  }
+
+  function ContainerToNode(node_id){
+    $nodes.forEach(n => {
+      if(n.id==node_id){
+        if(!check)
+          n.containers = n.containers.filter((value) => value !== container.name);
+        else
+          n.containers = [...n.containers, container.name ]
+      show_rdrawer.update(_ => 'node_info');
+      node_info.update(_ => n);
+      }
+    });
+  }
+
 </script>
 
 <div>
@@ -45,6 +68,20 @@
     <input bind:value={container.mobility}> 
   </div>
   
+  <div>
+    <button on:click={handleArray}>Show nodes</button>
+    {#if isNodeArrayVisible}
+    <ul>
+        {#each $nodes as n (n.id) }
+        <li>
+            <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
+            Node #{n.id}
+        </li> 
+        {/each}
+    </ul>
+    {/if}
+</div>
+
   <div>
     <button on:click={debug}>
         #debug
