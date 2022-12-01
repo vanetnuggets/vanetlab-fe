@@ -60,26 +60,45 @@
 	.node {
 		user-select: none;
 		position:absolute;
-		outline: solid 1px gray;
-		background-color: navy;
 		cursor: move;
-		width: 50px;
-		height: 50px;
 		color: white;
 		font-size: large;
 		font-weight: bold;
 		text-align: center;
-		border-radius: 100%;
 		margin: auto;
 	}
 	.remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
+
+	.foo {
+		outline: solid 1px gray;
+		width: 50px;
+		height: 50px;
+		border-radius: 100%;
+		background-color: navy;
+	}
+
+	.bar {
+		outline: solid 1px gray;
+		width: 50px;
+		height: 50px;
+		border-radius: 5%;
+		background-color: red;
+	}
+
+	.ap{
+		width: 50px;
+		height: 50px;
+		background-image: url("nodes/ap.png");
+		background-size: 50px;
+	}
 </style>
 
 <svelte:window on:mouseup={stop} />
 
 <div bind:this={node.element} on:mousemove={move} on:mousedown={start}
-	style="left: {node.left}px; top : {node.top}px" class="node">
+	style="left: {node.left}px; top : {node.top}px" class="node {node.type}">
 	{node.id}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span on:pointerdown={e => e.stopPropagation()} on:click={() => remove()} class=remove style="color:red">
 		X
 	</span>

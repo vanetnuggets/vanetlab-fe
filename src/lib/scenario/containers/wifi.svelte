@@ -31,6 +31,16 @@
     });
   }
 
+  function checkType() {
+    if (container.AP != null){}
+      $nodes.forEach(e => {
+        if (e.id == container.AP) {
+          e.type = "ap"
+        }
+      })
+      $nodes = $nodes
+  }
+
 </script>
 
 <div transition:slide>
@@ -57,7 +67,7 @@
   </div>
   <div class="child">
     <p>AP: </p>
-    <select bind:value={container.AP}>
+    <select bind:value={container.AP} on:change={checkType}>
       {#each container.nodes as node}
         <option value={node}>
           Node n. {node}
