@@ -1,6 +1,12 @@
 <script>
   import Container from "./Container.svelte";
   import { containers, topology } from '../../store/store.js';
+  import {
+    wifi_container,
+    csma_container,
+    point_to_point_container
+  } from '../../services/ContainerService.js'
+
   let name = ""
   let container_type = null;
   
@@ -18,17 +24,22 @@
       alert("Názov kontajnera nesmie byť prázdny");
       return;
     }
-    $containers = [...$containers, {
-      "id": $containers.length, 
-      "name": name,
-      "type": container_type,
-      "network_address": "",
-      "network_mask": "",
-      "network_name": "",
-      "log_pcap": false,
-      "log_ascii": false,
-      "nodes": []
-    }]
+    let new_cont = null;
+    let new_id = $containers.length
+    if (container_type == 'wifi') {
+      new_cont = wifi_container(new_id, name)
+    }
+    else if (container_type == 'csma') {
+      new_cont = csma_container(new_id, name)
+    }
+    else if (container_type == 'point_to_point') {
+      new_cont = point_to_point_container(new_id, name)
+    } else {
+      alert('wtf')
+      return;
+    }
+
+    $containers = [...$containers, new_cont]
     $topology.node_containers = [...$topology.node_containers, name]
     name = ""
   }

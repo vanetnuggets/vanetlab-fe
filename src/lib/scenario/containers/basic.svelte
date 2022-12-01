@@ -34,17 +34,10 @@
     });
   }
 
-
   onMount(() => {
-    container["data_rate"] = { "value": 0, "format": "" }
-    container["delay"] = { "value": 0, "format": "" }
+    
   })
   
-  onDestroy(() => {
-    delete container["data_rate"]
-    delete container["delay"]
-  })
-
 </script>
 
 {#await init() then }
