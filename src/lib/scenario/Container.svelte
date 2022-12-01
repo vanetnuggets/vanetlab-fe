@@ -1,7 +1,7 @@
 <script>
   
-  import Basic from './containers/basic.svelte'
-  import Wifi from './containers/wifi.svelte'
+  import Basic from './containers/Basic.svelte'
+  import Wifi from './containers/Wifi.svelte'
   import { visibleContainer } from '../../store/store.js';
   export let name
   export let container

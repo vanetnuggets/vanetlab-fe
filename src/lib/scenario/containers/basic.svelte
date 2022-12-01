@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+
   import { slide } from 'svelte/transition'
   import { nodes, show_rdrawer, node_info, units } from '../../../store/store'
 
@@ -13,9 +13,7 @@
     isNodeArrayVisible = !isNodeArrayVisible
   }
 
-  async function init() {
-   
-  }
+  async function init() {  }
 
   function debug() {
     console.log(container);
@@ -33,10 +31,6 @@
       }
     });
   }
-
-  onMount(() => {
-    
-  })
   
 </script>
 

@@ -1,6 +1,5 @@
 <script>
   import { slide } from 'svelte/transition'
-  import { onDestroy, onMount } from 'svelte';
   import { nodes, show_rdrawer, node_info } from '../../../store/store'
 
   export let container
