@@ -60,37 +60,79 @@
 	.node {
 		user-select: none;
 		position:absolute;
-		outline: solid 1px gray;
-		background-color: navy;
 		cursor: move;
-		width: 50px;
-		height: 50px;
-		color: white;
-		font-size: large;
-		font-weight: bold;
-		text-align: center;
-		border-radius: 100%;
 		margin: auto;
 	}
-	.remove { cursor: pointer; position: absolute; right: 5px; top: 3px; }
+	.remove { 
+		cursor: pointer; 
+		position: absolute; 
+		right: 0px;
+		top: -4px; 
+		color: white;
+		background-color: red;
+		border-radius: 100%;
+		padding: 0px 5px;
+		margin: 0px;
+		font-size: 14px;
+		font-weight: bold;
+		height: 20px;
+		width: 10px;
+	}
+
+	.foo {
+		outline: solid 1px gray;
+		width: 50px;
+		height: 50px;
+		border-radius: 100%;
+		background-color: navy;
+	}
+
+	.bar {
+		outline: solid 1px gray;
+		width: 50px;
+		height: 50px;
+		border-radius: 5%;
+		background-color: red;
+	}
+
+	.ap{
+		width: 50px;
+		height: 50px;
+		background-image: url("nodes/ap.png");
+		background-size: 50px;
+		background-color: aqua;
+		outline: 3px solid navy;
+		border-radius: 100%;
+	}
+
+	.node-id {
+		color: black;
+		font-size: 14px;
+		font-weight: bold;
+		background-color: white;
+		margin: 30px 20px 20px 17px;
+		padding: 0px 5px;
+		position:absolute;
+		border-radius: 25%;
+		outline: 2px solid navy;
+		cursor: move;
+	}
 </style>
 
 <svelte:window on:mouseup={stop} />
 
-<div bind:this={node.element}
-			 on:mousemove={move}
-			 on:mousedown={start}
-			 style="left: {node.left}px; top : {node.top}px"
-			 class="node"
-
-
->
-{node.id}
-	<span on:pointerdown={e => e.stopPropagation()}
-		on:click={() => remove()}
-	class=remove style="color:red">
-		X
-	</span>
+<div on:mousemove={move} on:mousedown={start}>
+	<div bind:this={node.element} style="left: {node.left}px; top : {node.top}px" class="node {node.type}">
+		
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<span on:pointerdown={e => e.stopPropagation()} on:click={() => remove()} class=remove>
+			X
+		</span>
+		
+	</div>
+	<div style="left: {node.left+15}px; top : {node.top}px" class=node-id>
+		{node.id}
+	</div>
 </div>
 
 

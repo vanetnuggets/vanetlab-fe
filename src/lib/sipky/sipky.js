@@ -48,7 +48,12 @@ class Sipky {
                     if (n1 == null || n2 == null) {
                         continue
                     }
-                    this.add_line(n1, n2, color);
+                    if (container.type == 'wifi') {
+                        if (container.AP != n1.id && container.AP != n2.id) {
+                            continue
+                        }
+                    }
+                    this.add_line(n1, n2, color, container.type);
                 }
             }
         }
@@ -85,7 +90,7 @@ class Sipky {
         return [node_1, node_2]
     }
 
-    add_line(node1, node2, color) {
+    add_line(node1, node2, color, container_type) {
         if (this.active == false) {
             return
         }
@@ -98,6 +103,10 @@ class Sipky {
             return
         }
 
+        let decorator = {
+            dash: false
+        }
+
         let new_line = new LeaderLine(
             node1.element,
             node2.element,
@@ -107,6 +116,12 @@ class Sipky {
                 color: color
             }
         )
+
+        if (container_type == 'wifi') {
+            new_line.dash = {
+                animation: true
+            }
+        }
 
         this.lines[conn] = new_line;
         
