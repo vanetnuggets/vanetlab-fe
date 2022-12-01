@@ -5,6 +5,7 @@
   export let container
   let isNodeArrayVisible = false
   let check = false
+  let lastAP = -1
 
   let mobility_items = [
     'default'
@@ -37,8 +38,14 @@
         if (e.id == container.AP) {
           e.type = "ap"
         }
+        if (lastAP != -1) {
+          if (e.id == lastAP){
+            e.type = "foo"
+          }
+        }
       })
       $nodes = $nodes
+      lastAP = container.AP
   }
 
   function test() {
