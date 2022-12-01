@@ -1,4 +1,5 @@
 <script>
+  import { slide } from 'svelte/transition'
   import { onDestroy, onMount } from 'svelte';
   import { nodes, show_rdrawer, node_info } from '../../../store/store'
 
@@ -6,17 +7,9 @@
   let isNodeArrayVisible = false
   let check = false
 
-  onMount(() => {
-    container["ssid"] = ""
-    container["AP"] = ""
-    container["mobility"] = ""
-  })
-
-  onDestroy(() => {
-    delete container["ssid"]
-    delete container["AP"]
-    delete container["mobility"]
-  })
+  let mobility_items = [
+    'default'
+  ]
 
   function debug() {
     console.log(container);
@@ -41,7 +34,7 @@
 
 </script>
 
-<div>
+<div transition:slide>
   <div class="child">
     <p>Adresa siete: </p>
     <input bind:value={container.network_address} placeholder="Network adress">
@@ -65,11 +58,23 @@
   </div>
   <div class="child">
     <p>AP: </p>
-      <input bind:value={container["AP"]}>
+    <select bind:value={container.AP}>
+      {#each container.nodes as node}
+        <option value={node}>
+          Node n. {node}
+        </option>
+      {/each}
+    </select>
   </div>
   <div class="child">
     <p>Mobility: </p>
-    <input bind:value={container.mobility}> 
+    <select bind:value={container.mobility}>
+      {#each mobility_items as item}
+        <option value={item}>
+          {item}
+        </option>
+      {/each}
+    </select>
   </div>
   
   <div>

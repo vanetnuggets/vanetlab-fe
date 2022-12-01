@@ -7,10 +7,6 @@
   export let name
   export let container
   
-  let container_types = [
-    '', 'csma', 'point_to_point', 'wifi'
-  ]
-
   let isShown = false
 
   function clickHandler() {
@@ -32,9 +28,6 @@
 </script>
 
 <style>
-  select  {
-    height: 26px;
-  }
   button {
     width: 360px;
   }
@@ -46,15 +39,9 @@
   </div>
   
   {#if open}
-  <div transition:slide>
+  <div>
     Select type of node container:
-    <select bind:value={container.type}>
-      {#each container_types as cont_type}
-        <option value={cont_type}>
-          {cont_type}
-        </option>
-      {/each}
-    </select>
+    
     {#if container.type =='csma' || container.type == 'point_to_point'}
       <Basic bind:container={container}/>
     {:else if container.type == 'wifi'}

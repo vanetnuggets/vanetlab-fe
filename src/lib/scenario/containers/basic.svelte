@@ -4,11 +4,17 @@
   import { nodes, show_rdrawer, node_info, units } from '../../../store/store'
 
   export let container
+  
+  
   let isNodeArrayVisible = false
   let check = false
 
   function handleArray() {
     isNodeArrayVisible = !isNodeArrayVisible
+  }
+
+  async function init() {
+   
   }
 
   function debug() {
@@ -28,14 +34,11 @@
     });
   }
 
-  async function load(){
-    await new Promise(r => setTimeout(r, 0))
-  }
 
   onMount(() => {
-      container["data_rate"] = { "value": 0, "format": "" }
-      container["delay"] = { "value": 0, "format": "" }
-    })
+    container["data_rate"] = { "value": 0, "format": "" }
+    container["delay"] = { "value": 0, "format": "" }
+  })
   
   onDestroy(() => {
     delete container["data_rate"]
@@ -44,17 +47,17 @@
 
 </script>
 
-{#await load() then }
+{#await init() then }
 <div transition:slide>
   <div class="child">
       <p>Data rate: </p>
       <input type=number bind:value={container.data_rate.value} min=1 max=1024>
       <select bind:value={container.data_rate.format}>
-          {#each $units.rate as unit}
-              <option value={unit}>
-                  {unit}
-              </option>
-          {/each}
+        {#each $units.rate as unit}
+          <option value={unit}>
+            {unit}
+          </option>
+        {/each}
       </select>
   </div>
   
@@ -62,11 +65,11 @@
       <p>Delay: </p>
       <input type=number bind:value={container.delay.value} min=1 max=10000>
       <select bind:value={container.delay.format}>
-          {#each $units.delay as unit}
-              <option value={unit}>
-                  {unit}
-              </option>
-          {/each}
+        {#each $units.delay as unit}
+          <option value={unit}>
+            {unit}
+          </option>
+        {/each}
       </select>
   </div>
   <div class="child">
@@ -92,20 +95,19 @@
       <button on:click={handleArray}>Show nodes</button>
       {#if isNodeArrayVisible}
       <ul class="nodes">
-          {#each $nodes as n (n.id) }
-          <li>
-              <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
-              Node #{n.id}
-          </li> 
-          {/each}
+        {#each $nodes as n (n.id) }
+        <li>
+          <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
+          Node #{n.id}
+        </li> 
+        {/each}
       </ul>
       {/if}
   </div>
-
   <div>
-      <button on:click={debug}>
-          #debug
-      </button>
+    <button on:click={debug}>
+      #debug
+    </button>
   </div>
 </div>
 {/await}
