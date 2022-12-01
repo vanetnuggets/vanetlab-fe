@@ -41,6 +41,10 @@
       $nodes = $nodes
   }
 
+  function test() {
+    console.log('ap changed')  
+  }
+
 </script>
 
 <div transition:slide>

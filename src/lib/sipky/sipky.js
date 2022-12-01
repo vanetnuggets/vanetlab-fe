@@ -48,6 +48,11 @@ class Sipky {
                     if (n1 == null || n2 == null) {
                         continue
                     }
+                    if (container.type == 'wifi') {
+                        if (container.AP != n1.id && container.AP != n2.id) {
+                            continue
+                        }
+                    }
                     this.add_line(n1, n2, color, container.type);
                 }
             }
