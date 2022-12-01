@@ -77,18 +77,10 @@
 
 <svelte:window on:mouseup={stop} />
 
-<div bind:this={node.element}
-			 on:mousemove={move}
-			 on:mousedown={start}
-			 style="left: {node.left}px; top : {node.top}px"
-			 class="node"
-
-
->
-{node.id}
-	<span on:pointerdown={e => e.stopPropagation()}
-		on:click={() => remove()}
-	class=remove style="color:red">
+<div bind:this={node.element} on:mousemove={move} on:mousedown={start}
+	style="left: {node.left}px; top : {node.top}px" class="node">
+	{node.id}
+	<span on:pointerdown={e => e.stopPropagation()} on:click={() => remove()} class=remove style="color:red">
 		X
 	</span>
 </div>

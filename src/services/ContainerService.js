@@ -5,7 +5,6 @@ function wifi_container(id, name) {
     "type": 'wifi',
     "network_address": "",
     "network_mask": "",
-    "network_name": "",
     "ssid": "",
     "AP": null,
     "mobility": "default",
@@ -22,7 +21,6 @@ function csma_container(id, name) {
     "type": 'csma',
     "network_address": "",
     "network_mask": "",
-    "network_name": "",
     "data_rate": { 
       "value": 0, 
       "format": "" 

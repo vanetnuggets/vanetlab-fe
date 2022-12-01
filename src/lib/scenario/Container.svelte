@@ -1,6 +1,5 @@
 <script>
   
-  import { slide } from 'svelte/transition'
   import Basic from './containers/basic.svelte'
   import Wifi from './containers/wifi.svelte'
   import { visibleContainer } from '../../store/store.js';
@@ -39,9 +38,7 @@
   </div>
   
   {#if open}
-  <div>
-    Select type of node container:
-    
+  <div >
     {#if container.type =='csma' || container.type == 'point_to_point'}
       <Basic bind:container={container}/>
     {:else if container.type == 'wifi'}

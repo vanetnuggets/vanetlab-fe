@@ -20,8 +20,12 @@
   }
 
   function addContainer(){
-    if (name.trim() == '' || container_type == null) {
+    if (name.trim() == '') {
       alert("Názov kontajnera nesmie byť prázdny");
+      return;
+    }
+    if (container_type == null) {
+      alert("Typ kontajnera nesmie byť prázdny");
       return;
     }
     let new_cont = null;
