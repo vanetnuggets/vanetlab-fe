@@ -15,11 +15,12 @@
 
 	function add_node(){
 		let newNode = {
-			left:50,
-			top:50,
-			id: id(),
-			element: null,
-			containers:[]
+			"left": 50,
+			"top": 50,
+			"id": id(),
+			"element": null,
+			"containers": [],
+			"type": "foo"
   		};
 		$nodes = [...$nodes, newNode]
 	}
