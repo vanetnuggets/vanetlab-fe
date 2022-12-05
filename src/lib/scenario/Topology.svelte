@@ -9,6 +9,7 @@
 
   let name = ""
   let container_type = null;
+  let counter = 0
   
   let container_types = [
     'csma', 'point_to_point', 'wifi'
@@ -21,12 +22,11 @@
 
   function addContainer(){
     if (name.trim() == '') {
-      alert("Názov kontajnera nesmie byť prázdny");
-      return;
+      name = 'random_container_'+ counter
+      counter++
     }
     if (container_type == null) {
-      alert("Typ kontajnera nesmie byť prázdny");
-      return;
+      container_type = container_types[0]
     }
     let new_cont = null;
     let new_id = $containers.length
@@ -65,11 +65,11 @@
     <div>
       Container Type:
       <select bind:value={container_type}>
-      {#each container_types as cont_type}
-        <option value={cont_type}>
-        {cont_type}
-        </option>
-      {/each}
+        {#each container_types as cont_type}
+          <option value={cont_type}>
+          {cont_type}
+          </option>
+        {/each}
       </select>
     </div>
   </div>

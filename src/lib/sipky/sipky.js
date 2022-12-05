@@ -1,5 +1,6 @@
 import { nodes, containers } from "../../store/store";
 import LeaderLine from 'leader-line-new';
+import Node__SvelteComponent_ from "../DragDrop/Node.svelte";
 
 class Sipky {
     static on_delete(node_id) {
@@ -25,8 +26,10 @@ class Sipky {
 
         containers.subscribe(containers => {
             me.containers = containers;
-            me.genocide();
-            me.redraw();
+            setTimeout(() => {
+                me.genocide();
+                me.redraw();
+            }, 20);
         });
     }
 
@@ -94,11 +97,15 @@ class Sipky {
         if (this.active == false) {
             return
         }
-
+        
         let min = Math.min(node1.id, node2.id).toString();
         let max = Math.max(node1.id, node2.id).toString();
+        let intersection = node1.containers.filter(element => node2.containers.includes(element));
+        if (intersection.length < 2) {
+            intersection = ""
+        }
         let conn = `${min}_${max}`;
-
+        
         if (this.lines[conn] !== undefined) {
             return
         }
@@ -113,7 +120,8 @@ class Sipky {
             {
                 path: 'straight',
                 endPlug: 'behind',
-                color: color
+                color: color,
+                middleLabel: intersection.toString(),
             }
         )
 
@@ -189,7 +197,7 @@ class Sipky {
         let n1 = this.genNum(0, 255).toString()
         let n2 = this.genNum(0, 255).toString()
         let n3 = this.genNum(0, 255).toString()
-        return 'rgb('+n1+', '+n2+', '+n3+')'
+        return 'rgb('+n1+', '+n2+', '+n3+',0.5)'
     }
 
     genNum(min, max) {
