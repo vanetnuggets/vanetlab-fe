@@ -81,7 +81,7 @@
   <div>
       <button on:click={handleArray}>Show nodes</button>
       {#if isNodeArrayVisible}
-      <ul class="nodes">
+      <ul class="nodes" style="list-style-type: none;">
         {#each $nodes as n (n.id) }
         <li>
           <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
