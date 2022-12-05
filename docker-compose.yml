@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  vanetlab-be: 
+    build: ../vanetlab-be
+    environment:
+      - VANETLAB_BE_PORT:"9000"
+      - VANETLAB_BE_HOST:"0.0.0.0"
+    ports: 
+      - "9000:9000"
+  vanetlab-fe:
+    build: .
+    environment:
+      VITE_BE_API_URL: "http://127.0.0.1:9000"
+    ports: 
+      - "80:80"
