@@ -100,13 +100,10 @@ class Sipky {
         
         let min = Math.min(node1.id, node2.id).toString();
         let max = Math.max(node1.id, node2.id).toString();
-        console.log('----------------')
-        console.log(node1.containers)
-        console.log(node2.containers)
         let intersection = node1.containers.filter(element => node2.containers.includes(element));
-        console.log(intersection)
-        
-        console.log('----------------')
+        if (intersection.length < 2) {
+            intersection = ""
+        }
         let conn = `${min}_${max}`;
         
         if (this.lines[conn] !== undefined) {
