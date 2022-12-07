@@ -83,7 +83,7 @@
     Add container
   </button>
   
-  {#each $containers as c (c.id) }
+  {#each $containers as c (c.name) }
       <Container name={c.type + ' - ' + c.name}/>
   {/each}
 </div>

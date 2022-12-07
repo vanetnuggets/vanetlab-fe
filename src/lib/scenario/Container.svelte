@@ -2,7 +2,7 @@
   
   import Basic from './containers/Basic.svelte'
   import Wifi from './containers/Wifi.svelte'
-  import { visibleContainer, containers, topology } from '../../store/store.js';
+  import { visibleContainer, containers, topology, nodes, node_id, node_info } from '../../store/store.js';
   export let name
   let container = $containers.find(item => item.name === name.split(" - ")[1])
   
@@ -22,6 +22,10 @@
   function deleteContainer() {
     if (confirm){
       $visibleContainer = "";
+      $nodes.forEach(element => {
+        element.containers = element.containers.filter((value) => value !== container.name);
+      });
+      $node_info = $node_info
       $containers = $containers.filter((value) => value.id !== container.id);
       $topology.node_containers = $topology.node_containers.filter((value) => value !== container.name);
     } else {

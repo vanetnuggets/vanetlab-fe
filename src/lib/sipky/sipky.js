@@ -169,6 +169,10 @@ class Sipky {
         }
     }
 
+    container_deleted() {
+        this.redraw()
+    }
+
     update(id) {
         if (this.active == false) {
             return
