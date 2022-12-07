@@ -2,9 +2,9 @@
   
   import Basic from './containers/Basic.svelte'
   import Wifi from './containers/Wifi.svelte'
-  import { visibleContainer } from '../../store/store.js';
+  import { visibleContainer, containers, topology } from '../../store/store.js';
   export let name
-  export let container
+  let container = $containers.find(item => item.name === name.split(" - ")[1])
   
   let isShown = false
 
@@ -21,7 +21,9 @@
 
   function deleteContainer() {
     if (confirm){
-      console.log("bude removed")
+      $visibleContainer = "";
+      $containers = $containers.filter((value) => value.id !== container.id);
+      $topology.node_containers = $topology.node_containers.filter((value) => value !== container.name);
     } else {
       console.log("este potvrdit")
       confirm = true;
@@ -30,7 +32,7 @@
 
   let confirm = false
   // maybe ternary is necessary 
-  $: open = ($visibleContainer == container.name) ? 
+  $: open = ($visibleContainer == container?.name) ? 
           (isShown) ? 
             true
           : false

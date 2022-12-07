@@ -1,6 +1,6 @@
 <script>
   import Container from "./Container.svelte";
-  import { containers, topology } from '../../store/store.js';
+  import { containers, con_number, topology } from '../../store/store.js';
   import {
     wifi_container,
     csma_container,
@@ -29,7 +29,8 @@
       container_type = container_types[0]
     }
     let new_cont = null;
-    let new_id = $containers.length
+    let new_id = $con_number;
+    $con_number += 1;
     if (container_type == 'wifi') {
       new_cont = wifi_container(new_id, name)
     }
@@ -83,7 +84,7 @@
   </button>
   
   {#each $containers as c (c.id) }
-    <Container name={c.type + ' - ' + c.name} bind:container={$containers[c.id]}/>
+      <Container name={c.type + ' - ' + c.name}/>
   {/each}
 </div>
 
