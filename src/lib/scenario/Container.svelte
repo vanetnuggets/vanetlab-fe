@@ -18,6 +18,17 @@
     isShown = false
     return false
   }
+
+  function deleteContainer() {
+    if (confirm){
+      console.log("bude removed")
+    } else {
+      console.log("este potvrdit")
+      confirm = true;
+    }
+  }
+
+  let confirm = false
   // maybe ternary is necessary 
   $: open = ($visibleContainer == container.name) ? 
           (isShown) ? 
@@ -27,14 +38,22 @@
 </script>
 
 <style>
-  button {
-    width: 360px;
+  .name {
+    width: 330px;
+  }
+  .remover {
+    width: 30px;
+    padding: 2px 0;
+  }
+  .confirm {
+    color: red;
   }
 </style>
 
 <div class="topology_container parent">
   <div class="child">
-    <button on:click={clickHandler}>{name}</button>
+    <button on:click={clickHandler} class="name">{name}</button>
+    <button on:click={deleteContainer} class="remover {confirm ? "confirm": ""}">X</button>
   </div>
   
   {#if open}
