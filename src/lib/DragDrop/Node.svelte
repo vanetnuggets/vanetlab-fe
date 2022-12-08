@@ -1,7 +1,7 @@
 <script>
 	import { store_container_size, show_rdrawer, node_info, nodes } from '../../store/store.js';
 	import sipky from '../sipky/sipky.js'
-	let node_size = 50;
+	
 
 	export let node={
 		"left":0,
@@ -10,7 +10,9 @@
 		"containers":[],
 		"element": null
 	} 
-	
+	export let zoom = 1
+	let node_size = 50*zoom;
+
 	let cont_size;
 	store_container_size.subscribe(val => {
 		cont_size = val;
@@ -33,11 +35,13 @@
 	
 	function move(e){
 		if(moving){
-			node.left = Math.max(0, node.left+e.movementX);
-			node.top = Math.max(0, node.top+e.movementY);
+			node.left = node.left+e.movementX;
+			node.top = node.top+e.movementY;
+			// node.left = Math.max(0, node.left+e.movementX);
+			// node.top = Math.max(0, node.top+e.movementY);
 
-			node.left = Math.min(cont_size.width-node_size, node.left)
-			node.top = Math.min(cont_size.height-node_size, node.top)
+			// node.left = Math.min(cont_size.width-node_size, node.left)
+			// node.top = Math.min(cont_size.height-node_size, node.top)
 		}
 		update();
 	}
@@ -122,17 +126,18 @@
 <svelte:window on:mouseup={stop} />
 
 <div on:mousemove={move} on:mousedown={start}>
-	<div bind:this={node.element} style="left: {node.left}px; top : {node.top}px" class="node {node.type}">
+	<div bind:this={node.element} style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom})" class="node {node.type}" >
 		
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span on:pointerdown={e => e.stopPropagation()} on:click={() => remove()} class=remove>
 			X
 		</span>
-		
+		<!-- <div style="left: {node.left+15}px; top : {node.top}px" class=node-id> -->
+		<div class=node-id>
+			{node.id}
+		</div>
 	</div>
-	<div style="left: {node.left+15}px; top : {node.top}px" class=node-id>
-		{node.id}
-	</div>
+	
 </div>
 
 

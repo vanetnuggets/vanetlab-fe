@@ -31,12 +31,14 @@
 
 .mytop {
   text-align: center;
+  z-index: 1;
 }
 
 .mybottom {
   flex: 0 0 40px;
   z-index: 100;
   text-align: center;
+  z-index: 1;
 }
 
 .lol {
@@ -50,10 +52,12 @@
 
 .myright {
   overflow-y: scroll;
+  z-index: 1;
 }
 
 .myleft {
   overflow-y: scroll;
+  z-index: 1;
 }
 
 

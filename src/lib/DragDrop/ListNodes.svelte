@@ -1,8 +1,17 @@
+<style>
+.add-button{
+	z-index: 100;
+	cursor: pointer;
+}
+</style>
+
+
 <script>
 	import Node from './Node.svelte';
 	import { nodes, node_id } from '../../store/store.js';
 	
 	let last_id;
+	let zoom=2;
 	node_id.subscribe(val => {
 		last_id = val;
 	})
@@ -24,10 +33,20 @@
   		};
 		$nodes = [...$nodes, newNode]
 	}
+	const handleWheel = e => {
+		if (e.deltaY>0){
+			zoom=zoom-0.1
+		}
+		else{
+			zoom=zoom+0.1
+		}
+		// console.log(e.deltaY)
+		// e.preventDefault()
+	}
 </script>
 
-
-<button on:click={add_node}>Add node</button>
+<svelte:window on:wheel={handleWheel}/>
+<button on:click={add_node} class=add-button>Add node</button>
 {#each $nodes as node (node.id) }
-	<Node bind:node={node}/>
+	<Node bind:node={node} zoom={zoom}/>
 {/each}

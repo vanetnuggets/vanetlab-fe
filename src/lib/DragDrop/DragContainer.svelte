@@ -2,7 +2,7 @@
 .area {
   position: relative;
   height: 100%;
-}
+  }
 </style>
 
 <div bind:this={canvas} class="area canvas">
