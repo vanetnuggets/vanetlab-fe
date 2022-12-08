@@ -1,0 +1,6 @@
+# Providers config
+providers:
+  docker: {}
+
+api:
+  insecure: true

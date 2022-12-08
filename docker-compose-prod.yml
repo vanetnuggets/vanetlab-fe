@@ -4,7 +4,7 @@ services:
   vanetlab-web:
     build: ../vanetlab-web
     labels:
-      - "traefik.http.routers.vanetlab-web.rule=Host(`web.vanetlab.local`)"
+      - "traefik.http.routers.vanetlab-web.rule=Host(`team08-22.studenti.fiit.stuba.sk`)"
   vanetlab-be: 
     build: ../vanetlab-be
     environment:
@@ -13,13 +13,13 @@ services:
     ports:
       - "9000:9000"
     labels:
-      - "traefik.http.routers.vanetlab-be.rule=Host(`vanetlab.local`)&&PathPrefix(`/api`)"
+      - "traefik.http.routers.vanetlab-be.rule=Host(`vanetlab.ml`)&&PathPrefix(`/api`)"
   vanetlab-fe:
     build: .
     environment:
             - VITE_BE_API_URL:"http://127.0.0.1:9000/api"
     labels:
-      - "traefik.http.routers.vanetlab-fe.rule=Host(`vanetlab.local`)"
+      - "traefik.http.routers.vanetlab-fe.rule=Host(`vanetlab.ml`)"
   traefik:
     image: traefik:v2.9
     ports:

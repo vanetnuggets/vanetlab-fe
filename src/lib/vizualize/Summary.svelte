@@ -31,7 +31,7 @@ summary.subscribe(val => {
   summ = val;
 })
 let curr = {
-  logs: "",
+  logs: [],
   console_output: ""
 }
 
@@ -62,11 +62,10 @@ async function list_scenarios() {
 }
 
 async function select_scenario(code) {
-  let r1 = await api.get('info', { 
-    params: {
+  let r1 = await api.get('info', {
       code: code
     }
-  })
+  )
 
   $summary[code] = {
     logs: r1.data.logs,
