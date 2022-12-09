@@ -1,65 +1,3 @@
-<script>
-	import { store_container_size, show_rdrawer, node_info, nodes } from '../../store/store.js';
-	import sipky from '../sipky/sipky.js'
-	
-
-	export let node={
-		"left":0,
-		"top":0,
-		"id":0,
-		"containers":[],
-		"element": null
-	} 
-	export let zoom = 1
-	let node_size = 50*zoom;
-
-	let cont_size;
-	store_container_size.subscribe(val => {
-		cont_size = val;
-	})
-
-	let moving = false;
-	
-	function start() {
-		moving = true;
-	}
-	
-	function stop() {
-		moving = false;
-		
-	}
-
-	function stop_a_little() {
-		moving = false;
-	}
-	
-	function move(e){
-		if(moving){
-			node.left = node.left+e.movementX;
-			node.top = node.top+e.movementY;
-			// node.left = Math.max(0, node.left+e.movementX);
-			// node.top = Math.max(0, node.top+e.movementY);
-
-			// node.left = Math.min(cont_size.width-node_size, node.left)
-			// node.top = Math.min(cont_size.height-node_size, node.top)
-		}
-		update();
-	}
-
-	function remove(){
-		$nodes = $nodes.filter((value) => value.id !== node.id);
-		show_rdrawer.update(_ => 'container_info');
-		sipky.on_delete(node.id);
-
-	}
-
-	function update() {
-		show_rdrawer.update(_ => 'node_info');
-		node_info.update(_ => node);
-		sipky.update(node.id);
-	}
-</script>
-
 <style>
 	.node {
 		user-select: none;
@@ -122,6 +60,65 @@
 		cursor: move;
 	}
 </style>
+
+<script>
+	import { store_container_size, show_rdrawer, node_info, nodes } from '../../store/store.js';
+	import sipky from '../sipky/sipky.js'
+	
+
+	export let node={
+		"left":0,
+		"top":0,
+		"x":0,
+		"y":0,
+		"id":0,
+		"containers":[],
+		"element": null
+	} 
+	export let zoom = 1
+
+	let moving = false;
+	
+	function start() {
+		moving = true;
+	}
+	
+	function stop() {
+		moving = false;
+		
+	}
+	
+	function move(e){
+		if(moving){
+			node.left = node.left+e.movementX;
+			node.top = node.top+e.movementY;
+			node.x = node.x+Math.round(e.movementX*Math.pow(zoom,-1))
+			node.y = node.y+Math.round(e.movementY*Math.pow(zoom,-1))
+			// node.left = Math.max(0, node.left+e.movementX);
+			// node.top = Math.max(0, node.top+e.movementY); 
+
+			// node.left = Math.min(cont_size.width-node_size, node.left)
+			// node.top = Math.min(cont_size.height-node_size, node.top)
+			
+		}
+		update();
+	}
+
+	function remove(){
+		$nodes = $nodes.filter((value) => value.id !== node.id);
+		show_rdrawer.update(_ => 'container_info');
+		sipky.on_delete(node.id);
+
+	}
+
+	function update() {
+		show_rdrawer.update(_ => 'node_info');
+		node_info.update(_ => node);
+		sipky.update(node.id);
+	}
+</script>
+
+
 
 <svelte:window on:mouseup={stop} />
 
