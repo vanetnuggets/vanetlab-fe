@@ -38,7 +38,7 @@ label{
 <script>
 	import Node from './Node.svelte';
 	import sipky from '../sipky/sipky.js'
-	import { nodes, node_id,store_container_size } from '../../store/store.js';
+	import { nodes, node_id,node_info,moving, store_container_size } from '../../store/store.js';
 	
 	export let mouseX=0
 	export let mouseY=0
@@ -48,6 +48,11 @@ label{
 	let last_id;
 	let zoom=1;
 	let checked=false;
+	let current_node
+
+	node_info.subscribe(val => {
+    	current_node = val;
+  	})
 
 	node_id.subscribe(val => {
 		last_id = val;
@@ -138,11 +143,32 @@ label{
 		}
 		// e.preventDefault()
 	}
+
+	function move(e){
+		if( $nodes[current_node.id] != null){
+			if($moving){
+				$nodes[current_node.id].left = $nodes[current_node.id].left+e.movementX;
+				$nodes[current_node.id].top = $nodes[current_node.id].top+e.movementY;
+				$nodes[current_node.id].x = $nodes[current_node.id].x+Math.round(e.movementX*Math.pow(zoom,-1))
+				$nodes[current_node.id].y = $nodes[current_node.id].y+Math.round(e.movementY*Math.pow(zoom,-1))
+				// node.left = Math.max(0, node.left+e.movementX);
+				// node.top = Math.max(0, node.top+e.movementY); 
+
+				// node.left = Math.min(cont_size.width-node_size, node.left)
+				// node.top = Math.min(cont_size.height-node_size, node.top)
+				sipky.update($nodes[current_node.id].id);
+				node_info.update(_ => $nodes[current_node.id]);
+			}
+		}
+	}
+	function stop() {
+		$moving = false;
+	}
 	
 	
 </script>
-
-<svelte:window on:wheel={handleWheel} />
+<!-- <svelte:window on:mouseup={stop}/> -->
+<svelte:window on:wheel={handleWheel} on:mousemove={move} on:mouseup={stop}/>
 <button on:click={add_node} class=add-button>Add node</button>
 <p>Zoom: {zoom}</p>
 <label class="container">Fix to 1x

@@ -5,8 +5,9 @@
   }
 </style>
 
+<!-- on:mousemove={move} -->
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-<div on:mousemove={move} on:mouseover={mouse_over} on:mouseleave={mouse_leave} bind:this={canvas} class="area canvas">
+<div  on:mouseover={mouse_over} on:mouseleave={mouse_leave} bind:this={canvas} class="area canvas">
   <ListNodes mouseX={mouseX} mouseY={mouseY} mouseOver={mouseover}/>
 </div>
 
