@@ -2,11 +2,13 @@
 .area {
   position: relative;
   height: 100%;
-}
+  }
 </style>
 
-<div bind:this={canvas} class="area canvas">
-  <ListNodes/>
+<!-- on:mousemove={move} -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+<div  on:mouseover={mouse_over} on:mouseleave={mouse_leave} bind:this={canvas} class="area canvas">
+  <ListNodes mouseX={mouseX} mouseY={mouseY} mouseOver={mouseover}/>
 </div>
 
 <script>
@@ -14,11 +16,30 @@
   import { store_container_size } from '../../store/store.js';
   
   import { onMount, onDestroy } from 'svelte';
-    import sipky from '../sipky/sipky';
+  import sipky from '../sipky/sipky';
 
   let canvas;
   let interval_update_size
 
+  let mouseX=0
+  let mouseY=0
+  let mouseover=false
+
+  function mouse_over(){
+    mouseover=true
+  }
+
+  function mouse_leave(){
+    mouseover=false
+  }
+
+  function move(e){
+    // console.log("cau")
+		var react = e.target.getBoundingClientRect();
+		mouseX=e.clientX-react.left
+		mouseY=e.clientY-react.top
+	}
+  
   onMount(() => {
     sipky.enable();
     // OOK OOK OOK OOK SOM ORAGNUTAN
