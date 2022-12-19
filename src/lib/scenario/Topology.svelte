@@ -1,6 +1,6 @@
 <script>
   import Container from "./Container.svelte";
-  import { containers, topology } from '../../store/store.js';
+  import { containers, con_number, topology } from '../../store/store.js';
   import {
     wifi_container,
     csma_container,
@@ -21,13 +21,8 @@
   }
 
   function get_index_by_id(id) {
-    for(let i=0; i<$containers.length; i++) {
-      let cont = $containers[i];
-      if (cont.id == id) {
-        return i;
-      }
-    }
-    return null;
+    let index = $containers.findIndex(e => e.id == id)
+    return index == null ? null : index;
   }
 
   function addContainer(){
@@ -39,7 +34,8 @@
       container_type = container_types[0]
     }
     let new_cont = null;
-    let new_id = $containers.length
+    let new_id = $con_number;
+    $con_number += 1;
     if (container_type == 'wifi') {
       new_cont = wifi_container(new_id, name)
     }
@@ -92,9 +88,8 @@
     Add container
   </button>
   
-  {#each $containers as c (c.id) }
-    <Container name={c.type + ' - ' + c.name} 
-               bind:container={$containers[get_index_by_id(c.id)]}/>
+  {#each $containers as c (c.name) }
+    <Container name={c.type + ' - ' + c.name} bind:container={$containers[get_index_by_id(c.id)]}/>
   {/each}
 </div>
 

@@ -2,6 +2,7 @@
 
   import { slide } from 'svelte/transition'
   import { nodes, show_rdrawer, node_info, units } from '../../../store/store'
+  import sipky from '../../sipky/sipky';
 
   export let container
   
@@ -30,6 +31,7 @@
       node_info.update(_ => n);
       }
     });
+    sipky.redraw()
   }
   
 </script>
