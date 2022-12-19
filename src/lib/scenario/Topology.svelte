@@ -21,10 +21,8 @@
   }
 
   function get_index_by_id(id) {
-
     let index = $containers.findIndex(e => e.id == id)
-    
-    return index==null ? null : index;
+    return index == null ? null : index;
   }
 
   function addContainer(){

@@ -3,8 +3,8 @@
 
   {#if node != null}
     ID: { node.id }<br>
-    X: {node.left}<br>
-    Y: {node.top}<br>
+    X: {node.x}<br>
+    Y: {node.y}<br>
     Containers: <br>
     {#each node.containers as n}
     - {n}<br>

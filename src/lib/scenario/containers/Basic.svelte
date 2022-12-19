@@ -86,7 +86,9 @@
       <ul class="nodes" style="list-style-type: none;">
         {#each $nodes as n (n.id) }
         <li>
-          <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} name="nodes" value={n.id}>
+          <input type=checkbox bind:checked={check} on:change={() => ContainerToNode(n.id)}  bind:group={container.nodes} 
+          disabled={container.type === "point_to_point" ? (container.nodes.length === 2 && !container.nodes.includes(n.id)) : false}
+          name="nodes" value={n.id}>
           Node #{n.id}
         </li> 
         {/each}

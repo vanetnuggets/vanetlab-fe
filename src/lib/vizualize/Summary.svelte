@@ -1,44 +1,79 @@
 
 <div class="container">
-  <h1>Summary</h1>
-{#each summ.output as line}
-{line} <br>
-{/each}
-
-{#each summ.logs as log}
-{log.name}({log.size/1000}Kb) 
-<button on:click={() => download(log.name)}>download</button>
-<br>
-{/each}
-
+  <button on:click={list_scenarios} >List</button>
+  <div class="scenario_list">
+    {#each Object.entries(files) as [id, name] }
+    <div class="scenario_item">
+      Scenario ID: { name }
+      <button on:click={() => logs(name)}>Logs</button>
+      <button on:click={() => output(name)}>Console output</button>
+      <button on:click={() => sourcecode(name)}>Source Code</button>
+    </div>
+    {/each}
+  </div>
 </div>
+
 <script>
-import api from '../../services/Api.js'
-import { summary } from '../../store/store'
+  import api from '../../services/Api.js'
+  import { summary, summary_list } from '../../store/store'
+  import { push } from 'svelte-spa-router'
 
-let summ;
-summary.subscribe(val => {
-  summ = val;
-})
+  let files = [];
+  let summ;
+  summary.subscribe(val => {
+    summ = val;
+  })
+  summary_list.subscribe(val => {
+    files = val;
+  })
 
-async function download(name) {
-  let resp = await api.get('trace', {
-    responseType: 'blob',
-    params: {
-      name: name
+  let curr = {
+    logs: [],
+    console_output: "",
+    code: ""
+  }
+
+  async function check_store(code) {
+    if (Object.keys($summary).includes(code) == false) {
+      await select_scenario(code);
     }
-  });
-  const blob = resp.data;
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.style.display = "none";
-  a.href = url;
-        
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  window.URL.revokeObjectURL(url); 
-}
+  } 
+
+  async function logs(code) {
+    await check_store(code);
+    push(`/logs/${code}`);
+  }
+
+  async function output(code) {
+    await check_store(code);
+    push(`/console/${code}`);
+  }
+
+  async function sourcecode(code) {
+    await check_store(code);
+    push(`/source/${code}`);
+  }
+
+
+  async function list_scenarios() {
+    let resp = await api.get('list', {})
+    summary_list.update(_ => resp.data.scenarios);
+    
+  }
+
+  async function select_scenario(code) {
+    let r1 = await api.get('info', {
+        code: code
+      }
+    )
+    $summary[code] = {
+      logs: r1.data.logs,
+      console_output: r1.data.output,
+      source: r1.data.source,
+      code: code
+    }
+    curr = $summary[code];
+  }
 
 </script>
 

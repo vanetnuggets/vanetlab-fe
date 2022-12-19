@@ -3,10 +3,6 @@ import LeaderLine from 'leader-line-new';
 import Node__SvelteComponent_ from "../DragDrop/Node.svelte";
 
 class Sipky {
-    static on_delete(node_id) {
-        throw new Error('Method not implemented.');
-    }
-    
     constructor() {
         this.lines = {}
         this.colors = {}
@@ -27,13 +23,28 @@ class Sipky {
         containers.subscribe(containers => {
             me.containers = containers;
             setTimeout(() => {
+                
                 me.genocide();
                 me.redraw();
             }, 20);
         });
     }
 
+    reset() {
+        this.genocide();
+        this.lines = {}
+        this.colors = {}
+        this.counter = 0
+        this.connections = {}
+        this.containers = []
+        this.nodes = []
+        this.active = false;
+    }
+
     redraw() {
+        if (this.active == false) {
+            return;
+        }
         for (let container of this.containers) {
             let color = this.get_color(container);
 
@@ -63,6 +74,9 @@ class Sipky {
     }
 
     genocide() {
+        if (this.active == false) {
+            return;
+        }
         for(let line of Object.values(this.lines)) {
             line.remove()
         }
@@ -76,8 +90,8 @@ class Sipky {
     }
 
     disable() {
-        this.active = false;
         this.genocide()
+        this.active = false;
     }
 
     get_friends(n1, n2) {
