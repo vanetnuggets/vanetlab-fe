@@ -1,36 +1,32 @@
 <style>
-.add-button {
-  display: inline-block;
-  padding: 15px 25px;
-  font-size: 24px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+.toolbar {
+	display: inline-block;
+	width: 100%;
+	z-index: -1;
 }
-
-.add-button:hover {background-color: #3e8e41}
-
-.add-button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.action {
+	float: left;
 }
-
-p{
-	color: blue;
-	font-weight: bold;
-	font-size: 20px;
+.zoom {
+	float: right;
 }
-label{
-	color: blue;
-	font-weight: bold;
-	font-size: 20px;
+.minibtn {
+	padding: 0px 4px;
+	margin: 6px 0px;
+	font-size: 12px;
+	background-color: white;
+	border: 2px solid black;
+	cursor: pointer;
+}
+.minibtn:hover {
+	border: 2px solid navy;
+	transition: 0.3s;
+	
+}
+.minibtn:active {
+	background-color: navy;
+	color: white;
+	transition: 0.3s;
 }
 </style>
 
@@ -160,30 +156,42 @@ label{
 		}
 	}
 
+	function add_zoom(val) {
+		recalc_zoom(val);
+		let x = val < 0 ? false: true;
+		recalculate_positions(x);
+	}
+
 	function to_index(id) {
 		for (let i=0; i<$nodes.length; i++) {
 			let curr = $nodes[i];
 			if ( curr.id == id )
 				return i
 		}
+		return null;
 	}
 
 	function move(e){
+		if ( current_node == null ) {
+			return;
+		}
 		let i = to_index(current_node.id);
-		if( $nodes[i] != null){
-			if($moving){
-				$nodes[i].left = $nodes[i].left+e.movementX;
-				$nodes[i].top = $nodes[i].top+e.movementY;
-				$nodes[i].x = $nodes[i].left / zoom;
-				$nodes[i].y = $nodes[i].top / zoom;
-				sipky.update($nodes[i].id);
-				node_info.update(_ => $nodes[i]);
-			}
+		if ( i == null ) {
+			return;
+		} 
+		if($moving){
+			$nodes[i].left = $nodes[i].left+e.movementX;
+			$nodes[i].top = $nodes[i].top+e.movementY;
+			$nodes[i].x = $nodes[i].left / zoom;
+			$nodes[i].y = $nodes[i].top / zoom;
+			sipky.update($nodes[i].id);
+			node_info.update(_ => $nodes[i]);
 		}
 	}
 
 	function stop() {
 		$moving = false;
+		current_node = null;
 	}
 
 	function start() {
@@ -195,11 +203,19 @@ label{
 
 <!-- <svelte:window on:mouseup={stop}/> -->
 <svelte:window  on:mousedown={start} on:mousemove={move} on:mouseleave={stop} on:mouseup={stop}   on:keydown={change_zoom} on:wheel={handleWheel}/>
-<button on:click={add_node} class=add-button>Add node</button>
-<p>Zoom: {zoom}</p>
-<label class="container">Fix to 1x
-	<input type=checkbox bind:checked={checked} on:click={return_to_1x}>
-</label>
-{#each $nodes as node (node.id) }
-	<Node bind:node={node} zoom={zoom}/>
-{/each}
+<div class="toolbar">
+	<div class="action">
+		<button on:click={add_node} class=add-button>Add node</button>
+	</div>
+	<div class="zoom">
+		Zoom Level: {zoom}
+		<button class="minibtn" on:click={() => add_zoom(0.1)}>➕</button>
+		<button class="minibtn" on:click={() => add_zoom(-0.1)}>➖</button>
+		<button class="minibtn" on:click={return_to_1x} >♻️</button>
+	</div>
+</div>
+<div class=playground>
+	{#each $nodes as node (node.id) }
+		<Node bind:node={node} zoom={zoom}/>
+	{/each}
+</div>
