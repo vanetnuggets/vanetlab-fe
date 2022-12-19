@@ -4,7 +4,7 @@
   import Wifi from './containers/Wifi.svelte'
   import { visibleContainer, containers, topology, nodes, node_id, node_info } from '../../store/store.js';
   export let name
-  let container = $containers.find(item => item.name === name.split(" - ")[1])
+  export let container
   
   let isShown = false
 

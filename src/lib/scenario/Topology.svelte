@@ -20,6 +20,13 @@
     "node_containers": $topology.node_containers,
   }
 
+  function get_index_by_id(id) {
+
+    let index = $containers.findIndex(e => e.id == id)
+    
+    return index==null ? null : index;
+  }
+
   function addContainer(){
     if (name.trim() == '') {
       name = 'random_container_'+ counter
@@ -84,7 +91,7 @@
   </button>
   
   {#each $containers as c (c.name) }
-      <Container name={c.type + ' - ' + c.name}/>
+    <Container name={c.type + ' - ' + c.name} bind:container={$containers[get_index_by_id(c.id)]}/>
   {/each}
 </div>
 
