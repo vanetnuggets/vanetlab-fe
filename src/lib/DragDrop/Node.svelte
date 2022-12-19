@@ -62,9 +62,8 @@
 </style>
 
 <script>
-	import { store_container_size, show_rdrawer,moving, node_info, nodes } from '../../store/store.js';
+	import { store_container_size, show_rdrawer, node_info, nodes } from '../../store/store.js';
 	import sipky from '../sipky/sipky.js'
-	
 
 	export let node={
 		"left":0,
@@ -75,33 +74,29 @@
 		"containers":[],
 		"element": null
 	} 
+
 	export let zoom = 1
+
+	let moving = false;
 	
 	function start() {
-		$moving = true;
+		moving = true;
 	}
 	
 	function stop() {
-		$moving = false;
+		moving = false;
 	}
 	
-	// function move(e){
-	// 	if(moving){
-	// 		node.left = node.left+e.movementX;
-	// 		node.top = node.top+e.movementY;
-	// 		node.x = node.x+Math.round(e.movementX*Math.pow(zoom,-1))
-	// 		node.y = node.y+Math.round(e.movementY*Math.pow(zoom,-1))
-	// 		// node.left = Math.max(0, node.left+e.movementX);
-	// 		// node.top = Math.max(0, node.top+e.movementY); 
-
-	// 		// node.left = Math.min(cont_size.width-node_size, node.left)
-	// 		// node.top = Math.min(cont_size.height-node_size, node.top)
-	// 		sipky.update(node.id);
-	// 		node_info.update(_ => node);
-	// 	}
-	// 	console.log(node.left)
-		
-	// }
+	function move(e){
+		if(moving){
+			node.left = node.left+e.movementX;
+			node.top = node.top+e.movementY;
+			node.x = node.left / zoom;
+			node.y = node.top / zoom;
+			sipky.update(node.id);
+			node_info.update(_ => node);
+		}
+	}
 
 	function remove(){
 		$nodes = $nodes.filter((value) => value.id !== node.id);
@@ -120,7 +115,7 @@
 
 <!-- <svelte:window on:mouseup={stop}/> -->
 
-<div on:mousedown={start} on:mouseover={set_current} on:focus on:blur>
+<div on:mouseover={set_current} on:focus on:blur>
 	<div bind:this={node.element} style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom})" class="node {node.type}" >
 		
 		<!-- svelte-ignore a11y-click-events-have-key-events -->

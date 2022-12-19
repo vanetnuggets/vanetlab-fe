@@ -36,6 +36,7 @@ label{
 
 
 <script>
+	import Keydown from "svelte-keydown";
 	import Node from './Node.svelte';
 	import sipky from '../sipky/sipky.js'
 	import { nodes, node_id,node_info,moving, store_container_size } from '../../store/store.js';
@@ -132,43 +133,68 @@ label{
 	const handleWheel = e => {
 		if(mouseOver && !checked){
 			if (e.deltaY>0){
-				if(zoom > 0.3)
-				zoom=Math.round((zoom-0.1)*10)/10
+				recalc_zoom(-0.1)
 				recalculate_positions(false)
 			}
-			else if(zoom <3){
-				zoom=Math.round((zoom+0.1)*10)/10
-				recalculate_positions(true)
-			}
+			recalc_zoom(0.1)
+			recalculate_positions(true)
 		}
-		// e.preventDefault()
+	}
+
+	function recalc_zoom(zoom_change) {
+		let new_zoom = Math.round((zoom+zoom_change)*10)/10;
+		if (new_zoom > 0.3 && new_zoom < 3) {
+			zoom = new_zoom
+		}
+	}
+
+	function change_zoom(evt) {
+		console.log(evt.key);
+		if (evt.key == '-') {
+			recalc_zoom(-0.1)
+			recalculate_positions(false)
+
+		} else if (evt.key == '+') {
+			recalc_zoom(0.1)
+			recalculate_positions(true)
+		}
+	}
+
+	function to_index(id) {
+		for (let i=0; i<$nodes.length; i++) {
+			let curr = $nodes[i];
+			if ( curr.id == id )
+				return i
+		}
 	}
 
 	function move(e){
-		if( $nodes[current_node.id] != null){
+		let i = to_index(current_node.id);
+		if( $nodes[i] != null){
 			if($moving){
-				$nodes[current_node.id].left = $nodes[current_node.id].left+e.movementX;
-				$nodes[current_node.id].top = $nodes[current_node.id].top+e.movementY;
-				$nodes[current_node.id].x = $nodes[current_node.id].x+Math.round(e.movementX*Math.pow(zoom,-1))
-				$nodes[current_node.id].y = $nodes[current_node.id].y+Math.round(e.movementY*Math.pow(zoom,-1))
-				// node.left = Math.max(0, node.left+e.movementX);
-				// node.top = Math.max(0, node.top+e.movementY); 
-
-				// node.left = Math.min(cont_size.width-node_size, node.left)
-				// node.top = Math.min(cont_size.height-node_size, node.top)
-				sipky.update($nodes[current_node.id].id);
-				node_info.update(_ => $nodes[current_node.id]);
+				$nodes[i].left = $nodes[i].left+e.movementX;
+				$nodes[i].top = $nodes[i].top+e.movementY;
+				$nodes[i].x = $nodes[i].left / zoom;
+				$nodes[i].y = $nodes[i].top / zoom;
+				sipky.update($nodes[i].id);
+				node_info.update(_ => $nodes[i]);
 			}
 		}
 	}
+
 	function stop() {
 		$moving = false;
+	}
+
+	function start() {
+		$moving = true;
 	}
 	
 	
 </script>
+
 <!-- <svelte:window on:mouseup={stop}/> -->
-<svelte:window on:wheel={handleWheel} on:mousemove={move} on:mouseup={stop}/>
+<svelte:window  on:mousedown={start} on:mousemove={move} on:mouseleave={stop} on:mouseup={stop}   on:keydown={change_zoom} on:wheel={handleWheel}/>
 <button on:click={add_node} class=add-button>Add node</button>
 <p>Zoom: {zoom}</p>
 <label class="container">Fix to 1x

@@ -32,6 +32,9 @@
       '/': DragContainer,
       '/sandbox': DragContainer,
       '/summary': Summary,
+      '/source/:code': SourceCode,
+      '/logs/:code': TraceLogs,
+      '/console/:code': ConsoleLogs,
       '*': NotFound
     }} />
   </span>
@@ -42,6 +45,10 @@
 import Router from 'svelte-spa-router'
 import NotFound from "./lib/DragDrop/NotFound.svelte"
 import Summary from "./lib/vizualize/Summary.svelte"
+import SourceCode from "./lib/vizualize/SourceCode.svelte"
+import TraceLogs from './lib/vizualize/TraceLogs.svelte';
+import ConsoleLogs from './lib/vizualize/ConsoleLogs.svelte';
+
 import BottomBar from "./lib/layouts/BottomBar.svelte";
 import TopBar from "./lib/layouts/TopBar.svelte";
 import LeftDrawer from "./lib/layouts/LeftDrawer.svelte";

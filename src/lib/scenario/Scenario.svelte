@@ -42,7 +42,15 @@
         <Simulation/>
     </div>
     {/if}
-
+    
+    <div>
+        <button>Preset1</button>
+    </div>
+    <div>
+        <button>Preset1</button>
+    </div><div>
+        <button>Preset1</button>
+    </div>
 </div>
 
 <style>

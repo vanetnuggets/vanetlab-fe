@@ -28,6 +28,6 @@ export const apps = writable({
 export const units = readable({
   "rate": ["Kbps","Mbps","Gbps"],
   "delay": ["ns", "ms", "s"]
-}
-  
-)
+})
+
+export const summary_list = writable([]);
