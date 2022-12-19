@@ -31,15 +31,15 @@
     }
 
     async function sendToBe(){
-        let res = await api.post("tracejson", generateScenario())
+        let res = await api.post("simulate", generateScenario())
         console.log(res);
 
-        summary.update(_ => {
-            return {
-                logs: res.data.logs,
-                output: res.data.output
-            }
-        });
+        $summary[res.data.scenario_code] = {
+            logs: res.data.pcap_logs,
+            console_output: res.data.output
+        } 
+
+        console.log($summary)
     }
 
 </script>

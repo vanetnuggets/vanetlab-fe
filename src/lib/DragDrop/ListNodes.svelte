@@ -1,36 +1,37 @@
 <style>
-.add-button {
-  display: inline-block;
-  padding: 15px 25px;
-  font-size: 24px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+.toolbar {
+	display: inline-block;
+	width: 100%;
+	z-index: -1;
 }
-
-.add-button:hover {background-color: #3e8e41}
-
-.add-button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.action {
+	float: left;
 }
-
-p{
-	color: blue;
-	font-weight: bold;
-	font-size: 20px;
+.zoom {
+	float: right;
 }
-label{
-	color: blue;
-	font-weight: bold;
-	font-size: 20px;
+.minibtn {
+	padding: 0px 4px;
+	margin: 6px 0px;
+	font-size: 12px;
+	background-color: white;
+	border: 2px solid black;
+	cursor: pointer;
+}
+.minibtn:hover {
+	border: 2px solid navy;
+	transition: 0.3s;
+	
+}
+.minibtn:active {
+	background-color: navy;
+	color: white;
+	transition: 0.3s;
+}
+.select-button:target {
+	background-color: navy;
+	color: white;
+	transition: 0.3s;
 }
 </style>
 
@@ -38,17 +39,23 @@ label{
 <script>
 	import Node from './Node.svelte';
 	import sipky from '../sipky/sipky.js'
-	import { nodes, node_id,node_info,moving, store_container_size } from '../../store/store.js';
+	import { nodes, node_id,node_info, store_container_size } from '../../store/store.js';
 	
 	export let mouseX=0
 	export let mouseY=0
 	export let mouseOver=false
+
+	let move_type = 'canvas';
+	let move_now = false;
 
 	let cont_size
 	let last_id;
 	let zoom=1;
 	let checked=false;
 	let current_node
+
+	let move_x = 0;
+	let move_y = 0;
 
 	node_info.subscribe(val => {
     	current_node = val;
@@ -90,7 +97,7 @@ label{
 		mouseY=cont_size.height/2
 		let direction=-1
 		if (zoom_in)
-		direction=-direction
+			direction=-direction
 		
 		$nodes.forEach(node => {
 			let distancex= Math.abs(node.left-mouseX)
@@ -101,9 +108,10 @@ label{
 			if(distancey<1){
 				distancey=1
 			}
-			const shiftx=Math.round(Math.log2(distancex))
-			const shifty=Math.round(Math.log2(distancey))
-		
+
+			const shiftx = distancex/10;
+			const shifty = distancey/10;
+			
 			if(node.left>mouseX)
 				node.left= node.left + shiftx*direction
 			else{
@@ -131,49 +139,151 @@ label{
 
 	const handleWheel = e => {
 		if(mouseOver && !checked){
-			if (e.deltaY>0){
-				if(zoom > 0.3)
-				zoom=Math.round((zoom-0.1)*10)/10
-				recalculate_positions(false)
-			}
-			else if(zoom <3){
-				zoom=Math.round((zoom+0.1)*10)/10
-				recalculate_positions(true)
+			if (e.deltaY > 0){
+				add_zoom(-0.1)
+			} else {
+				add_zoom(0.1)
 			}
 		}
-		// e.preventDefault()
+	}
+
+	function recalc_zoom(zoom_change) {
+		let new_zoom = Math.round((zoom+zoom_change)*10)/10;
+		if (new_zoom > 0.3 && new_zoom < 3) {
+			zoom = new_zoom
+		}
+	}
+
+	function add_zoom(val) {
+		let old_zoom = zoom;
+		recalc_zoom(val);
+		if (zoom == old_zoom) {
+			return;
+		}
+		let x = val < 0 ? false: true;
+		recalculate_positions(x);
+	}
+
+
+	function _move_canvas(dir, val) {
+		if (dir == 'x') {
+			move_x += val;
+			for (let i=0; i<$nodes.length; i++) {
+				let node_id = $nodes[i].id;
+				$nodes[i].left = ($nodes[i].x + move_x)*zoom;
+				sipky.update(node_id);
+			}
+		}
+		if (dir == 'y') {
+			move_y += val;
+			for (let i=0; i<$nodes.length; i++) {
+				let node_id = $nodes[i].id;
+				$nodes[i].top = ($nodes[i].y + move_y)*zoom;
+				sipky.update(node_id);
+			}
+		}
+	}
+
+
+	function change_zoom(evt) {
+		if (evt.key == '-') {
+			add_zoom(-0.1)
+		} else if (evt.key == '+') {
+			add_zoom(0.1)
+		}
+
+		if (evt.key == 'a') {
+			_move_canvas('x', -10);
+		}
+		if (evt.key == 'd') {
+			_move_canvas('x', 10);
+		}
+		if (evt.key == 's') {
+			_move_canvas('y', 10);
+		}
+		if (evt.key == 'w') {
+			_move_canvas('y', -10);
+		}
+	}
+
+	function set_move_type(type) {
+		move_type = type;
+	}
+
+	function to_index(id) {
+		for (let i=0; i<$nodes.length; i++) {
+			let curr = $nodes[i];
+			if ( curr.id == id )
+				return i
+		}
+		return null;
+	}
+
+	function move_canvas(evt) {
+		if(move_now == false || move_type != 'canvas') {
+			return
+		}
+
+		_move_canvas('x', evt.movementX);
+		_move_canvas('y', evt.movementY);
 	}
 
 	function move(e){
-		if( $nodes[current_node.id] != null){
-			if($moving){
-				$nodes[current_node.id].left = $nodes[current_node.id].left+e.movementX;
-				$nodes[current_node.id].top = $nodes[current_node.id].top+e.movementY;
-				$nodes[current_node.id].x = $nodes[current_node.id].x+Math.round(e.movementX*Math.pow(zoom,-1))
-				$nodes[current_node.id].y = $nodes[current_node.id].y+Math.round(e.movementY*Math.pow(zoom,-1))
-				// node.left = Math.max(0, node.left+e.movementX);
-				// node.top = Math.max(0, node.top+e.movementY); 
+		if(move_now == false) {
+			return;
+		}
 
-				// node.left = Math.min(cont_size.width-node_size, node.left)
-				// node.top = Math.min(cont_size.height-node_size, node.top)
-				sipky.update($nodes[current_node.id].id);
-				node_info.update(_ => $nodes[current_node.id]);
-			}
+		if ( move_type == 'canvas' ) {
+			move_canvas(e);
+			return;
+		}
+
+		if (move_type == 'node') {
+			let i = to_index(current_node.id);
+			if ( i == null ) {
+				return;
+			} 
+
+			$nodes[i].left = $nodes[i].left+e.movementX;
+			$nodes[i].top = $nodes[i].top+e.movementY;
+			$nodes[i].x = ($nodes[i].left-move_x) / zoom;
+			$nodes[i].y = ($nodes[i].top-move_y) / zoom;
+			sipky.update($nodes[i].id);
+			node_info.update(_ => $nodes[i]);
 		}
 	}
+
 	function stop() {
-		$moving = false;
+		move_now = false;
+		current_node = null;
 	}
-	
-	
+
+	function start() {
+		move_now = true;
+	}
 </script>
+
 <!-- <svelte:window on:mouseup={stop}/> -->
-<svelte:window on:wheel={handleWheel} on:mousemove={move} on:mouseup={stop}/>
-<button on:click={add_node} class=add-button>Add node</button>
-<p>Zoom: {zoom}</p>
-<label class="container">Fix to 1x
-	<input type=checkbox bind:checked={checked} on:click={return_to_1x}>
-</label>
-{#each $nodes as node (node.id) }
-	<Node bind:node={node} zoom={zoom}/>
-{/each}
+<svelte:window on:mousedown={start} on:mousemove={move} on:mouseleave={stop} on:mouseup={stop}   on:keydown={change_zoom} on:wheel={handleWheel}/>
+<div class="toolbar">
+	<div class="action">
+		<button on:click={add_node} class=add-button>Add node</button>
+		<button on:click={() => set_move_type('node')} class="minibtn select-button">👆️</button>
+		<button on:click={() => set_move_type('canvas')} class="minibtn select-button">🗺️</button>
+		 
+	</div>
+	<div class="zoom">
+		Moving: {move_type}
+		MoveX: {move_x}
+		MoveY: {move_y}
+		Zoom Level: {zoom}
+		<button class="minibtn" on:click={() => add_zoom(0.1)}>➕</button>
+		<button class="minibtn" on:click={() => add_zoom(-0.1)}>➖</button>
+		<button class="minibtn" on:click={return_to_1x} >♻️</button>
+	</div>
+</div>
+<div class=playground>
+	{#each $nodes as node (node.id) }
+		<Node bind:node={node} zoom={zoom}/>
+	{/each}
+</div>

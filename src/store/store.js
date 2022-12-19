@@ -18,10 +18,7 @@ export const visibleContainer = writable("")
 
 export const nodes = writable([])
 
-export const summary = writable({
-  logs: [],
-  output: []
-})
+export const summary = writable({})
 
 export const apps = writable({
   "server": [],
@@ -31,6 +28,6 @@ export const apps = writable({
 export const units = readable({
   "rate": ["Kbps","Mbps","Gbps"],
   "delay": ["ns", "ms", "s"]
-}
-  
-)
+})
+
+export const summary_list = writable([]);
