@@ -30,7 +30,7 @@
   <span slot="content">
     <Router routes={{
       '/': DragContainer,
-      '/sandbox': DragContainer,
+      '/canvas': DragContainer,
       '/summary': Summary,
       '/source/:code': SourceCode,
       '/logs/:code': TraceLogs,

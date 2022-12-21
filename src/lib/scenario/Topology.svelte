@@ -6,6 +6,7 @@
     csma_container,
     point_to_point_container
   } from '../../services/ContainerService.js'
+  import debug from "../../services/DebugService";
 
   let name = ""
   let container_type = null;
@@ -64,12 +65,20 @@
 </script>
 
 <div class="topology_container_holder">
-  <div>
-    <div>
-      <input bind:value={name} placeholder="Type container's name">
+  Create a new network.
+  <div class="row">
+    <div class="col">
+      Network name: <br>
     </div>
-    <div>
-      Container Type:
+    <div class="col">
+      <input class="my-input" bind:value={name} placeholder="example_name">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      Network type: <br>
+    </div>
+    <div class="col">
       <select bind:value={container_type}>
         {#each container_types as cont_type}
           <option value={cont_type}>
@@ -80,12 +89,14 @@
     </div>
   </div>
   
+  {#if debug == true}
   <button on:click={showAll}>
     #debug
   </button>
-  
+  {/if}
+
   <button on:click={addContainer}>
-    Add container
+    Create
   </button>
   
   {#each $containers as c (c.name) }
@@ -99,5 +110,36 @@
 <style>
 select  {
   height: 26px;
+  width: 125px;
+  float: right;
+  padding: 0px;
+  margin: 0px;
+}
+
+.topology_container_holder {
+  border: 1px solid black;
+  border-radius: 0;
+}
+
+.my-input {
+  height: 26px;
+  padding: 0px;
+  margin: 0px;
+  width: 125px;
+  border-radius: 0px;
+  float: right;
+}
+
+.row {
+  display: flex;
+  border: 1px solid black;
+  margin: 4px;
+  padding: 2px 10px;
+  align-items: center;
+}
+
+.col {
+  text-align: left;
+  flex: 50%;
 }
 </style>
