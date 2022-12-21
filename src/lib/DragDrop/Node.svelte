@@ -4,6 +4,10 @@
 		position:absolute;
 		cursor: move;
 		margin: auto;
+		width: 50px;
+		height: 50px;
+		border-radius: 100%;
+		background-color: navy;
 	}
 	.remove { 
 		cursor: pointer; 
@@ -16,6 +20,18 @@
 		padding: 0px 5px;
 		margin: 0px;
 		font-size: 14px;
+		font-weight: bold;
+		height: 20px;
+		width: 10px;
+	}
+	.info {
+		position: absolute; 
+		left: -5px;
+		top: -5px; 
+		color: navy;
+		background-color: transparent;
+		margin: 0px;
+		font-size: 16px;
 		font-weight: bold;
 		height: 20px;
 		width: 10px;
@@ -59,11 +75,24 @@
 		outline: 2px solid navy;
 		cursor: move;
 	}
+
+	.selected {
+		outline: 3px solid red;
+	}
 </style>
 
 <script>
-	import { store_container_size, show_rdrawer, node_info, nodes } from '../../store/store.js';
+	import { 
+		node_info2, 
+		moving_type, 
+		show_rdrawer, 
+		node_info, 
+		nodes 
+	} from '../../store/store.js';
 	import sipky from '../sipky/sipky.js'
+
+	let unselected = '';
+	let selected = 'selected';
 
 	export let node={
 		"left":0,
@@ -72,7 +101,9 @@
 		"y":0,
 		"id":0,
 		"containers":[],
-		"element": null
+		"element": null,
+		"info": false,
+		"state": unselected
 	} 
 
 	export let zoom = 1
@@ -87,27 +118,46 @@
 		moving = false;
 	}
 	
-	function move(e){
-		if(moving){
-			node.left = node.left+e.movementX;
-			node.top = node.top+e.movementY;
-			node.x = node.left / zoom;
-			node.y = node.top / zoom;
-			sipky.update(node.id);
-			node_info.update(_ => node);
-		}
-	}
-
 	function remove(){
 		$nodes = $nodes.filter((value) => value.id !== node.id);
 		show_rdrawer.update(_ => 'container_info');
 		sipky.on_delete(node.id);
-
 	}
 
-	function set_current(){
-		show_rdrawer.update(_ => 'node_info');
-		node_info.update(_ => node);
+	function set_current(evt){
+		if ( $moving_type == "info") {
+			for (let node of $nodes) {
+				node.info = false;
+			}
+			node.info = true;
+			node_info2.update(_ => node);
+			show_rdrawer.update(_ => 'node_info');
+		}
+
+		if ( $moving_type != "node") {
+			return;
+		}
+		
+		node.state = selected;
+		if (evt.shiftKey == true) {
+			$node_info.set(node.id, node);
+		} else {
+			for (let n of $node_info.values()) {
+				if (n.id != node.id)
+					n.state = unselected;
+			}
+			let map = new Map()
+			map.set(node.id, node)
+			$node_info = map;
+		}
+	}
+
+	function unselect(evt) {
+		if (evt.shiftKey == true) {
+			return;
+		}
+		node.state = unselected;
+		$node_info = new Map();
 	}
 </script>
 
@@ -115,17 +165,25 @@
 
 <!-- <svelte:window on:mouseup={stop}/> -->
 
-<div on:mouseover={set_current} on:focus on:blur>
-	<div bind:this={node.element} style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom})" class="node {node.type}" >
-		
+<div on:pointerup={(evt) => unselect(evt)} on:pointerdown={(evt) => set_current(evt)} on:focus on:blur>
+	<div bind:this={node.element} 
+		style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom})" 
+		class="node {node.state}" 
+	>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span on:pointerdown={e => e.stopPropagation()} on:click={() => remove()} class=remove>
 			X
 		</span>
 		<!-- <div style="left: {node.left+15}px; top : {node.top}px" class=node-id> -->
-		<div class=node-id>
+		<div class="node-id">
 			{node.id}
 		</div>
+
+		{#if node.info == true}
+		<div class="info">
+			ℹ️
+		</div>
+		{/if}
 	</div>
 	
 </div>

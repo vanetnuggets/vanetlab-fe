@@ -1,7 +1,9 @@
 import { writable, readable } from 'svelte/store';
 
+export const moving_type = writable("canvas")
 export const show_rdrawer = writable("container_info");
-export const node_info = writable({})
+export const node_info = writable(new Map())
+export const node_info2 = writable(null) // opica 🐒
 export const moving = writable(false)
 export const node_id = writable(0)
 export const store_container_size = writable({

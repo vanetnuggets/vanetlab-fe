@@ -21,11 +21,12 @@
 </div>
 
 <script>
-	import { node_info, nodes } from '../../store/store.js';
+	import { node_info2, nodes } from '../../store/store.js';
   
   let node = null;
-  node_info.subscribe(val => {
+  node_info2.subscribe(val => {
     node = val;
+    console.log(node);
   })
 
   let types = [
