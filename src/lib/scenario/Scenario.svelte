@@ -11,8 +11,9 @@
     let TopologyBntText = "Show topology settings"
     let isSimulationVisible = false
     let SimulationBntText = "Show simulation settings"
-    let opened_class = 'open somebs btn-trans';
-    let opened_sim = 'open somebs btn-trans';
+    let opened_class = 'somebs btn-trans';
+    let opened_sim = 'somebs btn-trans';
+    let opened_presets = 'somebs btn-trans';
 
     let _node_id;
     node_id.subscribe(n => {
@@ -133,9 +134,12 @@
         
     }
 
+    let presets_text = "Show presets";
     let show_presets = false;
-    function toggle_presets() {
-        show_presets = !show_presets;
+    function handle_presets() {
+      show_presets = !show_presets;
+      presets_text = show_presets == true ? "Hide presets" : "Show presets";
+      opened_presets = isSimulationVisible ? "open somebs btn-trans": "somebs btn-trans"
     }
     
 
@@ -163,16 +167,23 @@
     {/if}
   </div>
 
-  {#each Object.keys(presets) as key}
-  <div>
-    <button class="btn-basic" on:click={() => set_preset(key)}>preset: {key}</button>
+  <div class="{opened_presets}">
+    <button on:click={handle_presets} class="important-btn somebs btn-trans">{presets_text}</button>
+    {#if show_presets == true}
+    {#each Object.keys(presets) as key}
+    <div  transition:slide class="somebs">
+      <button class="btn-basic" on:click={() => set_preset(key)}>preset: {key}</button>
+    </div>
+    {/each}
+    {/if}
   </div>
-  {/each}
+
+  
 </div>
 
 <style>
     .somebs {
-        width: 360px;
+        width: 350px;
     }
 
     .open {
