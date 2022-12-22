@@ -1,5 +1,8 @@
-😎 VANETLAB BOTTOM BAR 😎
-<button class="btn-light" on:click={sendToBe}>Send scenario</button>
+
+<button class="btn r" on:click={sendToBe}>Send scenario</button>
+<div class="middle">
+    TP@fiit.stu
+</div>
 
 <script>
     import api from '../../services/Api.js'
@@ -43,3 +46,37 @@
     }
 
 </script>
+
+<style scoped>
+    .btn {
+      background-color: var(--dark-3);
+      color: var(--color-text-1);
+      font-size: 15px;
+      border-radius: 5px;
+      margin-right: 10px;
+      height: 25px;
+    }
+    
+    .btn:hover {
+      background-color: var(--dark-3);
+      outline: 1px solid var(--color-text-1);
+    }
+    
+    .middle {
+      position: fixed;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      bottom: 4px;
+      left: 0;
+      right: 0;
+      z-index: -1;
+    }
+    
+    .r {
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+    }
+    
+    </style>

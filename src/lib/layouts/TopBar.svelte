@@ -2,12 +2,12 @@
 {#if visible == true}
 <div>
   <button on:click={() => goto('canvas')} class="btn l">🎨 Canvas</button>
-  <button on:click={() => goto('summary')} class="btn l">🚏 Simulation</button>
+  <button on:click={() => goto('summary')} class="btn l">🚏 Simulation &nbsp;</button>
 </div>
 {/if}
 
 <div class="middle">
-😎 VANETLAT FRONTEND 😎
+  🚘️ VanetLab v0.1 🚘️
 </div>
 
 <script>
@@ -28,15 +28,20 @@
 
 </script>
 
-<style scoped>
+<style>
 .btn {
-  background-color: white;
-  color: black;
-  padding: 0px 4px;
+  background-color: var(--dark-3);
+  color: var(--color-text-1);
+  padding: 0px 4px 0px 4px;
   margin: 0px 5px;
   font-size: 15px;
-  border-radius: 0;
+  border-radius: 5px;
   border: 0px solid red;
+}
+
+.btn:hover {
+  background-color: var(--dark-3);
+  outline: 1px solid var(--color-text-1);
 }
 
 .middle {
@@ -52,6 +57,10 @@
 
 .l {
   float: left;
+}
+
+.r {
+  float: right;
 }
 
 </style>

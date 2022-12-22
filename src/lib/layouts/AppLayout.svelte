@@ -21,12 +21,13 @@
       </slot>
     </div>
   </div>
-  <div class="mybottom">
-    <slot name="bottom">
-    </slot>
-  </div>
-</div>
 
+  
+</div>
+<div class="mybottom">
+  <slot name="bottom">
+  </slot>
+</div>
 <style>
 
 .mytop {
@@ -35,29 +36,34 @@
 }
 
 .mybottom {
-  flex: 0 0 40px;
-  z-index: 100;
+  position: fixed;
   text-align: center;
-  z-index: 1;
+  z-index: 2;
+  height: 24px;
+  width: 100%;
+  bottom: 0px;
 }
 
 .lol {
   display: flex; 
   flex-direction: row;
-  max-height: calc(100vh - 75px);
   max-width: 100%;
-  height: 100vh;
+  height: calc(100vh - 40px);
   align-items: stretch;
 }
 
 .myright {
   overflow-y: scroll;
   z-index: 1;
+  background-color: var(--dark-2);
+  color: white;
+  padding-bottom: 30px;
 }
 
 .myleft {
   overflow-y: scroll;
   z-index: 1;
+  padding-bottom: 30px;
 }
 
 
@@ -70,7 +76,5 @@
 .myapp {
   display: flex; 
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
 }
 </style>

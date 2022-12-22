@@ -9,13 +9,15 @@
 }
 .zoom {
 	float: right;
+	text-align: right;
+	margin-right: 5px;
 }
 .minibtn {
 	padding: 0px 4px;
 	margin: 6px 0px;
 	font-size: 12px;
-	background-color: white;
-	border: 2px solid black;
+	background-color: var(--color-text-1);
+	border: 2px solid var(--dark-1);
 	cursor: pointer;
 }
 .minibtn:hover {
@@ -40,7 +42,7 @@
 	import Node from './Node.svelte';
 	import sipky from '../sipky/sipky.js'
 	import { 
-		node_info2, 
+		show_rdrawer, 
 		moving_type, 
 		nodes, 
 		node_id, 
@@ -215,6 +217,7 @@
 
 	function set_move_type(type) {
 		$moving_type = type;
+		show_rdrawer.update(_ => '');
 		for (let n of $nodes) {
 			n.info = false;
 			n.state = '';
@@ -290,10 +293,10 @@
 	
 	</div>
 	<div class="zoom">
-		Moving: {$moving_type}
-		MoveX: {move_x}
-		MoveY: {move_y}
-		Zoom Level: {zoom}
+		Moving: {$moving_type}<br>
+		MoveX: {move_x}<br>
+		MoveY: {move_y}<br>
+		Zoom Level: {zoom}<br>
 		<button class="minibtn" on:click={() => add_zoom(0.1)}>➕</button>
 		<button class="minibtn" on:click={() => add_zoom(-0.1)}>➖</button>
 		<button class="minibtn" on:click={return_to_1x} >♻️</button>

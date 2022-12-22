@@ -23,7 +23,7 @@
     function addServer(){
         $apps.server = [...$apps.server, {
             "id": $apps.server.length,
-            "name": "",
+            "name": "CHANGE-ME",
             "port": 0,
             "start": {
                 "value": 0,
@@ -42,7 +42,7 @@
     function addClient() {
         $apps.client = [...$apps.client, {
             "id": $apps.client.length,
-            "name": "",
+            "name": "CHANGE-ME",
             "port": 0,
             "start": {
                 "value": 0,
@@ -72,36 +72,39 @@
 </script>
 
 <div class="simulation_container">
-    <div>
-        <button on:click={handleServer} class="somebs">{ServerBntText}</button>
-    </div>
-    {#if isServerVisible}
-    <div transition:slide class="somebs">
-        <button on:click={addServer}>Add server app</button>
-        {#each $apps.server as s (s.id) }
-        <ServerApp bind:app={$apps.server[s.id]}/>
-        {/each}
-    </div>
-    {/if}
-    <div>
-        <button on:click={handleClient} class="somebs">{ClientBntText}</button>
-    </div>
+  <button on:click={handleServer} class="btn-basic">{ServerBntText}</button>
+  <button class="r btn-basic" on:click={addServer}>Add</button>
+    
+  {#if isServerVisible}
+  <div transition:slide>
+    {#each $apps.server as s (s.id) }
+    <ServerApp bind:app={$apps.server[s.id]}/>
+    {/each}
+  </div>
+  {/if}
+
+    <button on:click={handleClient} class="btn-basic">{ClientBntText}</button>
+    <button class="r btn-basic" on:click={addClient}>Add</button>
     {#if isClientVisible}
     <div transition:slide class="somebs">
-        <button on:click={addClient}>Add client app</button>
+      {#if $apps.client.length == 0}
+        There are no client apps in the simulation as of now.
+      {:else}
         {#each $apps.client as c (c.id) }
         <ClientApp bind:app={$apps.client[c.id]}/>
         {/each}
+      {/if}
     </div>
     {/if}
+
 </div>
 
 
-<style>
-    button {
-    width: 360px;
-    }
-    .somebs {
-        margin: 15px 0 15px 0;
-    }
+<style scoped>
+  .somebs {
+    width: 95%;
+  }
+  .r {
+    float: right;
+  }
 </style>

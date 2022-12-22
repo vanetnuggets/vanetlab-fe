@@ -5,51 +5,57 @@
 * {
   padding: 0px;
   margin: 0px;
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-  --main-dark-color: #00002c;
- --main-bg-color: #03045E;
- --secondary-bg-color: #023E8A;
- --ternary-bg-color: #0077B6;
- --main-fg-color: #fbfbff;
+  --dark-1: #2c3e50;
+  --dark-2: #222222;
+  --dark-3: #343434;
+  --dark-4: #414141;
+  --light-1: #f9f9f9;
+  --color-text-1: #f9f9f9;
+  --ternary-bg-color: #181818;
+  --main-fg-color: #b8b8b8;
  text-align: center;
 }
 
+input {
+  background-color: var(--main-fg-color);
+  border: none;
+}
 
+select {
+  background-color: var(--main-fg-color);
+  border: none;
+}
 
 .drawer {
   color: white;
-  background-color: var(--secondary-bg-color);
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
+  
 }
 
 
 .mytop {
-  background-color: var(--main-dark-color);
+  background-color: var(--dark-1);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 5px;
   color: white;
 }
 
 .mybottom {
-  background-color: var(--main-dark-color);
+  background-color: var(--dark-1);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 5px; 
   color: white;
 }
 
 .myright {
-  background-color: var(--secondary-bg-color);
-  padding: 10px;
+  min-width: 200px;
+  background-color: var(--dark-2);
 }
 
 .myleft {
-  background-color: var(--main-bg-color);
+  background-color: var(--dark-2);
   padding: 10px;
 }
 
@@ -58,46 +64,31 @@
 }
 
 .client_container {
-  background-color: var(--ternary-bg-color);
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: var(--dark-4);
+  width: 360px;
 }
 
 .server_container {
-  background-color: var(--ternary-bg-color);
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 0px;
+  margin: 0px;
 }
 
 .simulation_container {
-  background-color: var(--secondary-bg-color);
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
+  background-color: var(--dark-3);
+  text-align: left;
 }
 
 .topology_container {
-  background-color: var(--ternary-bg-color);
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
 }
 
 .topology_container_holder {
-  background-color: var(--secondary-bg-color);
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
+
 }
 
-button {
-  border-radius: 7px;
-  border: 1px solid transparent;
+button {   
+  border-radius: 5px;
   padding: 2px 10px;
   font-size: 1em;
   font-weight: 500;
@@ -107,18 +98,29 @@ button {
   transition: border-color 0.25s;
   color: white;
   margin: 4px 4px;
+  border: none;
 }
-button:hover {
-  border-color: #646cff;
+.btn-basic:hover {
+  outline: 2px solid var(--dark-4);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.important-btn {
+  border-radius: 0;
+  border-left: 3px solid var(--dark-1);
 }
+
 
 .btn-light {
   color: #1a1a1a;
   background-color: var(--main-fg-color)
+}
+
+.btn-trans {
+  background-color: transparent;
+  text-align: left;
+}
+.btn-trans:hover {
+  background-color: var(--dark-3);
 }
 
 a {
@@ -131,7 +133,6 @@ a:hover {
 }
 
 input {
-  border: 0px solid transparent;
   outline: none;
   border-radius: 5px;
   padding: 2px 10px;
@@ -152,7 +153,7 @@ option {
 .parent {
   display: flex;
   flex-direction: column;
-  border-bottom: 2px solid navy;
+  border-bottom: 3px solid var(--dark-2);
   padding: 10px;
 }
 
@@ -166,4 +167,40 @@ option {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
+}
+
+.row {
+  display: flex;
+  margin: 2px;
+  padding: 2px 10px;
+  align-items: center;
+  text-align: left;
+}
+
+.col {
+  text-align: left;
+  align-items: left;
+  margin: 0 auto;
+  flex: 50%;
+}
+
+/* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--dark-1); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--dark-4); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: car(--color-text-1); 
 }

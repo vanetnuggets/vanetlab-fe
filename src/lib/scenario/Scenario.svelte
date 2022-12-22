@@ -11,6 +11,8 @@
     let TopologyBntText = "Show topology settings"
     let isSimulationVisible = false
     let SimulationBntText = "Show simulation settings"
+    let opened_class = 'open somebs btn-trans';
+    let opened_sim = 'open somebs btn-trans';
 
     let _node_id;
     node_id.subscribe(n => {
@@ -21,11 +23,14 @@
     function handleTopology() {
         isTopologyVisible = !isTopologyVisible;
         TopologyBntText = isTopologyVisible ? "Hide topology settings" : "Show topology settings"
+        opened_class = isTopologyVisible ? "open somebs btn-trans": "somebs btn-trans"
     }
 
+
     function handleSimulation() {
-        isSimulationVisible = !isSimulationVisible;
-        SimulationBntText = isSimulationVisible ? "Hide simulation settings" : "Show simulation settings"
+      isSimulationVisible = !isSimulationVisible;
+      SimulationBntText = isSimulationVisible ? "Hide simulation settings" : "Show simulation settings"
+      opened_sim = isSimulationVisible ? "open somebs btn-trans": "somebs btn-trans"
     }
 
     function reset_preset() {
@@ -128,44 +133,54 @@
         
     }
 
+    let show_presets = false;
+    function toggle_presets() {
+        show_presets = !show_presets;
+    }
+    
+
 </script>
 
-<div>
-    <div>
-        <p>Scenario settings</p>
-    </div>
-    <div>
-        <button on:click={handleTopology} class="somebs">{TopologyBntText}</button>
-    </div>
+<div class="tmp">
+  <div>
+      <p>Scenario settings</p>
+  </div>
+  <div class="{opened_class}">
+    <button on:click={handleTopology} class="important-btn somebs btn-trans">{TopologyBntText}</button>
     {#if isTopologyVisible}
     <div  transition:slide class="somebs">
-        <Topology/>
+      <Topology/>
     </div>
     {/if}
-    <div>
-        <button on:click={handleSimulation} class="somebs">{SimulationBntText}</button>
-    </div>
-
+  </div>
+  
+  <div class="{opened_sim}">
+    <button on:click={handleSimulation} class="important-btn somebs btn-trans">{SimulationBntText}</button>
     {#if isSimulationVisible}
-    <div  transition:slide class="somebs">
-        <Simulation/>
+    <div transition:slide class="somebs">
+      <Simulation/>
     </div>
     {/if}
-    
-    {#each Object.keys(presets) as key}
-    <div>
-        <button on:click={() => set_preset(key)}>preset: {key}</button>
-    </div>
-    {/each}
+  </div>
+
+  {#each Object.keys(presets) as key}
+  <div>
+    <button class="btn-basic" on:click={() => set_preset(key)}>preset: {key}</button>
+  </div>
+  {/each}
 </div>
 
 <style>
     .somebs {
-        margin: 15px 0 15px 0;
+        width: 360px;
+    }
+
+    .open {
+        background-color: var(--dark-3);
     }
 
 
     button {
-        width: 360px;
+        width: 95%;
     }
 </style>
