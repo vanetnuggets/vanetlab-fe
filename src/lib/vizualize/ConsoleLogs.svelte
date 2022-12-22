@@ -1,9 +1,9 @@
-<div>
+<div class="area">
   <div class="title">
     Console Logs for scenario { params.code }
   </div>
   <pre class="source_code">
-    {console_output}
+{console_output}
   </pre>
 </div>
 

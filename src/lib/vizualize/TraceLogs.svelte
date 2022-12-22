@@ -28,11 +28,9 @@
   })
 
   async function download(name) {
-    let resp = await api.get('pcap', {
-      responseType: 'blob',
-      params: {
-        name: name
-      }
+    let resp = await api.getBlob('pcap', {
+        name: name,
+        code: params.code
     });
     const blob = resp.data;
     const url = window.URL.createObjectURL(blob);

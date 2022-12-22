@@ -28,7 +28,7 @@
 		position: absolute; 
 		left: -5px;
 		top: -5px; 
-		color: navy;
+		color: var(--dark-1);
 		background-color: transparent;
 		margin: 0px;
 		font-size: 16px;
@@ -42,7 +42,7 @@
 		width: 50px;
 		height: 50px;
 		border-radius: 100%;
-		background-color: navy;
+		background-color: var(--dark-1);
 	}
 
 	.bar {
@@ -59,7 +59,7 @@
 		background-image: url("nodes/ap.png");
 		background-size: 50px;
 		background-color: aqua;
-		outline: 3px solid navy;
+		outline: 3px solid var(--dark-1);
 		border-radius: 100%;
 	}
 
@@ -72,7 +72,7 @@
 		padding: 0px 5px;
 		position:absolute;
 		border-radius: 25%;
-		outline: 2px solid navy;
+		outline: 2px solid var(--dark-1);
 		cursor: move;
 	}
 

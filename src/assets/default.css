@@ -204,3 +204,22 @@ option {
 ::-webkit-scrollbar-thumb:hover {
   background: car(--color-text-1); 
 }
+
+.btn {
+  background-color: var(--dark-3);
+  color: var(--color-text-1);
+  padding: 0px 4px 0px 4px;
+  margin: 0px 5px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 0px solid red;
+}
+
+.area {
+  padding: 5px;
+}
+
+.s {
+  padding-left: 8px;
+  padding-right: 8px;
+}

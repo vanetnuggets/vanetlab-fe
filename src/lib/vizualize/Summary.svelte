@@ -1,13 +1,14 @@
 
 <div class="container">
-  <button on:click={list_scenarios} >List</button>
+  List of simulated scenarios.
+  <button class="btn" on:click={list_scenarios} >♻️ refresh</button>
   <div class="scenario_list">
     {#each Object.entries(files) as [id, name] }
     <div class="scenario_item">
       Scenario ID: { name }
-      <button on:click={() => logs(name)}>Logs</button>
-      <button on:click={() => output(name)}>Console output</button>
-      <button on:click={() => sourcecode(name)}>Source Code</button>
+      <button class="btn s" on:click={() => logs(name)}>Logs</button>
+      <button class="btn s" on:click={() => output(name)}>Console output</button>
+      <button class="btn s" on:click={() => sourcecode(name)}>Source Code</button>
     </div>
     {/each}
   </div>
@@ -81,5 +82,8 @@
 .container {
   overflow-y: scroll;
   max-height: calc(100vh - 75px);
+  background-color: var(--main-fg-color);
 }
+
+
 </style>

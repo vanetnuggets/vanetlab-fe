@@ -71,6 +71,7 @@
   position: relative;
   flex-grow: 4;
   align-items: stretch;
+  background-color: var(--main-fg-color);
 }
 
 .myapp {

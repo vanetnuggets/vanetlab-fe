@@ -286,7 +286,7 @@
 <svelte:window on:mousedown={start} on:mousemove={move} on:mouseleave={stop} on:mouseup={stop}   on:keydown={change_zoom} on:wheel={handleWheel}/>
 <div class="toolbar">
 	<div class="action">
-		<button on:click={add_node} class=add-button>Add node</button>
+		<button on:click={add_node} class="btn s">Add node</button>
 		<button on:click={() => set_move_type('node')} class="minibtn select-button">👆️</button>
 		<button on:click={() => set_move_type('canvas')} class="minibtn select-button">🗺️</button>
 		<button on:click={() => set_move_type('info')} class="minibtn select-button">ℹ️</button>
