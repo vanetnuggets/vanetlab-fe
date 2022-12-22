@@ -217,7 +217,6 @@
 
 	function set_move_type(type) {
 		$moving_type = type;
-		show_rdrawer.update(_ => '');
 		for (let n of $nodes) {
 			n.info = false;
 			n.state = '';

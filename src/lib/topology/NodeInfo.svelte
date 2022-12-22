@@ -18,6 +18,7 @@
           🌐 { net } <br>
            - address: { node.networks[net].network.network_address } <br>
            - mask: { node.networks[net].network.network_mask } <br>
+           - type: { get_node_type(net, node.general.id) }
           {#if has_server(net)}
             <button on:click={() => toggle_server(get_sname(net, node))} class="importrant-btn btn-trans"> 
               Server: { get_sname(net, node) } 
@@ -158,5 +159,11 @@
   }
   function get_cname(net, node) {
     return node.networks[net].client.name;
+  }
+  function get_net(net, what) {
+    return node.networks[net].network[what]
+  } 
+  function get_node_type(b, c) {
+    return Info.get_node_type(node, b, c);
   }
 </script>

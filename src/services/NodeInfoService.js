@@ -11,6 +11,19 @@ class NodeInfoService {
     return null;
   }
 
+  static get_node_type(info, net, id) {
+    // wifi - AP/STA
+    if (info.networks[net].network.type == 'wifi') {
+      if (info.networks[net].network.AP == id) {
+        return 'AP';
+      } else {
+        return 'STA';
+      }
+    }
+
+    return 'Generic node';
+  }
+
   static info_by_id(id) {
     
     let nodes_ = get(nodes);
