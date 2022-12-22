@@ -28,7 +28,9 @@
         else
           n.containers = [...n.containers, container.name ]
       show_rdrawer.update(_ => 'node_info');
-      node_info.update(_ => n);
+      let m = new Map()
+      m.set(n.id, n);
+      node_info.update(_ => m);
       }
     });
     sipky.redraw()

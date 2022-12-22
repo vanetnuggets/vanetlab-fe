@@ -1,54 +1,56 @@
 <div class="info-wrapper">
-  <button on:click={toggle_info} class="importrant-btn btn-trans"> 
-    Node #{node.general.id} information:
-  </button>
-  {#if node != null && open_info == true}
-  <div transition:slide class="nodeinfo">
-    <div class="general">
-      X: {node.general.x}  
-      Y: {node.general.y} 
-    </div>
-    <div class="networks">
-      <button on:click={toggle_networks} class="importrant-btn btn-trans"> 
-        Networks:
-      </button><br>
-      {#if open_networks}
-        <div class="networks" transition:slide>
-          {#each Object.keys(node.networks) as net}
-          🌐 { net } <br>
-           - address: { node.networks[net].network.network_address } <br>
-           - mask: { node.networks[net].network.network_mask } <br>
-           - type: { get_node_type(net, node.general.id) }
-          {#if has_server(net)}
-            <button on:click={() => toggle_server(get_sname(net, node))} class="importrant-btn btn-trans"> 
-              Server: { get_sname(net, node) } 
-            </button>
-            {#if open_servers[get_sname(net, node)]}
-              <div transition:slide class="server">
-                - Server type: TODO <br>
-                - Listening on port: { node.networks[net].server.port } <br> 
-              </div>
-            {/if}
-          {/if}
-
-          {#if has_client(net)}
-            <button on:click={() => toggle_client(get_cname(net, node))} class="importrant-btn btn-trans"> 
-              Client: { get_cname(net, node) } 
-            </button>
-            {#if open_clients[get_cname(net, node)]}
-              <div transition:slide class="client">
-                - Client type: TODO <br>
-                - Communicating with: { node.networks[net].client.server } <br> 
-                - Packet size: { node.networks[net].client.packet_size } <br>
-                - Interval: { node.networks[net].client.interval.value }{ node.networks[net].client.interval.format } 
-              </div>
+  {#if node != null}
+    <button on:click={toggle_info} class="importrant-btn btn-trans"> 
+      Node #{node.general.id} information:
+    </button>
+    {#if open_info == true}
+    <div transition:slide class="nodeinfo">
+      <div class="general">
+        X: {node.general.x}  
+        Y: {node.general.y} 
+      </div>
+      <div class="networks">
+        <button on:click={toggle_networks} class="importrant-btn btn-trans"> 
+          Networks:
+        </button><br>
+        {#if open_networks}
+          <div class="networks" transition:slide>
+            {#each Object.keys(node.networks) as net}
+            🌐 { net } <br>
+            - address: { node.networks[net].network.network_address } <br>
+            - mask: { node.networks[net].network.network_mask } <br>
+            - type: { get_node_type(net, node.general.id) }
+            {#if has_server(net)}
+              <button on:click={() => toggle_server(get_sname(net, node))} class="importrant-btn btn-trans"> 
+                Server: { get_sname(net, node) } 
+              </button>
+              {#if open_servers[get_sname(net, node)]}
+                <div transition:slide class="server">
+                  - Server type: TODO <br>
+                  - Listening on port: { node.networks[net].server.port } <br> 
+                </div>
               {/if}
             {/if}
-          {/each}
-        </div>
-      {/if}
+
+            {#if has_client(net)}
+              <button on:click={() => toggle_client(get_cname(net, node))} class="importrant-btn btn-trans"> 
+                Client: { get_cname(net, node) } 
+              </button>
+              {#if open_clients[get_cname(net, node)]}
+                <div transition:slide class="client">
+                  - Client type: TODO <br>
+                  - Communicating with: { node.networks[net].client.server } <br> 
+                  - Packet size: { node.networks[net].client.packet_size } <br>
+                  - Interval: { node.networks[net].client.interval.value }{ node.networks[net].client.interval.format } 
+                </div>
+                {/if}
+              {/if}
+            {/each}
+          </div>
+        {/if}
+      </div>
     </div>
-  </div>
+    {/if}
   {/if}
 </div>
 
@@ -99,6 +101,10 @@
   let node = null;
   node_info2.subscribe(val => {
     node = val;
+
+    if (node == null) {
+      return null;
+    }
 
     let info = Info.info_by_id(node.id);
     node = info;
