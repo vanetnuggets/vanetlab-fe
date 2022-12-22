@@ -168,7 +168,7 @@
 <div on:pointerup={(evt) => unselect(evt)} on:pointerdown={(evt) => set_current(evt)} on:focus on:blur>
 	<div bind:this={node.element} 
 		style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom})" 
-		class="node {node.state}" 
+		class="node {node.state} {node.type}" 
 	>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span on:pointerdown={e => e.stopPropagation()} on:click={() => remove()} class=remove>
