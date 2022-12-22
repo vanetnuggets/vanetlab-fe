@@ -1,5 +1,6 @@
 <script>
     import { topology, containers, apps } from '../../store/store.js';
+    import { slide } from 'svelte/transition'
 
     export let app
     let format = [
@@ -14,17 +15,43 @@
     function handleServer(){
         isServerVisible = !isServerVisible
     }
+    let showme = false;
+    function toggle() {
+        showme = !showme;
+    }
 </script>
 
-<div class="client_container" style="display:grid">
-    <div style="display">
-        <p>Name: </p>
-        <input bind:value={app.name} placeholder="Type app's name">
+<style scoped>
+    input {
+      height: 20px;
+      padding: 0px;
+      margin: 0px;
+    }
+    select {
+      padding: 0px;
+      margin: 0px;
+    }
+    option {
+      padding: 0px;
+      margin: 0px;
+    }
+</style>
+
+<button class="btn-basic" on:click={toggle}>{app.name}</button>
+{#if showme == true}
+<div transition:slide class="client_container" style="display:grid">
+    <div class="row">
+        <div class="col">
+            <p>Name: </p>
+        </div>
+        <div class="col">
+            <input bind:value={app.name} placeholder="Type app's name">
+        </div>
     </div>
     <div style="display:ruby">
         <button on:click={handleServer}>Set server</button>
             {#if isServerVisible}
-            <ul>
+            <ul transition:slide>
                 {#each $apps.server as s (s.id) }
                 <li>
                     <input type=radio bind:group={app.server} name="server" value={s.name}>
@@ -34,76 +61,109 @@
             </ul>
             {/if}
     </div>
-    <div style="display:ruby">
-        <p>Start: </p>
-        <input type=number bind:value={app.start.value} min=1 max=1024>
-        <select bind:value={app.start.format}>
-            {#each format as unit}
-                <option value={unit}>
-                    {unit}
-                </option>
-            {/each}
-        </select>
-    </div>
-    <div style="display:ruby">
-        <p>Stop: </p>
-        <input type=number bind:value={app.stop.value} min=1 max=1024>
-        <select bind:value={app.stop.format}>
-            {#each format as unit}
-                <option value={unit}>
-                    {unit}
-                </option>
-            {/each}
-        </select>
-    </div>
-    <div style="display:ruby">
-        <p>Network: </p>
-        <select bind:value={app.network}>
-            {#each $topology.node_containers as network}
-                <option value={network}>
-                    {network}
-                </option>
-            {/each}
-        </select>
-    </div>
-    <div style="display:ruby">
-        <p>Node: </p>
-        {#if app.network != ""}
-        <select bind:value={app.node}>
-            {#each $containers as c}
-                {#if c.name == app.network}
-                {#each c.nodes as node}
-                <option value={node}>
-                    {node}
-                </option>
+    <div class="row">
+        <div class="col">
+            <p>Start: </p>
+        </div>
+        <div class="col">
+            <input type=number bind:value={app.start.value} min=1 max=1024>
+            <select bind:value={app.start.format}>
+                {#each format as unit}
+                    <option value={unit}>
+                        {unit}
+                    </option>
                 {/each}
-                {/if}
-            {/each}
-        </select>
-        {/if}
+            </select>
+        </div>
     </div>
-    <div style="display:ruby">
-        <p>Interval: </p>
-        <input type=number bind:value={app.interval.value} min=1 max=1000>
-        <select bind:value={app.interval.format}>
-            {#each format as unit}
-                <option value={unit}>
-                    {unit}
-                </option>
-            {/each}
-        </select>
+    <div class="row">
+        <div class="col">
+            <p>Stop: </p>
+        </div>
+        <div class="col">
+            <input type=number bind:value={app.stop.value} min=1 max=1024>
+            <select bind:value={app.stop.format}>
+                {#each format as unit}
+                    <option value={unit}>
+                        {unit}
+                    </option>
+                {/each}
+            </select>
+        </div>
     </div>
-    <div style="display:ruby">
-        <p>max_packets: </p>
-        <input bind:value={app.max_packets} placeholder="Type idk">
+    <div class="row">
+        <div class="col">
+            <p>Network: </p>
+        </div>
+        <div class="col">
+            <select bind:value={app.network}>
+                {#each $topology.node_containers as network}
+                    <option value={network}>
+                        {network}
+                    </option>
+                {/each}
+            </select>
+        </div>
     </div>
-    <div style="display:ruby">
-        <p>Packet size: </p>
-        <input bind:value={app.packet_size} placeholder="Type packet size">
+    <div class="row">
+        <div class="col">
+            <p>Node: </p>
+        </div>
+        <div class="col">
+        {#if app.network != ""}
+            <select bind:value={app.node}>
+                {#each $containers as c}
+                    {#if c.name == app.network}
+                    {#each c.nodes as node}
+                    <option value={node}>
+                        {node}
+                    </option>
+                    {/each}
+                    {/if}
+                {/each}
+            </select>
+            {/if}
+        </div>
     </div>
-    <div style="display:ruby">
-    <p>Port: </p>
-        <input type=number bind:value={app.port} min=1 max=65535>
+    <div class="row">
+        <div class="col">
+            <p>Interval: </p>
+        </div>
+        <div class="col">
+            <input type=number bind:value={app.interval.value} min=1 max=1000>
+            <select bind:value={app.interval.format}>
+                {#each format as unit}
+                    <option value={unit}>
+                        {unit}
+                    </option>
+                {/each}
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>max_packets: </p>
+        </div>
+        <div class="col">
+            <input bind:value={app.max_packets} placeholder="Type idk">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Packet size: </p>
+        </div>
+        <div class="col">
+            <input bind:value={app.packet_size} placeholder="Type packet size">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Port: </p>
+        </div>
+        <div class="col">
+            <input type=number bind:value={app.port} min=1 max=65535>
+        </div>
     </div>
     <button on:click={debug}>AAAAAAa</button>
 </div>
+{/if}

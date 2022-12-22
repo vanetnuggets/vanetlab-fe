@@ -55,15 +55,23 @@
 </script>
 
 <div transition:slide>
-  <div class="child">
-    <p>Adresa siete: </p>
-    <input bind:value={container.network_address} placeholder="Network adress">
+  <div class="row">
+    <div class="col">
+      <p>Adresa siete: </p>
+    </div>
+    <div class="col">
+      <input bind:value={container.network_address} placeholder="Network adress">
+    </div>
   </div>
-  <div class="child">
-    <p>Maska siete: </p>
-    <input bind:value={container.network_mask} placeholder="Network mask">
+  <div class="row">
+    <div class="col">
+      <p>Maska siete: </p>
+    </div>
+    <div class="col">
+      <input bind:value={container.network_mask} placeholder="Network mask">
+    </div>
   </div>
-  <div>
+  <div class="row">
     <label>
       <input type=checkbox bind:checked={container.log_pcap}> Log .pcap
     </label>
@@ -72,29 +80,41 @@
       <input type=checkbox bind:checked={container.log_ascii}> Log ascii trace
     </label>
   </div>
-  <div class="child">
-    <p>SSID: </p>
-    <input bind:value={container.ssid}>
+  <div class="row">
+    <div class="col">
+      <p>SSID: </p>
+    </div>
+    <div class="col">
+      <input bind:value={container.ssid}>
+    </div>
   </div>
-  <div class="child">
-    <p>AP: </p>
-    <select bind:value={container.AP} on:change={checkType}>
-      {#each container.nodes as node}
-        <option value={node}>
-          Node n. {node}
-        </option>
-      {/each}
-    </select>
+  <div class="row">
+    <div class="col">
+      <p>AP: </p>
+    </div>
+    <div class="col">
+      <select bind:value={container.AP} on:change={checkType}>
+        {#each container.nodes as node}
+          <option value={node}>
+            Node n. {node}
+          </option>
+        {/each}
+      </select>
+    </div>
   </div>
-  <div class="child">
-    <p>Mobility: </p>
-    <select bind:value={container.mobility}>
-      {#each mobility_items as item}
-        <option value={item}>
-          {item}
-        </option>
-      {/each}
-    </select>
+  <div class="row">
+    <div class="col">
+      <p>Mobility: </p>
+    </div>
+    <div class="col">
+      <select bind:value={container.mobility}>
+        {#each mobility_items as item}
+          <option value={item}>
+            {item}
+          </option>
+        {/each}
+      </select>
+    </div>
   </div>
   
   <div>
@@ -109,9 +129,6 @@
         {/each}
     </ul>
     {/if}
-</div>
-
-  <div>
     <button on:click={debug}>
         #debug
     </button>

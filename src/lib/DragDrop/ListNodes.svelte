@@ -9,13 +9,15 @@
 }
 .zoom {
 	float: right;
+	text-align: right;
+	margin-right: 5px;
 }
 .minibtn {
 	padding: 0px 4px;
 	margin: 6px 0px;
 	font-size: 12px;
-	background-color: white;
-	border: 2px solid black;
+	background-color: var(--color-text-1);
+	border: 2px solid var(--dark-1);
 	cursor: pointer;
 }
 .minibtn:hover {
@@ -39,13 +41,19 @@
 <script>
 	import Node from './Node.svelte';
 	import sipky from '../sipky/sipky.js'
-	import { nodes, node_id,node_info, store_container_size } from '../../store/store.js';
+	import { 
+		show_rdrawer, 
+		moving_type, 
+		nodes, 
+		node_id, 
+		node_info, 
+		store_container_size 
+	} from '../../store/store.js';
 	
 	export let mouseX=0
 	export let mouseY=0
 	export let mouseOver=false
 
-	let move_type = 'canvas';
 	let move_now = false;
 
 	let cont_size
@@ -58,8 +66,8 @@
 	let move_y = 0;
 
 	node_info.subscribe(val => {
-    	current_node = val;
-  	})
+    current_node = val;
+  })
 
 	node_id.subscribe(val => {
 		last_id = val;
@@ -86,8 +94,9 @@
 			"id": id(),
 			"element": null,
 			"containers": [],
-			"type": "foo"
-  		};
+			"type": "foo",
+			"selected": false
+  	};
 		$nodes = [...$nodes, newNode]
 	}
 
@@ -207,7 +216,11 @@
 	}
 
 	function set_move_type(type) {
-		move_type = type;
+		$moving_type = type;
+		for (let n of $nodes) {
+			n.info = false;
+			n.state = '';
+		}
 	}
 
 	function to_index(id) {
@@ -220,7 +233,7 @@
 	}
 
 	function move_canvas(evt) {
-		if(move_now == false || move_type != 'canvas') {
+		if(move_now == false || $moving_type != 'canvas') {
 			return
 		}
 
@@ -233,29 +246,34 @@
 			return;
 		}
 
-		if ( move_type == 'canvas' ) {
+		if ( $moving_type == 'canvas' ) {
 			move_canvas(e);
 			return;
 		}
 
-		if (move_type == 'node') {
-			let i = to_index(current_node.id);
-			if ( i == null ) {
-				return;
-			} 
+		if ($moving_type == 'node') {
+			for(let cn of current_node.values()) {
+				if (cn == null) {
+					continue;
+				}
+				let i = to_index(cn.id);
+				if ( i == null ) {
+					continue;
+				} 
 
-			$nodes[i].left = $nodes[i].left+e.movementX;
-			$nodes[i].top = $nodes[i].top+e.movementY;
-			$nodes[i].x = ($nodes[i].left-move_x) / zoom;
-			$nodes[i].y = ($nodes[i].top-move_y) / zoom;
-			sipky.update($nodes[i].id);
-			node_info.update(_ => $nodes[i]);
+				$nodes[i].left = $nodes[i].left+e.movementX;
+				$nodes[i].top = $nodes[i].top+e.movementY;
+				$nodes[i].x = ($nodes[i].left-move_x) / zoom;
+				$nodes[i].y = ($nodes[i].top-move_y) / zoom;
+				sipky.update($nodes[i].id);
+				$node_info.set($nodes[i].id, $nodes[i]);
+			}
 		}
 	}
 
 	function stop() {
 		move_now = false;
-		current_node = null;
+		//current_node = null;
 	}
 
 	function start() {
@@ -267,16 +285,17 @@
 <svelte:window on:mousedown={start} on:mousemove={move} on:mouseleave={stop} on:mouseup={stop}   on:keydown={change_zoom} on:wheel={handleWheel}/>
 <div class="toolbar">
 	<div class="action">
-		<button on:click={add_node} class=add-button>Add node</button>
+		<button on:click={add_node} class="btn s">Add node</button>
 		<button on:click={() => set_move_type('node')} class="minibtn select-button">👆️</button>
 		<button on:click={() => set_move_type('canvas')} class="minibtn select-button">🗺️</button>
-		 
+		<button on:click={() => set_move_type('info')} class="minibtn select-button">ℹ️</button>
+	
 	</div>
 	<div class="zoom">
-		Moving: {move_type}
-		MoveX: {move_x}
-		MoveY: {move_y}
-		Zoom Level: {zoom}
+		Moving: {$moving_type}<br>
+		MoveX: {move_x}<br>
+		MoveY: {move_y}<br>
+		Zoom Level: {zoom}<br>
 		<button class="minibtn" on:click={() => add_zoom(0.1)}>➕</button>
 		<button class="minibtn" on:click={() => add_zoom(-0.1)}>➖</button>
 		<button class="minibtn" on:click={return_to_1x} >♻️</button>

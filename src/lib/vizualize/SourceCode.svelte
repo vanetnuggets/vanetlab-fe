@@ -1,4 +1,4 @@
-<div>
+<div class="area">
   <div class="title">
     Source code for scenario { params.code }
   </div>

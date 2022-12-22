@@ -1,4 +1,5 @@
 <script>
+  import { slide } from 'svelte/transition'
   import Container from "./Container.svelte";
   import { containers, con_number, topology } from '../../store/store.js';
   import {
@@ -6,6 +7,7 @@
     csma_container,
     point_to_point_container
   } from '../../services/ContainerService.js'
+  import debug from "../../services/DebugService";
 
   let name = ""
   let container_type = null;
@@ -61,33 +63,50 @@
     });
     console.log(JSON.stringify({"topology":show}))
   }
+
+  let network_open = false;
+  function open_creation() {
+    network_open = !network_open;
+  }
 </script>
 
 <div class="topology_container_holder">
-  <div>
-    <div>
-      <input bind:value={name} placeholder="Type container's name">
+  <button class="somebs create-btn btn-trans" on:click={open_creation}>Create a new network.</button>
+  {#if network_open == true}
+  <div transition:slide>
+    <div class="row">
+      <div class="col">
+        Network name: <br>
+      </div>
+      <div class="col">
+        <input class="my-input" bind:value={name} placeholder="example_name">
+      </div>
     </div>
-    <div>
-      Container Type:
-      <select bind:value={container_type}>
-        {#each container_types as cont_type}
-          <option value={cont_type}>
-          {cont_type}
-          </option>
-        {/each}
-      </select>
+    <div class="row">
+      <div class="col">
+        Network type: <br>
+      </div>
+      <div class="col">
+        <select bind:value={container_type}>
+          {#each container_types as cont_type}
+            <option value={cont_type}>
+            {cont_type}
+            </option>
+          {/each}
+        </select>
+      </div>
     </div>
+    {#if debug == true}
+    <button on:click={showAll}>
+      #debug
+    </button>
+    {/if}
+
+    <button on:click={addContainer}>
+      Create
+    </button>
   </div>
-  
-  <button on:click={showAll}>
-    #debug
-  </button>
-  
-  <button on:click={addContainer}>
-    Add container
-  </button>
-  
+  {/if}
   {#each $containers as c (c.name) }
     <Container name={c.type + ' - ' + c.name} bind:container={$containers[get_index_by_id(c.id)]}/>
   {/each}
@@ -99,5 +118,32 @@
 <style>
 select  {
   height: 26px;
+  width: 125px;
+  float: right;
+  padding: 0px;
+  margin: 0px;
 }
+
+.create-btn:hover {
+  background-color: var(--dark-4);
+}
+
+.somebs {
+  width: 95%;
+}
+
+.topology_container_holder {
+  border-radius: 5px;
+  background-color: var(--dark-3);
+}
+
+.my-input {
+  height: 26px;
+  padding: 0px;
+  margin: 0px;
+  width: 125px;
+  border-radius: 0px;
+  float: right;
+}
+
 </style>
