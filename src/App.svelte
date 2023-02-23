@@ -32,6 +32,7 @@
       '/': DragContainer,
       '/canvas': DragContainer,
       '/summary': Summary,
+      '/sumo': Sumo,
       '/source/:code': SourceCode,
       '/logs/:code': TraceLogs,
       '/console/:code': ConsoleLogs,
@@ -45,6 +46,7 @@
 import Router from 'svelte-spa-router'
 import NotFound from "./lib/DragDrop/NotFound.svelte"
 import Summary from "./lib/vizualize/Summary.svelte"
+import Sumo from "./lib/vizualize/Sumo.svelte"
 import SourceCode from "./lib/vizualize/SourceCode.svelte"
 import TraceLogs from './lib/vizualize/TraceLogs.svelte';
 import ConsoleLogs from './lib/vizualize/ConsoleLogs.svelte';

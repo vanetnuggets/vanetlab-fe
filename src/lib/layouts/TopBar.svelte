@@ -3,6 +3,7 @@
 <div>
   <button on:click={() => goto('canvas')} class="btn l">🎨 Canvas</button>
   <button on:click={() => goto('summary')} class="btn l">🚏 Simulation &nbsp;</button>
+  <button on:click={() => goto('sumo')} class="btn l">🤼 SUMO</button>
 </div>
 {/if}
 
@@ -19,6 +20,8 @@
       push('/summary')
     } else if (a == 'canvas') {
       push('/canvas')
+    } else if (a == 'sumo') {
+      push('/sumo')
     }
   }
 
