@@ -49,7 +49,7 @@
           </div>
         {/if}
       </div>
-      <KeyFrames/>
+        <KeyFrames/>
     </div>
     {/if}
   {/if}
