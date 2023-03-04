@@ -34,11 +34,13 @@
                     <input class="my-input"   bind:value={y} placeholder="Position on y-axis">
                   </div>
               </div>
-              <button on:click={add_key_frame}>
+              {error_message}
+              <button on:click={add_keyframe}>
                   Add keyframe
               </button>
               <br>
             </div>
+            
           {/if}
       </div>
         <button on:click={toggle_list_keyframes} class="importrant-btn btn-trans"> 
@@ -50,7 +52,7 @@
                 <span>{keyframe.time}</span> 
                 <span>{keyframe.x}</span>
                 <span>{keyframe.y}</span>
-                <button on:click={() => remove_key_frame(keyframe)}>&times;</button>
+                <button on:click={() => remove_keyframe(keyframe)}>&times;</button>
                 <br>
             {/each}
           </div>
@@ -71,10 +73,10 @@ let keyframes = [
   let end_time = null;
   let x = null;
   let y = null;
-  
+  let error_message = ""
   
  
-  let open_keyframes = true;
+  let open_keyframes = false;
   function toggle_keyframes() {
     open_keyframes = !open_keyframes;  
   }
@@ -84,32 +86,59 @@ let keyframes = [
     open_add_keyframes = !open_add_keyframes;  
   }
   
-  let open_list_keyframes = false;
+  let open_list_keyframes = true;
   function toggle_list_keyframes() {
     open_list_keyframes = !open_list_keyframes;  
   }
 
-  const add_key_frame = () => {
-    let index = 0;
-    for ( index; index < keyframes.length; index++) {
-      if (keyframes[index].time > end_time) {
-        break;
-      }
-    }
-    keyframes.splice(index, 0, 
-      {
-        time: end_time,
-        x,
-        y,
-      })
-    keyframes=keyframes;
+  function check_format() {
+    if(Number.isNaN(end_time=parseInt(end_time)))
+      end_time = null
+    if(Number.isNaN(x=parseInt(x)))
+      x = null
+    if(Number.isNaN(y=parseInt(y)))
+      y = null
 
-    end_time = null;
-    x=null;
-    y=null;
+    if(end_time == null || x == null || y == null){
+      error_message = "Incorrectly entered format. Integer requared."
+      return false  
+    }
+    return true
+  }
+
+  function check_missing() {
+    if(end_time == null || x == null || y == null){
+      error_message = "Something is missing"
+      return false  
+    }
+    return true
+  }
+
+  function add_keyframe () {
+    if(check_missing() && check_format() ){
+      let index
+      for ( index=0; index < keyframes.length; index++) {
+        if (keyframes[index].time > end_time) {
+          break;
+        }
+      }
+    
+      keyframes.splice(index, 0,  
+        {
+          time: end_time,
+          x,
+          y,
+        })
+      keyframes=keyframes;
+
+      end_time = null;
+      x=null;
+      y=null;
+      error_message=""
+    }
   };
 
-  const remove_key_frame = keyframe => {
+  const remove_keyframe = keyframe => {
     keyframes = keyframes.filter(k => k !== keyframe);
   };
 </script>
