@@ -1,6 +1,6 @@
 <script>
     import Network from "./Network.svelte";
-    import { networks } from "../../store/store";
+    import { networks, nextNetworkId } from "../../store/store";
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
 
@@ -18,12 +18,13 @@
 
   function addContainer(){
     let new_network = {
-        "id": $networks.length,
+        "id": $nextNetworkId,
         "name": name,
         "address": address,
         "color": color
     }
     $networks = [...$networks, new_network]
+    $nextNetworkId+=1
     toggle_creation()
     color = "#ff0000"
   }
