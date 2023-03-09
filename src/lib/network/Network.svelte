@@ -2,6 +2,7 @@
     import { visibleNetwork } from '../../store/store.js';
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks } from '../../store/store.js';
+    import Switch from './Switch.svelte';
     export let network
 
     let rgb
@@ -83,6 +84,14 @@
                 <ColorPicker bind:rgb bind:hex={network.color}/>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                Network type:
+            </div>
+            <div class="col">
+                <Switch bind:switchValue={network.type}/> 
+            </div>
+          </div>
     </div>
     {/if}
   </div>

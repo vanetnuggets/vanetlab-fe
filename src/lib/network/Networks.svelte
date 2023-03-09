@@ -3,6 +3,8 @@
     import { networks, nextNetworkId } from "../../store/store";
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
+    import Switch from "./Switch.svelte";
+
 
     let rgb;
 
@@ -21,7 +23,8 @@
         "id": $nextNetworkId,
         "name": name,
         "address": address,
-        "color": color
+        "color": color,
+        "type": switchValue
     }
     $networks = [...$networks, new_network]
     $nextNetworkId+=1
@@ -34,9 +37,12 @@
     network_open = !network_open;
   }
 
+ 
   let name = ""
   let address = ""
   let color
+  let switchValue
+
 
 </script>
 
@@ -69,7 +75,15 @@
         <div class="col">
             <ColorPicker bind:rgb bind:hex={color}/>
         </div>
+    </div>
+    <div class="row">
+      <div class="col">
+          Network type:
       </div>
+      <div class="col">
+          <Switch bind:switchValue={switchValue}/> 
+      </div>
+    </div>
     <button on:click={addContainer}>
         Create
     </button>
