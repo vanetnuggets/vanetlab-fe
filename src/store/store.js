@@ -11,6 +11,9 @@ export const store_container_size = writable({
   height: 50
 })
 
+export const networks = writable([])
+export const visibleNetwork = writable("")
+
 export const topology = writable({
   "node_count": 0,
   "node_containers": [],
