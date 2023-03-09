@@ -1,16 +1,25 @@
 <div>
   From Sumo <br>
-  Name your scenario:
-  <input bind:value={simName} placeholder="omg-i-love-ns3" /><br><br>
+  Name your scenario: <br>
+  <input class="hm" bind:value={simName} placeholder="omg-i-love-ns3" /><br><br>
 
   {#if sumoFile == null}
+  <div class="test">
     <Dropzone on:drop={handleDrop}></Dropzone>
+  </div>
   {:else}
     Loaded file: <br>
     <b>{sumoFile.name}</b>
     <button on:click={loadSumo}>Load scenario</button>
   {/if}
 </div>
+
+<style>
+.test {
+  color: red;
+  background-color: red;
+}
+</style>
 
 <script>
 import Dropzone from "svelte-file-dropzone";
