@@ -1,3 +1,7 @@
+<div class="float">
+  ahoj
+</div>
+
 <div class="flex-container">
   <div class="flex-item ">
     <div class="center-container">
@@ -46,6 +50,21 @@
 </div>
 
 <style scoped>
+
+.float {
+  position: absolute;
+  font-size: 8px;
+}
+
+.inside {
+  width: 400px;
+  min-height: 300px;
+}
+
+.btn-basic {
+  width: 100%;
+}
+
 .center-container {
   display: flex;
   flex-direction: column;
@@ -53,12 +72,13 @@
   color: white;
   margin: auto;
   padding: 20px;
-  min-width: 400px;
-  min-height: 300px;
   align-items: center;
   text-align: center;
   transition: opacity 0.4s, transform 1s;
   transition: 0.3s;
+  border: none;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
 .flex-container {
   background-color: var(--dark-2);
@@ -71,9 +91,7 @@
   height: 100vh;
 }
 .flex-item {
-  max-width: 500px;
-  transition: opacity 0.4s, transform 1s;
-  transition: 0.3s;
+  
 }
 </style>
 
