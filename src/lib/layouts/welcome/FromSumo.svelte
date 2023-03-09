@@ -1,26 +1,43 @@
 <div>
-  From Sumo
-  {#if sumo_file == null}
-  <Dropzone on:drop={handleDrop}></Dropzone>
+  From Sumo <br>
+  Name your scenario:
+  <input bind:value={simName} placeholder="omg-i-love-ns3" /><br><br>
+
+  {#if sumoFile == null}
+    <Dropzone on:drop={handleDrop}></Dropzone>
   {:else}
-  Loaded file: {sumo_file.name}
-  <button on:click={loadSumo}>Load scenario</button>
+    Loaded file: <br>
+    <b>{sumoFile.name}</b>
+    <button on:click={loadSumo}>Load scenario</button>
   {/if}
 </div>
 
 <script>
 import Dropzone from "svelte-file-dropzone";
+    import { push } from "svelte-spa-router";
+import { config, scenarioName } from "../../../store/store";
+import { fromSumo } from "../../api/sumo";
 
-let sumo_file = null
+let sumoFile = null
+let simName = ""
 
-function loadSumo() {
+async function loadSumo() {
+  let data = new FormData;
+  data.append('name', simName);
+  data.append('sumotrace', sumoFile, simName);
 
+  const result = await fromSumo(data);
+  console.log(result.data);
+
+  scenarioName.update(_ => simName);
+  config.update(_ => result.data);
+
+  push('/app')
 }
 
 function handleDrop(e) {
-  const { acceptedFiles, fileRejections } = e.detail;
-  sumo_file = acceptedFiles[0];
-  console.log(sumo_file);
+  sumoFile = e.detail.acceptedFiles[0];
+  console.log(sumoFile);
 }
 
 </script>

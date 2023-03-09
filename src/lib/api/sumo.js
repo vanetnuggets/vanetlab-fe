@@ -13,3 +13,13 @@ export async function post_sumo(text_file){
 
     // console.log($summary)
 }
+
+
+export function fromSumo(data) {
+    return Api.post("from-sumo", 
+        data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    })
+}

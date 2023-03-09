@@ -39,3 +39,5 @@ export const units = readable({
 })
 
 export const summary_list = writable([]);
+
+export const config = writable({});

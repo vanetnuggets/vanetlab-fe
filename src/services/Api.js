@@ -12,13 +12,16 @@ let api = axios.create({
 })
 
 export default {
-  post(path, data){
-    return api.post(path, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Referrer-Policy': 'no-referrer'
+  post(path, data, other=null){
+    if (other === null) {
+      other = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Referrer-Policy': 'no-referrer'
+        }
       }
-    })
+    }
+    return api.post(path, data, other)
   },
   get(path, params) {
     return api.get(path, {
