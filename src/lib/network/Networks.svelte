@@ -2,6 +2,9 @@
     import Network from "./Network.svelte";
     import { networks } from "../../store/store";
     import { slide } from 'svelte/transition'
+    import ColorPicker from 'svelte-awesome-color-picker';
+
+    let rgb;
 
     function get_index_by_id(id) {
     for(let i=0; i<$networks.length; i++) {
@@ -22,6 +25,7 @@
     }
     $networks = [...$networks, new_network]
     toggle_creation()
+    color = "#ff0000"
   }
 
   let network_open = false;
@@ -31,7 +35,7 @@
 
   let name = ""
   let address = ""
-  let color = ""
+  let color
 
 </script>
 
@@ -62,10 +66,7 @@
     </div>
     <div class="row">
         <div class="col">
-          Network color:
-        </div>
-        <div class="col">
-          <input class="my-input" bind:value={color} placeholder="example_color">
+            <ColorPicker bind:rgb bind:hex={color}/>
         </div>
       </div>
     <button on:click={addContainer}>

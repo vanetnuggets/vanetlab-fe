@@ -1,7 +1,9 @@
 <script>
     import { visibleNetwork } from '../../store/store.js';
+    import ColorPicker from 'svelte-awesome-color-picker';
     export let network
-    
+
+    let rgb
     let isShown = false
   
     function clickHandler() {
@@ -53,10 +55,7 @@
         </div>
         <div class="row">
             <div class="col">
-                Network color:
-            </div>
-            <div class="col">
-                <input class="my-input" bind:value={network.color} placeholder="example_color">
+                <ColorPicker bind:rgb bind:hex={network.color}/>
             </div>
         </div>
     </div>
