@@ -53,7 +53,10 @@
   
   <div class="topology_container parent">
     <div class="child">
-      <button on:click={clickHandler} class="btn-basic name">{network.name}</button>
+      <button on:click={clickHandler} class="btn-basic name">
+        {network.name}
+        <span style="color:{network.color}">⬤</span>
+    </button>
       <button on:click={deleteContainer} class="btn-basic remover {confirm ? "confirm": ""}">X</button>
     </div>
     
