@@ -11,7 +11,7 @@
     function clickHandler() {
         isShown = !isShown
         if (isShown) 
-        visibleNetwork.set(network.name)
+        visibleNetwork.set(network.ssid)
     }
   
     function handleClosing() {
@@ -32,7 +32,7 @@
     }
     
     // MAGIC
-    $: open = ($visibleNetwork == network.name) ? 
+    $: open = ($visibleNetwork == network.ssid) ? 
             (isShown) ? 
               true
             : false
@@ -55,7 +55,7 @@
   <div class="topology_container parent">
     <div class="child">
       <button on:click={clickHandler} class="btn-basic name">
-        {network.name}
+        {network.ssid}
         <span style="color:{network.color}">⬤</span>
     </button>
       <button on:click={deleteContainer} class="btn-basic remover {confirm ? "confirm": ""}">X</button>
@@ -68,7 +68,7 @@
                 Network name:
             </div>
             <div class="col">
-                <input class="my-input" bind:value={network.name} placeholder="example_name">
+                <input class="my-input" bind:value={network.ssid} placeholder="example_name">
             </div>
         </div>
         <div class="row">
@@ -76,7 +76,7 @@
                 Network address:
             </div>
             <div class="col">
-                <input class="my-input" bind:value={network.address} placeholder="example_address">
+                <input class="my-input" bind:value={network.addr} placeholder="example_address">
             </div>
         </div>
         <div class="row">
