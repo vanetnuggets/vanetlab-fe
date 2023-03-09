@@ -1,28 +1,39 @@
 <button class="btn l" on:click={toggle}>🍔</button>
 {#if visible == true}
 <div>
-  <button on:click={() => goto('canvas')} class="btn l">🎨 Canvas</button>
-  <button on:click={() => goto('summary')} class="btn l">🚏 Simulation &nbsp;</button>
-  <button on:click={() => goto('sumo')} class="btn l">🤼 SUMO</button>
+  <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
+  <button on:click={() => goto('/app/summary')} class="btn l">🚏 Simulation &nbsp;</button>
+  <button on:click={() => goto('/app/sumo')} class="btn l">🤼 SUMO</button>
 </div>
 {/if}
+<button on:click={() => goto('/')} class="btn r">🚪 Exit</button>
 
 <div class="middle">
-  🚘️ VanetLab v0.1 🚘️
+  {currName}
 </div>
 
 <script>
   import { push } from 'svelte-spa-router'
+  import { scenarioName } from '../../store/store';
   let visible = true;
 
+  let currName;
+  scenarioName.subscribe(val => {
+    currName = val;
+  })
+
   function goto(a) {
-    if (a == 'summary') {
-      push('/summary')
-    } else if (a == 'canvas') {
-      push('/canvas')
-    } else if (a == 'sumo') {
-      push('/sumo')
-    }
+    push(`${a}`)
+
+    // if (a == 'summary') {
+    //   push('/summary')
+    // } else if (a == 'canvas') {
+    //   push('/canvas')
+    // } else if (a == 'sumo') {
+    //   push('/sumo')
+    // } else if (a == 'exit') {
+    //   push('/')
+    // }
   }
 
   function toggle() {

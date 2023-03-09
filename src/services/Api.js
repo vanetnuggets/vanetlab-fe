@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // let baseURL = `https://vanetlab.ml/api`
-let baseURL = `http://localhost:9000/api`
+let baseURL = `http://localhost:5000/api`
 
 if (import.meta.env.VITE_BE_API_URL != null) {
   baseURL = import.meta.env.VITE_BE_API_URL
