@@ -23,7 +23,7 @@ export default {
     }
     return api.post(path, data, other)
   },
-  get(path, params) {
+  get(path, params={}) {
     return api.get(path, {
       headers: {
         'Referrer-Policy': 'no-referrer'
