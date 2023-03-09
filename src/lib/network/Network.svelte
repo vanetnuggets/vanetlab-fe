@@ -11,7 +11,7 @@
     function clickHandler() {
         isShown = !isShown
         if (isShown) 
-        visibleNetwork.set(network.ssid)
+        visibleNetwork.set(network.id)
     }
   
     function handleClosing() {
@@ -32,7 +32,7 @@
     }
     
     // MAGIC
-    $: open = ($visibleNetwork == network.ssid) ? 
+    $: open = ($visibleNetwork == network.id) ? 
             (isShown) ? 
               true
             : false
