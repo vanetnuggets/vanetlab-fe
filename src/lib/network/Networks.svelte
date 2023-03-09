@@ -21,15 +21,27 @@
   function addContainer(){
     let new_network = {
         "id": $nextNetworkId,
-        "name": name,
-        "address": address,
+        "ssid": name,
+        "addr": address,
         "color": color,
         "type": switchValue
     }
     $networks = [...$networks, new_network]
     $nextNetworkId+=1
-    toggle_creation()
     color = "#ff0000"
+    toggle_creation()
+    debugBS()
+  }
+
+  function debugBS(){
+    let json = {
+        "networks": {}
+    }
+    $networks.forEach(element => { 
+        json.networks[element.id] = element
+    });
+    console.log(JSON.stringify(json))
+    json = null
   }
 
   let network_open = false;
@@ -41,7 +53,7 @@
   let name = ""
   let address = ""
   let color
-  let switchValue
+  let switchValue = "WIFI"
 
 
 </script>
