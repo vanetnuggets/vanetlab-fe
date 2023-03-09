@@ -7,7 +7,6 @@
 		width: 50px;
 		height: 50px;
 		border-radius: 100%;
-		background-color: var(--dark-1);
 	}
 	.remove { 
 		cursor: pointer; 
@@ -86,7 +85,8 @@
 		node_info2, 
 		moving_type, 
 		show_rdrawer, 
-		node_info, 
+		node_info,
+		networks,
 		nodes 
 	} from '../../store/store.js';
 	import sipky from '../sipky/sipky.js'
@@ -103,8 +103,22 @@
 		"containers":[],
 		"element": null,
 		"info": false,
-		"state": unselected
-	} 
+		"state": unselected,
+		"color": "navy",
+		"l2id": null
+	}
+
+	let ndcolor = "navy";
+	networks.subscribe(_ => {
+		ndcolor = nodecolor();
+	})
+
+	function nodecolor() {
+		if (node.l2id === undefined || node.l2id === null) {
+			return "navy";
+		}
+		return $networks[node.l2id].color;
+	}
 
 	export let zoom = 1
 
@@ -167,7 +181,7 @@
 
 <div on:pointerup={(evt) => unselect(evt)} on:pointerdown={(evt) => set_current(evt)} on:focus on:blur>
 	<div bind:this={node.element} 
-		style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom})" 
+		style="left: {node.left}px; top : {node.top}px;	transform: scale({zoom}); background-color: {ndcolor};" 
 		class="node {node.state} {node.type}" 
 	>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->

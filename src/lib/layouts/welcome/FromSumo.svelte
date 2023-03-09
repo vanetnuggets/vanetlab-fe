@@ -24,8 +24,9 @@
 <script>
 import Dropzone from "svelte-file-dropzone";
 import { push } from "svelte-spa-router";
-import { config, scenarioName } from "../../../store/store";
+import { scenarioName } from "../../../store/store";
 import { fromSumo } from "../../api/sumo";
+import loadConfig from "../../../services/LoadService";
 
 let sumoFile = null
 let simName = ""
@@ -39,7 +40,7 @@ async function loadSumo() {
   console.log(result.data);
 
   scenarioName.update(_ => simName);
-  config.update(_ => result.data);
+  loadConfig(result.data);
 
   push('/app')
 }

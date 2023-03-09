@@ -7,16 +7,10 @@
 
 
     let rgb;
-
-    function get_index_by_id(id) {
-    for(let i=0; i<$networks.length; i++) {
-      let cont = $networks[i];
-      if (cont.id == id) {
-        return i;
-      }
-    }
-    return null;
-  }
+    let netarr;
+    networks.subscribe(val => {
+      netarr = Object.values(val);
+    })
 
   function addContainer(){
     let new_network = {
@@ -26,7 +20,7 @@
         "color": color,
         "type": switchValue
     }
-    $networks = [...$networks, new_network]
+    $networks[$nextNetworkId] = new_network;
     $nextNetworkId+=1
     color = "#ff0000"
     toggle_creation()
@@ -37,7 +31,7 @@
     let json = {
         "networks": {}
     }
-    $networks.forEach(element => { 
+    netarr.forEach(element => { 
         json.networks[element.id] = element
     });
     console.log(JSON.stringify(json))
@@ -58,8 +52,8 @@
 
 </script>
 
-{#each $networks as n (n.id) }
-    <Network bind:network={$networks[get_index_by_id(n.id)]}/>
+{#each netarr as n (n.id) }
+    <Network bind:network={$networks[n.id]}/>
 {/each}
 
 <button on:click={toggle_creation}>

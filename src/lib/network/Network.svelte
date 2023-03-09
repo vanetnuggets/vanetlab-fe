@@ -1,7 +1,7 @@
 <script>
     import { visibleNetwork } from '../../store/store.js';
     import ColorPicker from 'svelte-awesome-color-picker';
-    import { networks } from '../../store/store.js';
+    import { config } from '../../store/store.js';
     import Switch from './Switch.svelte';
     export let network
 
@@ -24,7 +24,7 @@
     function deleteContainer() {
         if (confirm){
             $visibleNetwork = "";
-            $networks = $networks.filter((value) => value.id !== network.id);
+            delete $config.networks[network.id];
         } else {
             console.log("este potvrdit")
             confirm = true;

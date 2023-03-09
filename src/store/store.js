@@ -11,7 +11,7 @@ export const store_container_size = writable({
   height: 50
 })
 
-export const networks = writable([])
+export const networks = writable({})
 export const visibleNetwork = writable("")
 export const nextNetworkId = writable(0)
 export const scenarioName = writable({});
