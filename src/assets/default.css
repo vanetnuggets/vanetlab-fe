@@ -17,6 +17,7 @@
   --ternary-bg-color: #181818;
   --main-fg-color: #b8b8b8;
  text-align: center;
+ --accent-color: CornflowerBlue;
 }
 
 input {
@@ -222,4 +223,28 @@ option {
 .s {
   padding-left: 8px;
   padding-right: 8px;
+}
+
+/* Inner Design Option */
+.s--inner button {
+  padding: 0.5em;
+  border: 1px solid var(--gray);
+}
+
+.s--inner button span {
+  user-select: none;
+  pointer-events:none;
+  padding: 0.25em;
+}
+
+.s--inner button:focus {
+  outline: var(--accent-color) solid 1px;
+}
+
+/* Inner Design Option */
+[role='switch'][aria-checked='true'] :first-child,
+[role='switch'][aria-checked='false'] :last-child {
+  border-radius: 0.25em;
+  background: var(--accent-color);
+  display: inline-block;
 }

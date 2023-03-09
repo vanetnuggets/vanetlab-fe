@@ -3,6 +3,8 @@
     import { networks, nextNetworkId } from "../../store/store";
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
+    import Switch from "./Switch.svelte";
+
 
     let rgb;
 
@@ -19,14 +21,27 @@
   function addContainer(){
     let new_network = {
         "id": $nextNetworkId,
-        "name": name,
-        "address": address,
-        "color": color
+        "ssid": name,
+        "addr": address,
+        "color": color,
+        "type": switchValue
     }
     $networks = [...$networks, new_network]
     $nextNetworkId+=1
-    toggle_creation()
     color = "#ff0000"
+    toggle_creation()
+    debugBS()
+  }
+
+  function debugBS(){
+    let json = {
+        "networks": {}
+    }
+    $networks.forEach(element => { 
+        json.networks[element.id] = element
+    });
+    console.log(JSON.stringify(json))
+    json = null
   }
 
   let network_open = false;
@@ -34,9 +49,12 @@
     network_open = !network_open;
   }
 
+ 
   let name = ""
   let address = ""
   let color
+  let switchValue = "WIFI"
+
 
 </script>
 
@@ -69,7 +87,15 @@
         <div class="col">
             <ColorPicker bind:rgb bind:hex={color}/>
         </div>
+    </div>
+    <div class="row">
+      <div class="col">
+          Network type:
       </div>
+      <div class="col">
+          <Switch bind:switchValue={switchValue}/> 
+      </div>
+    </div>
     <button on:click={addContainer}>
         Create
     </button>
