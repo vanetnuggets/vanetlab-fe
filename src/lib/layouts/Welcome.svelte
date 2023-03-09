@@ -36,7 +36,7 @@
         {/if}
         {#if curr_option == 'REMOTE'}
         <div>
-          Get scenarios
+          <LoadRemote bind:this={loadRemoteComponent}></LoadRemote>
         </div>
         {/if}
       </div>
@@ -80,8 +80,13 @@
 <script>
   import NewSim from "./welcome/NewSim.svelte";
   import FromSumo from "./welcome/FromSumo.svelte";
+  import LoadRemote from "./welcome/LoadRemote.svelte";
+
+  import { listScenarios } from "../api/scenarios";
+  import { scenarioList } from "../../store/welcome";
 
   let curr_option = null
+  let loadRemoteComponent;
 
   function click_new_sim() {
     if (curr_option == 'NEW')
@@ -101,10 +106,14 @@
     else curr_option = 'LOCAL' 
   }
 
-  function click_load_remote() {
+  async function click_load_remote() {
     if (curr_option == 'REMOTE')
-      curr_option = null
-    else curr_option = 'REMOTE' 
+      curr_option = null;
+    else {
+      curr_option = 'REMOTE';
+      let result = await listScenarios();
+      scenarioList.update(_ => result.data.data);
+    } 
   }
 
 

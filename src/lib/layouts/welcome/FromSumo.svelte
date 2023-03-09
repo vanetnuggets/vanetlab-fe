@@ -14,7 +14,7 @@
 
 <script>
 import Dropzone from "svelte-file-dropzone";
-    import { push } from "svelte-spa-router";
+import { push } from "svelte-spa-router";
 import { config, scenarioName } from "../../../store/store";
 import { fromSumo } from "../../api/sumo";
 
