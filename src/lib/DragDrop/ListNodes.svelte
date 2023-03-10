@@ -48,7 +48,7 @@
 		node_id, 
 		node_info, 
 		store_container_size,
-		main_config 
+		main_config
 	} from '../../store/store.js';
 	
 	export let mouseX=0
@@ -83,6 +83,7 @@
 			}
 		}
 		nodearr = tmp;
+		console.log(nodearr);
 	})
 
 	node_id.subscribe(val => {
@@ -127,9 +128,7 @@
   	};
 		nodearr = [...nodearr, newNode]
 
-	  	add_node_to_config(newNode.id)
-
-		$nodes = [...$nodes, newNode]
+	  add_node_to_config(newNode.id)
 	}
 
 	function recalculate_positions(zoom_in){

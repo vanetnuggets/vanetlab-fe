@@ -24,7 +24,7 @@ export const containers = writable([])
 export const con_number = writable(0)
 export const visibleContainer = writable("")
 
-export const nodes = writable([])
+export const nodes = writable({})
 
 export const summary = writable({})
 

@@ -3,6 +3,8 @@ import { get } from 'svelte/store'
 
 class NodeInfoService {
   static _get_by_id(arr, id) {
+
+    return arr[id];
     for (let a of arr) {
       if (a.id == id) {
         return a;

@@ -87,9 +87,14 @@
 		show_rdrawer, 
 		node_info,
 		networks,
-		nodes 
+		nodes
 	} from '../../store/store.js';
 	import sipky from '../sipky/sipky.js'
+
+	let nodearr;
+	nodes.subscribe(val => {
+		nodearr = Object.values(val);
+	})
 
 	let unselected = '';
 	let selected = 'selected';
@@ -133,14 +138,14 @@
 	}
 	
 	function remove(){
-		$nodes = $nodes.filter((value) => value.id !== node.id);
-		show_rdrawer.update(_ => 'container_info');
-		sipky.on_delete(node.id);
+		// = nodearr.filter((value) => value.id !== node.id);
+		// show_rdrawer.update(_ => 'container_info');
+		// sipky.on_delete(node.id);
 	}
 
 	function set_current(evt){
 		if ( $moving_type == "info") {
-			for (let node of $nodes) {
+			for (let node of nodearr) {
 				node.info = false;
 			}
 			node.info = true;
