@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // let baseURL = `https://vanetlab.ml/api`
-let baseURL = `http://localhost:9000/api`
+let baseURL = `http://localhost:5000/api`
 
 if (import.meta.env.VITE_BE_API_URL != null) {
   baseURL = import.meta.env.VITE_BE_API_URL
@@ -12,15 +12,18 @@ let api = axios.create({
 })
 
 export default {
-  post(path, data){
-    return api.post(path, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Referrer-Policy': 'no-referrer'
+  post(path, data, other=null){
+    if (other === null) {
+      other = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Referrer-Policy': 'no-referrer'
+        }
       }
-    })
+    }
+    return api.post(path, data, other)
   },
-  get(path, params) {
+  get(path, params={}) {
     return api.get(path, {
       headers: {
         'Referrer-Policy': 'no-referrer'

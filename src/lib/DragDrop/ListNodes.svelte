@@ -61,6 +61,7 @@
 	let zoom=1;
 	let checked=false;
 	let current_node
+	let nodearr;
 
 	let move_x = 0;
 	let move_y = 0;
@@ -68,6 +69,20 @@
 	node_info.subscribe(val => {
     current_node = val;
   })
+
+	nodes.subscribe(val => {
+		let tmp  = Object.values(val);
+		for (let node of tmp ) {
+			if (node.mobility.length == 0) {
+				node.x = 0;
+				node.y = 0;
+			} else {
+				node.x = node.mobility[0].x;
+				node.y = node.mobility[0].y;
+			}
+		}
+		nodearr = tmp;
+	})
 
 	node_id.subscribe(val => {
 		last_id = val;
@@ -97,7 +112,7 @@
 			"type": "foo",
 			"selected": false
   	};
-		$nodes = [...$nodes, newNode]
+		nodearr = [...nodearr, newNode]
 	}
 
 	function recalculate_positions(zoom_in){
@@ -108,7 +123,7 @@
 		if (zoom_in)
 			direction=-direction
 		
-		$nodes.forEach(node => {
+		nodearr.forEach(node => {
 			let distancex= Math.abs(node.left-mouseX)
 			let distancey= Math.abs(node.top-mouseY)
 			if(distancex<1){
@@ -138,7 +153,7 @@
 	function return_to_1x(){
 		if(!checked){
 			zoom = 1
-			$nodes.forEach(node => {
+			nodearr.forEach(node => {
 				node.left=node.x
 				node.top=node.y
 				sipky.update(node.id);
@@ -177,17 +192,17 @@
 	function _move_canvas(dir, val) {
 		if (dir == 'x') {
 			move_x += val;
-			for (let i=0; i<$nodes.length; i++) {
-				let node_id = $nodes[i].id;
-				$nodes[i].left = ($nodes[i].x + move_x)*zoom;
+			for (let i=0; i<nodearr.length; i++) {
+				let node_id = nodearr[i].id;
+				nodearr[i].left = (nodearr[i].x + move_x)*zoom;
 				sipky.update(node_id);
 			}
 		}
 		if (dir == 'y') {
 			move_y += val;
-			for (let i=0; i<$nodes.length; i++) {
-				let node_id = $nodes[i].id;
-				$nodes[i].top = ($nodes[i].y + move_y)*zoom;
+			for (let i=0; i<nodearr.length; i++) {
+				let node_id = nodearr[i].id;
+				nodearr[i].top = (nodearr[i].y + move_y)*zoom;
 				sipky.update(node_id);
 			}
 		}
@@ -217,15 +232,15 @@
 
 	function set_move_type(type) {
 		$moving_type = type;
-		for (let n of $nodes) {
+		for (let n of nodearr) {
 			n.info = false;
 			n.state = '';
 		}
 	}
 
 	function to_index(id) {
-		for (let i=0; i<$nodes.length; i++) {
-			let curr = $nodes[i];
+		for (let i=0; i<nodearr.length; i++) {
+			let curr = nodearr[i];
 			if ( curr.id == id )
 				return i
 		}
@@ -261,12 +276,12 @@
 					continue;
 				} 
 
-				$nodes[i].left = $nodes[i].left+e.movementX;
-				$nodes[i].top = $nodes[i].top+e.movementY;
-				$nodes[i].x = ($nodes[i].left-move_x) / zoom;
-				$nodes[i].y = ($nodes[i].top-move_y) / zoom;
-				sipky.update($nodes[i].id);
-				$node_info.set($nodes[i].id, $nodes[i]);
+				nodearr[i].left = nodearr[i].left+e.movementX;
+				nodearr[i].top = nodearr[i].top+e.movementY;
+				nodearr[i].x = (nodearr[i].left-move_x) / zoom;
+				nodearr[i].y = (nodearr[i].top-move_y) / zoom;
+				sipky.update(nodearr[i].id);
+				$node_info.set(nodearr[i].id, nodearr[i]);
 			}
 		}
 	}
@@ -302,7 +317,7 @@
 	</div>
 </div>
 <div class=playground>
-	{#each $nodes as node (node.id) }
+	{#each nodearr as node (node.id) }
 		<Node bind:node={node} zoom={zoom}/>
 	{/each}
 </div>
