@@ -49,6 +49,7 @@
           </div>
         {/if}
       </div>
+      <KeyFrames/>
     </div>
     {/if}
   {/if}
@@ -71,9 +72,9 @@
   padding-left:10px;
 }
 
-.networks {
+/* .networks {
 
-}
+} */
 
 .client {
   padding-left:10px;
@@ -97,6 +98,9 @@
   import { slide } from 'svelte/transition'
 	import { node_info2, nodes } from '../../store/store.js';
   import Info from '../../services/NodeInfoService';
+  import KeyFrames from './KeyFrames.svelte';
+
+  
 
   let node = null;
   node_info2.subscribe(val => {
