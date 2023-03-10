@@ -11,12 +11,9 @@ export const store_container_size = writable({
   height: 50
 })
 
-<<<<<<< HEAD
 export const networks = writable({})
 export const visibleNetwork = writable("")
 export const nextNetworkId = writable(0)
-=======
->>>>>>> f209e6d6d9aaf42e695ed4b1f412ac111eeaa95c
 export const scenarioName = writable({});
 
 export const topology = writable({

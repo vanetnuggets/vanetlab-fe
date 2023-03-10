@@ -44,7 +44,7 @@
 	import { 
 		show_rdrawer, 
 		moving_type, 
-		config, 
+		nodes, 
 		node_id, 
 		node_info, 
 		store_container_size 
@@ -70,13 +70,8 @@
     current_node = val;
   })
 
-<<<<<<< HEAD
 	nodes.subscribe(val => {
 		let tmp  = Object.values(val);
-=======
-	config.subscribe(val => {
-		let tmp  = Object.values(val.nodes);
->>>>>>> f209e6d6d9aaf42e695ed4b1f412ac111eeaa95c
 		for (let node of tmp ) {
 			if (node.mobility.length == 0) {
 				node.x = 0;
