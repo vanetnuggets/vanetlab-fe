@@ -1,31 +1,28 @@
-name: ssh-pipeline
+name: FE_update
+
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  
+  # Manual button
+  workflow_dispatch:
 
 jobs:
+  # Job
   build:
-    name: Build
     runs-on: ubuntu-latest
 
+    # Tasks
     steps:
-    - name: deploy
-      uses: cross-the-world/ssh-pipeline@master
-      env:
-        WELCOME: "ssh pipeline"
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
-        user: ${{ secrets.USER }}
-        pass: ${{ secrets.PASS }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        connect_timeout: 10s
-        script: |
-          (rm -rf /home/github/test || true)
-          ls -la  
-          echo $WELCOME 
-          mkdir -p /home/github/test/test1 && 
-          mkdir -p /home/github/test/test2 &&
+        timeout: 10s
+        script: bash /home/gitter/script.sh
           
           
           
