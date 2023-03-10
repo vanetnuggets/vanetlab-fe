@@ -45,26 +45,13 @@ export const config = writable({
   "nodes": {},
   "max_at": 0
 });
+
+
+export const node = writable(null)
 export const main_config = writable(
-  { 
-    "nodes": {
-      "l2id": null,
-      "l2": null,
-      "l2conf": {},
-      "l3": null,
-      "l3conf": {},
-      "mobility":{
-        "1": {
-          "x":10,
-          "y":20,
-          "z":30
-        },
-        "5": {
-          "x":10,
-          "y":20,
-          "z":30
-        }
-      }
-    }
+  {
+    "networks": {},
+    "nodes": {},
+    "max-at": 0
   }
 );

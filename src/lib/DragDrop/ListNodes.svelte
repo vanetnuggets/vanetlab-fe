@@ -47,7 +47,8 @@
 		nodes, 
 		node_id, 
 		node_info, 
-		store_container_size 
+		store_container_size,
+		main_config 
 	} from '../../store/store.js';
 	
 	export let mouseX=0
@@ -98,6 +99,18 @@
 		return this_id;
 	}  
 
+	function add_node_to_config(id){
+		$main_config.nodes[id]={
+								"l2id": null,
+								"l2": null,
+								"l2conf": {},
+								"l3": null,
+								"l3conf": {},
+								"mobility":{}
+								}
+		$main_config=$main_config
+	}
+
 	function add_node(){
 		const postionx= Math.round((cont_size.width/2)*10)/10
 		const positiony = Math.round((cont_size.height/2)*10)/10
@@ -113,6 +126,10 @@
 			"selected": false
   	};
 		nodearr = [...nodearr, newNode]
+
+	  	add_node_to_config(newNode.id)
+
+		$nodes = [...$nodes, newNode]
 	}
 
 	function recalculate_positions(zoom_in){

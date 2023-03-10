@@ -56,7 +56,7 @@
         </button><br>
         {#if open_list_mobility}
           <div transition:slide>
-            {#each Object.entries($main_config.nodes.mobility) as [time, position]}
+            {#each Object.entries($main_config.nodes[node_id].mobility) as [time, position]}
                 <span>{time}</span> 
                 <span>{position.x}</span>
                 <span>{position.y}</span>
@@ -85,7 +85,7 @@
 
   let mobility
   main_config.subscribe(n => {
-    mobility = n.nodes.mobility;
+    mobility = n.nodes[node_id].mobility;
   }) 
  
   let open_mobility = false;
@@ -142,7 +142,7 @@
       y_input=null;
       z_input=null;
       error_message=""
-      console.log($main_config)
+      //console.log($main_config)
     }
   };
 
