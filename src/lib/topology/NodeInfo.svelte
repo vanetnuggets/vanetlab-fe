@@ -9,7 +9,7 @@
         X: {node.general.x}  
         Y: {node.general.y} 
       </div>
-      <div class="networks">
+      <!-- <div class="networks">
         <button on:click={toggle_networks} class="importrant-btn btn-trans"> 
           Networks:
         </button><br>
@@ -48,8 +48,10 @@
             {/each}
           </div>
         {/if}
-      </div>
-        <KeyFrames/>
+      </div> -->
+        <L2 node_id={node.general.id}/>
+        <br>
+        <Mobility node_id={node.general.id}/>
     </div>
     {/if}
   {/if}
@@ -98,7 +100,8 @@
   import { slide } from 'svelte/transition'
 	import { node_info2, nodes } from '../../store/store.js';
   import Info from '../../services/NodeInfoService';
-  import KeyFrames from './KeyFrames.svelte';
+  import Mobility from './Mobility.svelte';
+  import L2 from './L2.svelte'
 
   
 
