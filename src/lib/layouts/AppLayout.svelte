@@ -12,7 +12,7 @@
       <slot name="left">
       </slot>
     </div>
-    <div class="mycontent">
+    <div class="mycontent" id="bs">
       <slot name="content">
       </slot>
     </div>
