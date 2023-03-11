@@ -1,6 +1,6 @@
 import { nodes, containers } from "../../store/store";
 import LeaderLine from 'leader-line-new';
-import Node__SvelteComponent_ from "../DragDrop/Node.svelte";
+// import Node__SvelteComponent_ from "../DragDrop/Node.svelte";
 
 class Sipky {
     constructor() {

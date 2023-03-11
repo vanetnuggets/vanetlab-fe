@@ -9,7 +9,7 @@
         X: {node.general.x}  
         Y: {node.general.y} 
       </div>
-      <div class="networks">
+      <!-- <div class="networks">
         <button on:click={toggle_networks} class="importrant-btn btn-trans"> 
           Networks:
         </button><br>
@@ -48,7 +48,10 @@
             {/each}
           </div>
         {/if}
-      </div>
+      </div> -->
+        <L2 bind:node_id={node.general.id}/>
+        <br>
+        <Mobility bind:node_id={node.general.id}/>
     </div>
     {/if}
   {/if}
@@ -71,9 +74,9 @@
   padding-left:10px;
 }
 
-.networks {
+/* .networks {
 
-}
+} */
 
 .client {
   padding-left:10px;
@@ -97,6 +100,10 @@
   import { slide } from 'svelte/transition'
 	import { node_info2, nodes } from '../../store/store.js';
   import Info from '../../services/NodeInfoService';
+  import Mobility from './Mobility.svelte';
+  import L2 from './L2.svelte'
+  import { main_config } from '../../store/store.js';
+  
 
   let node = null;
   node_info2.subscribe(val => {
@@ -118,6 +125,7 @@
   let open_info = true;
   function toggle_info() {
     open_info = !open_info;
+    //console.log($main_config)
   }
 
   let open_clients = {};

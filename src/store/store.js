@@ -24,7 +24,7 @@ export const containers = writable([])
 export const con_number = writable(0)
 export const visibleContainer = writable("")
 
-export const nodes = writable([])
+export const nodes = writable({})
 
 export const summary = writable({})
 
@@ -45,3 +45,13 @@ export const config = writable({
   "nodes": {},
   "max_at": 0
 });
+
+
+export const node = writable(null)
+export const main_config = writable(
+  {
+    "networks": {},
+    "nodes": {},
+    "max-at": 0
+  }
+);
