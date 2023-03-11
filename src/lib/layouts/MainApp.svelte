@@ -50,7 +50,7 @@ import TopBar from "../../lib/layouts/TopBar.svelte";
 import LeftDrawer from "../../lib/layouts/LeftDrawer.svelte";
 import AppLayout from "../../lib/layouts/AppLayout.svelte";
 import Networks from "../../lib/network/Networks.svelte";
-import DragContainer from '../../lib/DragDrop/DragContainer.svelte';
+import DragContainer from '../../lib/DragDrop/ultrappcinovydrag.svelte';
 import RightDrawer from "../../lib/layouts/RightDrawer.svelte";
 import ContainerInfo from "../../lib/topology/ContainerInfo.svelte";
 import NodeInfo from "../../lib/topology/NodeInfo.svelte";
