@@ -22,7 +22,4 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         timeout: 10s
-        script: bash /home/gitter/script.sh
-          
-          
-          
+        script: bash ~/update_fe.sh
