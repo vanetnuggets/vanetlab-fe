@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { nextNodeId, nodes } from '../../store/store.js';
 
+    let radius=15;
     let svg
     let circle
     let colors = ["blue", "pink", "brown", "yellow"];
@@ -87,7 +88,14 @@
         </svg>
         {#each $nodes as d, i}
         <circle class="myPoint"
-            data-id={d.id} cx={d.x} cy={d.y} r="15" fill={colors[d.net]}/>
-        {/each} 
+            data-id={d.id} cx={d.x} cy={d.y} r={radius} fill={colors[d.net]}/>
+        <circle cx={d.x+radius-5} cy={d.y+radius-7} r={8} fill="white"/>
+        <text alignment-baseline="middle" text-anchor="middle" x={d.x+radius-5} y={d.y+radius-5}>{d.id}</text>
+        {/each}
     </g>
 </svg>
+
+<style scoped>
+
+</style>
+
