@@ -25,7 +25,7 @@
 
   <span slot="content">
     <Router routes={{
-      '/app/canvas': DragContainer,
+      '/app/canvas': Canvas,
       '/app/summary': Summary,
       '/app/sumo': Sumo,
       '/app/source/:code': SourceCode,
@@ -38,7 +38,7 @@
 
 <script>
 import Router from 'svelte-spa-router'
-import NotFound from "../../lib/DragDrop/NotFound.svelte"
+import NotFound from "../Canvas/NotFound.svelte"
 import Summary from "../../lib/vizualize/Summary.svelte"
 import Sumo from "../../lib/vizualize/Sumo.svelte"
 import SourceCode from "../../lib/vizualize/SourceCode.svelte"
@@ -50,7 +50,7 @@ import TopBar from "../../lib/layouts/TopBar.svelte";
 import LeftDrawer from "../../lib/layouts/LeftDrawer.svelte";
 import AppLayout from "../../lib/layouts/AppLayout.svelte";
 import Networks from "../../lib/network/Networks.svelte";
-import DragContainer from '../../lib/DragDrop/ultrappcinovydrag.svelte';
+import Canvas from '../Canvas/canvas.svelte';
 import RightDrawer from "../../lib/layouts/RightDrawer.svelte";
 import ContainerInfo from "../../lib/topology/ContainerInfo.svelte";
 import NodeInfo from "../../lib/topology/NodeInfo.svelte";
