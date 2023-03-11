@@ -1,43 +1,22 @@
 <script>
-    import { zoom, select, drag } from "d3";
+    import { zoom, select, drag, randomInt } from "d3";
     import { onMount } from "svelte";
+    import { nextNodeId, nodes } from '../../store/store.js';
 
     let svg
     let circle
-    let fakenodes = [
-        {
-            "id": 0,
-            "x": 50,
-            "y": 50,
-            "net": 1
-        },
-        {
-            "id": 1,
-            "x": 120,
-            "y": 50,
-            "net": 1
-        },
-        {   
-            "id": 2,
-            "x": 140,
-            "y": 50,
-            "net": 2
-        }
-    ];
-    let colors = ["blue", "pink", "brown"];
+    let colors = ["blue", "pink", "brown", "yellow"];
     
     function started(event) {
         circle = select(this); // set circle to the element that has been dragged.
         circle.attr("cx", event.x).attr("cy", event.y); // move the x/y position
-        fakenodes[circle.attr("data-id")].x = event.x
-        fakenodes[circle.attr("data-id")].y = event.y
-        console.log("moving", fakenodes[circle.attr("data-id")]);
+        $nodes[circle.attr("data-id")].x = event.x
+        $nodes[circle.attr("data-id")].y = event.y
+        console.log("moving", $nodes[circle.attr("data-id")]);
     }
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
-    onMount(() => {
-        svg = select(bind);
-        dragHandler(svg.selectAll(".myPoint")); //onMount, get all the circles we've rendered and call dragHandler on them
-    });
+
+    
 
     let bindHandleZoom, bind
 
@@ -46,6 +25,7 @@
 
     $: zoomX = zoom()
         .scaleExtent([1, 5])
+        // @ts-ignore
         .translateExtent([
             [0, 0],
             [width, height],
@@ -61,13 +41,46 @@
         select(bind).call(zoomX);
     }
 
+    function add_node(){
+		let newNode = {
+            "id": $nextNodeId,
+			"x": width/2,
+			"y": 50,
+            "net": Math.floor(Math.random() * colors.length)
+        };
+		$nodes = [...$nodes, newNode]
+        $nextNodeId+=1
+        // wait until it is rendered and add draghandler
+        delay(100).then(() => {
+            svg = select(bind)
+            dragHandler(svg.selectAll(".myPoint"))
+            console.log(svg)
+        });
+	}
+
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time))
+    }
+
+    onMount(() => {
+        svg = select(bind)
+        dragHandler(svg.selectAll(".myPoint"))
+        console.log(svg)
+    })
+
 </script>
+
+<div class="toolbar">
+	<div class="action">
+		<button on:click={add_node} class="btn s">Add node</button>
+    </div>
+</div>
 
 <svg bind:this={bind} height="97%" width="100%">
     <g bind:this={bindHandleZoom}>
-        {#each fakenodes as d, i}
+        {#each $nodes as d, i}
         <circle class="myPoint"
             data-id={d.id} cx={d.x} cy={d.y} r="15" fill={colors[d.net]}/>
-        {/each}
+        {/each} 
     </g>
 </svg>
