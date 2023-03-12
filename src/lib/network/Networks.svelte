@@ -1,6 +1,7 @@
 <script>
     import Network from "./Network.svelte";
-    import { networks, nextNetworkId } from "../../store/store";
+    import { nextNetworkId } from "../../store/store";
+    import { networks } from "../../store/scenario";
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
     import Switch from "./Switch.svelte";
@@ -34,7 +35,6 @@
     netarr.forEach(element => { 
         json.networks[element.id] = element
     });
-    console.log(JSON.stringify(json))
     json = null
   }
 
@@ -53,7 +53,9 @@
 </script>
 
 {#each netarr as n (n.id) }
+  {#if n.id != -1}
     <Network bind:network={$networks[n.id]}/>
+  {/if}
 {/each}
 
 <button on:click={toggle_creation}>

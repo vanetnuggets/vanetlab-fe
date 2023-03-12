@@ -56,7 +56,7 @@
         </button><br>
         {#if open_list_mobility}
           <div transition:slide>
-            {#each Object.entries($main_config.nodes[node_id].mobility) as [time, position]}
+            {#each Object.entries($nodes[node_id].mobility) as [time, position]}
                 <span>{time}</span> 
                 <span>{position.x}</span>
                 <span>{position.y}</span>
@@ -72,7 +72,7 @@
 
 <script>
   import { slide } from 'svelte/transition'
-  import { main_config } from '../../store/store.js';
+  import { nodes } from '../../store/scenario.js';
  
   export let node_id
   
@@ -84,8 +84,8 @@
   
 
   let mobility
-  main_config.subscribe(n => {
-    mobility = n.nodes[node_id].mobility;
+  nodes.subscribe(n => {
+    mobility = n[node_id].mobility;
   }) 
  
   let open_mobility = false;
@@ -135,7 +135,7 @@
    // console.log(node_id)
     if(check_missing() && check_format() ){
       mobility[time_input]={"x":x_input,"y":y_input,"z":z_input}
-      $main_config=$main_config
+      $nodes=$nodes
       
       time_input = null;
       x_input=null;
@@ -148,6 +148,6 @@
 
   const remove_mobility = (time) => {
     mobility = delete mobility[time] && mobility
-    $main_config=$main_config
+    $nodes=$nodes
   };
 </script>

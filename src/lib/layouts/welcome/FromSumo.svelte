@@ -26,7 +26,7 @@ import Dropzone from "svelte-file-dropzone";
 import { push } from "svelte-spa-router";
 import { scenarioName } from "../../../store/store";
 import { fromSumo } from "../../api/sumo";
-import loadConfig from "../../../services/LoadService";
+import { loadConfig } from "../../../services/LoadService";
 
 let sumoFile = null
 let simName = ""
@@ -42,7 +42,7 @@ async function loadSumo() {
   scenarioName.update(_ => simName);
   loadConfig(result.data);
 
-  push('/app')
+  push('/app/canvas')
 }
 
 function handleDrop(e) {
