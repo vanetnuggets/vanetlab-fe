@@ -51,7 +51,7 @@
 			"x": width/2,
 			"y": 50,
             "mobility": {},
-            "l2id": null,
+            "l2id": -1,
             "l2": null,
             "l2conf": null,
             "l3": null,
@@ -66,15 +66,6 @@
             dragHandler(svg.selectAll(".myPoint"))
         });
 	}
-
-    function get_color(l2id) {
-        let net = $networks[l2id];
-        // zla siet zla farba sme rasisti
-        if (net == undefined) {
-            return "#000000";
-        }
-        return $networks[l2id].color;
-    }
 
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time))

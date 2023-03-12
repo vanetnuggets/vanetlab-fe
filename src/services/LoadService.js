@@ -2,11 +2,10 @@ import { nodes, networks, max_at } from "../store/scenario";
 // import { max_at } from "../store/store";
 
 export function clearAll() {
-  networks.update(_ => {});
-  nodes.update(_ => {});
+  networks.update(_ => { return {}});
+  nodes.update(_ => { return {}});
   max_at.update(_ => 0);
 }
-
 
 
 export function initNetworks() {
