@@ -1,12 +1,15 @@
 <script>
     import { zoom, select, drag, randomInt } from "d3";
     import { onMount } from "svelte";
-    import { nextNodeId, nodes } from '../../store/store.js';
+    import { nextNodeId, node_info2 } from '../../store/store.js';
+    import { nodes, networks} from '../../store/scenario'
 
     let radius=15;
     let svg
     let circle
     let colors = ["blue", "pink", "brown", "yellow"];
+
+    $: nodearr = Object.values($nodes);
     
     function started(event) {
         circle = select(this); // set circle to the element that has been dragged.
@@ -47,9 +50,15 @@
             "id": $nextNodeId,
 			"x": width/2,
 			"y": 50,
+            "mobility": {},
+            "l2id": null,
+            "l2": null,
+            "l2conf": null,
+            "l3": null,
+            "l3conf": null,
             "net": Math.floor(Math.random() * colors.length)
         };
-		$nodes = [...$nodes, newNode]
+		$nodes[$nextNodeId] = newNode;
         $nextNodeId+=1
         // wait until it is rendered and add draghandler
         delay(100).then(() => {
@@ -58,8 +67,21 @@
         });
 	}
 
+    function get_color(l2id) {
+        let net = $networks[l2id];
+        // zla siet zla farba sme rasisti
+        if (net == undefined) {
+            return "#000000";
+        }
+        return $networks[l2id].color;
+    }
+
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time))
+    }
+
+    function selectNode(node) {
+        node_info2.update(_ => node);
     }
 
     onMount(() => {
@@ -86,9 +108,10 @@
             </defs>
             <rect width="100%" height="100%" fill="url(#smallGrid)" />
         </svg>
-        {#each $nodes as d, i}
-        <circle class="myPoint"
-            data-id={d.id} cx={d.x} cy={d.y} r={radius} fill={colors[d.net]}/>
+        {#each nodearr as d, i}
+        {d}
+        <circle on:click={() => selectNode(d)} class="myPoint"
+            data-id={d.id} cx={d.x} cy={d.y} r={radius} fill={get_color(d.l2id)}/>
         <circle cx={d.x+radius-5} cy={d.y+radius-7} r={8} fill="white"/>
         <text alignment-baseline="middle" text-anchor="middle" x={d.x+radius-5} y={d.y+radius-5}>{d.id}</text>
         {/each}

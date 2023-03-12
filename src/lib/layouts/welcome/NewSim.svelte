@@ -21,7 +21,7 @@ let sim_name = "";
 function new_sim() {
   // call API call to check if name is available
   scenarioName.update(_ => sim_name);
-  push('/app');
+  push('/app/canvas');
 }
 
 </script>

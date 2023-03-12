@@ -32,7 +32,7 @@ import { push } from "svelte-spa-router";
 import { getRemote } from "../../api/scenarios";
 import { scenarioName } from "../../../store/store";
 import { scenarioList } from "../../../store/welcome";
-import loadConfig from "../../../services/LoadService";
+import { loadConfig } from "../../../services/LoadService";
 
 let loading = false;
 let scenarios = []
@@ -45,7 +45,7 @@ async function loadScenario(name) {
   let data = await getRemote(name);
   loadConfig(data.data.data); //datadatadata
   scenarioName.update(_ => name);
-  push('/app');
+  push('/app/canvas');
 }
 
 </script>

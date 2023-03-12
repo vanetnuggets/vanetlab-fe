@@ -1,11 +1,7 @@
 <AppLayout>
   <span slot="right">
     <RightDrawer>
-    {#if elem_rdrawer == 'node_info'}
-      <NodeInfo></NodeInfo>
-    {:else if elem_rdrawer == 'container_info' }
-      <ContainerInfo></ContainerInfo>
-    {/if}
+      <NodeInfo/>
     </RightDrawer>
   </span>
 
@@ -52,10 +48,8 @@ import AppLayout from "../../lib/layouts/AppLayout.svelte";
 import Networks from "../../lib/network/Networks.svelte";
 import Canvas from '../Canvas/Canvas.svelte';
 import RightDrawer from "../../lib/layouts/RightDrawer.svelte";
-import ContainerInfo from "../../lib/topology/ContainerInfo.svelte";
 import NodeInfo from "../../lib/topology/NodeInfo.svelte";
 import { show_rdrawer } from '../../store/store.js';
-import Sipky from '../../lib/sipky/sipky'
 
 let elem_rdrawer;
 show_rdrawer.subscribe(value => {

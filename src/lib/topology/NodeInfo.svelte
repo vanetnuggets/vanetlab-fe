@@ -1,13 +1,13 @@
 <div class="info-wrapper">
   {#if node != null}
     <button on:click={toggle_info} class="importrant-btn btn-trans"> 
-      Node #{node.general.id} information:
+      Node #{node.id} information:
     </button>
     {#if open_info == true}
     <div transition:slide class="nodeinfo">
       <div class="general">
-        X: {node.general.x}  
-        Y: {node.general.y} 
+        X: {node.x}  
+        Y: {node.y} 
       </div>
       <!-- <div class="networks">
         <button on:click={toggle_networks} class="importrant-btn btn-trans"> 
@@ -49,9 +49,9 @@
           </div>
         {/if}
       </div> -->
-        <L2 bind:node_id={node.general.id}/>
+        <L2 bind:node_id={node.id}/>
         <br>
-        <Mobility bind:node_id={node.general.id}/>
+        <Mobility bind:node_id={node.id}/>
     </div>
     {/if}
   {/if}
@@ -98,23 +98,17 @@
 
 <script>
   import { slide } from 'svelte/transition'
-	import { node_info2, nodes } from '../../store/store.js';
+	import { node_info2 } from '../../store/store.js';
   import Info from '../../services/NodeInfoService';
   import Mobility from './Mobility.svelte';
   import L2 from './L2.svelte'
-  import { main_config } from '../../store/store.js';
+  import { nodes } from '../../store/scenario.js';
   
 
   let node = null;
+
   node_info2.subscribe(val => {
     node = val;
-
-    if (node == null) {
-      return null;
-    }
-
-    let info = Info.info_by_id(node.id);
-    node = info;
   })
 
   let open_networks = true;

@@ -41,18 +41,4 @@ export const units = readable({
 
 export const summary_list = writable([]);
 
-export const config = writable({
-  "networks": {},
-  "nodes": {},
-  "max_at": 0
-});
-
-
 export const node = writable(null)
-export const main_config = writable(
-  {
-    "networks": {},
-    "nodes": {},
-    "max-at": 0
-  }
-);
