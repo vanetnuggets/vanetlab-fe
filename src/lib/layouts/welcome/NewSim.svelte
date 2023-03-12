@@ -15,12 +15,15 @@
 import Dropzone from "svelte-file-dropzone";
 import { push } from "svelte-spa-router";
 import { scenarioName } from "../../../store/store" 
-
+import { clearAll, initNetworks } from "../../../services/LoadService";
 let sim_name = "";
 
 function new_sim() {
   // call API call to check if name is available
+  clearAll();
+  initNetworks();
   scenarioName.update(_ => sim_name);
+  
   push('/app/canvas');
 }
 

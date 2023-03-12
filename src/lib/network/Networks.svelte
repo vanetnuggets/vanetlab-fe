@@ -53,7 +53,9 @@
 </script>
 
 {#each netarr as n (n.id) }
+  {#if n.id != -1}
     <Network bind:network={$networks[n.id]}/>
+  {/if}
 {/each}
 
 <button on:click={toggle_creation}>

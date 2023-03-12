@@ -1,7 +1,7 @@
 <script>
     import { visibleNetwork } from '../../store/store.js';
     import ColorPicker from 'svelte-awesome-color-picker';
-    import { networks } from '../../store/scenario.js';
+    import { networks, nodes } from '../../store/scenario.js';
     import Switch from './Switch.svelte';
     export let network
 
@@ -22,8 +22,20 @@
     let confirm = false
 
     function deleteContainer() {
+        // cannot delete default network -> breaks everything
+        if (network.id == -1) {
+            return
+        }
         if (confirm){
             $visibleNetwork = "";
+
+            // move all nodes in the network to default network
+            for (let key of Object.keys($nodes)) {
+                let node = $nodes[key];
+                if (node.l2id == network.id) {
+                    node.l2id = -1;
+                }
+            }
             
             let tmp = $networks;
             delete tmp[network.id];

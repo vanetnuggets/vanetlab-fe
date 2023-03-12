@@ -109,9 +109,8 @@
             <rect width="100%" height="100%" fill="url(#smallGrid)" />
         </svg>
         {#each nodearr as d, i}
-        {d}
         <circle on:click={() => selectNode(d)} class="myPoint"
-            data-id={d.id} cx={d.x} cy={d.y} r={radius} fill={get_color(d.l2id)}/>
+            data-id={d.id} cx={d.x} cy={d.y} r={radius} fill={$networks[d.l2id].color}/>
         <circle cx={d.x+radius-5} cy={d.y+radius-7} r={8} fill="white"/>
         <text alignment-baseline="middle" text-anchor="middle" x={d.x+radius-5} y={d.y+radius-5}>{d.id}</text>
         {/each}
