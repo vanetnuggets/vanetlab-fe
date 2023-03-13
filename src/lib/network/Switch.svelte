@@ -1,6 +1,22 @@
 <script>
-
+ 
+    import { nodes } from "../../store/scenario";
     export let switchValue
+    export let networkId = 0
+
+
+function resetNodes (){ 
+    //console.log("cau")
+    for (const key of Object.keys($nodes)) {
+        //console.log($nodes[key].l2id , networkId)
+        if( $nodes[key].l2id == networkId){
+            //console.log("spm")
+            $nodes[key].l2 = switchValue.toLowerCase()
+            $nodes[key].l2conf = {}
+        }
+    }
+    $nodes=$nodes
+}
 
 function handleClick(event){
         const target = event.target
@@ -10,6 +26,7 @@ function handleClick(event){
         checked = state === 'true' ? false : true
 
         switchValue = checked === true ? 'LTE' : 'WIFI'
+        resetNodes()
     }
 
     let checked = (switchValue=="LTE" ? true : false)

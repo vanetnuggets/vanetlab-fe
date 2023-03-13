@@ -3,6 +3,7 @@
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks, nodes } from '../../store/scenario.js';
     import Switch from './Switch.svelte';
+    import ConsoleLogs from '../vizualize/ConsoleLogs.svelte';
     export let network
 
     let rgb
@@ -31,12 +32,13 @@
 
             // move all nodes in the network to default network
             for (let key of Object.keys($nodes)) {
-                let node = $nodes[key];
-                if (node.l2id == network.id) {
-                    node.l2id = -1;
+                if( $nodes[key].l2id == network.id){
+                    $nodes[key].l2id = -1 
+                    $nodes[key].l2 = null
+                    $nodes[key].l2conf = {}
                 }
             }
-            
+            $nodes=$nodes
             let tmp = $networks;
             delete tmp[network.id];
             networks.update(_ => tmp);

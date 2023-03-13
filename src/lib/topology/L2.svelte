@@ -20,7 +20,7 @@
     } else {
         $nodes[node_id].l2 = $networks[$nodes[node_id].l2id].type.toLowerCase();
     }
-
+    
     $: if ($nodes[node_id].l2 != null && !l2_types[$nodes[node_id].l2].includes($nodes[node_id].l2conf.type))
         $nodes[node_id].l2conf={}
         

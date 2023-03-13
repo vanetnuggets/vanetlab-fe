@@ -33,7 +33,7 @@
   function check_format() {
     if (!Number.isInteger((time_input = Number(time_input)))) {
       time_input = null;
-      error_message = "Incorrectly entered format. Integer requared.";
+      error_message = "Incorrectly entered format. Integer required.";
       return false;
     }
 
@@ -44,7 +44,7 @@
 
 
     if (!x_input || !y_input || !z_input) {
-      error_message = "Incorrectly entered format. Float requared.";
+      error_message = "Incorrectly entered format. Float required.";
       return false;
     }
     return true;

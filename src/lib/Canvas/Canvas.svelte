@@ -73,7 +73,11 @@
 
     function selectNode(node) {
         current_node.update(_ => node.id);
-        console.log(node)
+        //console.log($nodes)
+    }
+
+    function vypis(){
+        console.log($nodes)
     }
 
     onMount(() => {
@@ -86,6 +90,7 @@
 <div class="toolbar">
 	<div class="action">
 		<button on:click={add_node} class="btn s">Add node</button>
+        <button on:click={vypis} class="btn s">Vypis</button>
     </div>
 </div>
 
