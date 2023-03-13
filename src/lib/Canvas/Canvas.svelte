@@ -1,21 +1,21 @@
 <script>
     import { zoom, select, drag, randomInt } from "d3";
     import { onMount } from "svelte";
-    import { nextNodeId, node_info2 } from '../../store/store.js';
+    import { nextNodeId, current_node, current_time } from '../../store/store.js';
     import { nodes, networks} from '../../store/scenario'
 
     let radius=15;
     let svg
     let circle
-    let colors = ["blue", "pink", "brown", "yellow"];
+    //let colors = ["blue", "pink", "brown", "yellow"];
 
     $: nodearr = Object.values($nodes);
     
     function started(event) {
         circle = select(this); // set circle to the element that has been dragged.
         circle.attr("cx", event.x).attr("cy", event.y); // move the x/y position
-        $nodes[circle.attr("data-id")].x = event.x
-        $nodes[circle.attr("data-id")].y = event.y
+        $nodes[circle.attr("data-id")].mobility[$current_time].x = event.x
+        $nodes[circle.attr("data-id")].mobility[$current_time].y = event.y
         // console.log("moving", $nodes[circle.attr("data-id")]);
     }
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
@@ -48,16 +48,16 @@
     function add_node(){
 		let newNode = {
             "id": $nextNodeId,
-			"x": width/2,
-			"y": 50,
             "mobility": {},
             "l2id": -1,
             "l2": null,
-            "l2conf": null,
+            "l2conf": {},
             "l3": null,
-            "l3conf": null,
-            "net": Math.floor(Math.random() * colors.length)
+            "l3conf": null
+           // "net": Math.floor(Math.random() * colors.length)
         };
+        newNode.mobility[$current_time]={"x":width/2,"y":height/2,"z":0}
+
 		$nodes[$nextNodeId] = newNode;
         $nextNodeId+=1
         // wait until it is rendered and add draghandler
@@ -72,7 +72,8 @@
     }
 
     function selectNode(node) {
-        node_info2.update(_ => node);
+        current_node.update(_ => node.id);
+        console.log(node)
     }
 
     onMount(() => {
@@ -101,9 +102,9 @@
         </svg>
         {#each nodearr as d, i}
         <circle on:click={() => selectNode(d)} class="myPoint"
-            data-id={d.id} cx={d.x} cy={d.y} r={radius} fill={$networks[d.l2id].color}/>
-        <circle cx={d.x+radius-5} cy={d.y+radius-7} r={8} fill="white"/>
-        <text alignment-baseline="middle" text-anchor="middle" x={d.x+radius-5} y={d.y+radius-5}>{d.id}</text>
+            data-id={d.id} cx={d.mobility[$current_time].x} cy={d.mobility[$current_time].y} r={radius} fill={$networks[d.l2id].color}/>
+        <circle cx={d.mobility[$current_time].x+radius-5} cy={d.mobility[$current_time].y+radius-7} r={8} fill="white"/>
+        <text alignment-baseline="middle" text-anchor="middle" x={d.mobility[$current_time].x+radius-5} y={d.mobility[$current_time].y+radius-5}>{d.id}</text>
         {/each}
     </g>
 </svg>

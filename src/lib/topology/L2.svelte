@@ -1,31 +1,61 @@
+<script>
+    import { slide } from "svelte/transition";
+    import { nodes, networks } from "../../store/scenario";
+
+    export let node_id;
+    const l2_types = {
+        lte: ["eu", "enb"],
+        wifi: ["sta", "ap"],
+    };
+
+    let open_l2 = false;
+    function toggle_l2() {
+        open_l2 = !open_l2;
+        //console.log($networks)
+    }
+
+    $: if ($nodes[node_id].l2id == -1) {
+        $nodes[node_id].l2 = null;
+        $nodes[node_id].l2conf = {};
+    } else {
+        $nodes[node_id].l2 = $networks[$nodes[node_id].l2id].type.toLowerCase();
+    }
+
+    $: if ($nodes[node_id].l2 != null && !l2_types[$nodes[node_id].l2].includes($nodes[node_id].l2conf.type))
+        $nodes[node_id].l2conf={}
+        
+</script>
+
 <div class="L2">
-    <button on:click={toggle_l2} class="importrant-btn btn-trans"> 
+    <button on:click={toggle_l2} class="importrant-btn btn-trans">
         L2
-    </button><br>
+    </button><br />
     {#if open_l2}
-        <div transition:slide> 
+        <div transition:slide>
             <div class="row">
                 <div class="col">
-                L2 type: <br>
+                    L2 network: <br />
                 </div>
                 <div class="col">
-                    <select bind:value={$nodes[node_id].l2} on:change={set_l2}>
-                        {#each Object.keys(l2_types) as l2_t}
-                            <option value={l2_t}>
-                                {l2_t}
+                    <select
+                        bind:value={$nodes[node_id].l2id}
+                    >
+                        {#each Object.keys($networks) as l2_t}
+                            <option value={parseInt(l2_t)}>
+                                {$networks[l2_t].ssid}
                             </option>
                         {/each}
                     </select>
                 </div>
             </div>
             {#if $nodes[node_id].l2 != null}
-                <div transition:slide> 
+                <div transition:slide>
                     <div class="row">
                         <div class="col">
-                        {$nodes[node_id].l2} type: <br>
+                            {$nodes[node_id].l2} type: <br />
                         </div>
                         <div class="col">
-                            <select bind:value={$nodes[node_id].l2conf.type} on:change={set_l2conf}>
+                            <select bind:value={$nodes[node_id].l2conf.type}>
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
                                     <option value={l2_st}>
                                         {l2_st}
@@ -36,44 +66,6 @@
                     </div>
                 </div>
             {/if}
-        </div> 
-    {/if} 
+        </div>
+    {/if}
 </div>
-
-<script>
-  import { slide } from 'svelte/transition'
-  import { nodes } from '../../store/scenario';
- 
-  export let node_id
-  const l2_types={
-    'lte':['eu','enb'],
-    'wifi': ['sta','ap']
-  }
-  
-//   let l2_type = null
-//   main_config.subscribe(n => {
-//     //console.log(node_id)
-//     l2_type= n.nodes[node_id].l2;
-//   }) 
-
-  
-//   let l2_subtype= null
-//   main_config.subscribe(n => {
-//     l2_subtype= n.nodes[node_id].l2conf;
-//   })               
-  
-  let open_l2 = false;
-  function toggle_l2() {
-    open_l2 = !open_l2;  
-  }
-
-  function set_l2(){
-    //$main_config.nodes[node_id].l2 = $main_config.nodes[node_id].l2 
-    $nodes[node_id].l2conf = {}
-  }
-
-  function set_l2conf(){
-    //$main_config.nodes[node_id].l2conf = $main_config.nodes[node_id].l2conf
-    //console.log($main_config)
-  }
-</script>
