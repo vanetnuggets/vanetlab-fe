@@ -89,7 +89,7 @@
           Network type:
       </div>
       <div class="col">
-          <Switch bind:switchValue={switchValue}/> 
+          <Switch bind:switchValue={switchValue} networkId = {$nextNetworkId}/> 
       </div>
     </div>
     <button on:click={addContainer}>
