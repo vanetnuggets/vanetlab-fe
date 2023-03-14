@@ -53,7 +53,7 @@
             "l2": null,
             "l2conf": {},
             "l3": null,
-            "l3conf": null
+            "l3conf": {}
            // "net": Math.floor(Math.random() * colors.length)
         };
         newNode.mobility[$current_time]={"x":width/2,"y":height/2,"z":0}

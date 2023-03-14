@@ -41,8 +41,6 @@
     if (Number.isNaN((y_input = Number(y_input)))) y_input = null;
     if (Number.isNaN((z_input = Number(z_input)))) z_input = null;
 
-
-
     if (!x_input || !y_input || !z_input) {
       error_message = "Incorrectly entered format. Float required.";
       return false;

@@ -4,6 +4,7 @@
   import { nodes } from "../../store/scenario.js";
   import Mobility from "./Mobility.svelte";
   import L2 from "./L2.svelte";
+  import L3 from "./L3.svelte"
 
   let node_id = null;
 
@@ -29,9 +30,11 @@
           X: {$nodes[node_id].mobility[$current_time].x.toFixed(2)}
           Y: {$nodes[node_id].mobility[$current_time].y.toFixed(2)}
         </div>
-        <L2 bind:node_id={node_id} />
+        <L2 node_id={node_id} />
         <br />
-        <Mobility bind:node_id={node_id} />
+        <L3 node_id={node_id} />
+        <br />
+        <Mobility node_id={node_id} />
       </div>
     {/if}
   {/if}
