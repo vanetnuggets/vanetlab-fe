@@ -12,6 +12,6 @@ export function saveRemote(name, scenario) {
   return Api.post(`scenario/${name}`, scenario);
 }
 
-export async function simulate(name) {
-  return Api.post(`simulate/${name}`);
+export async function simulate(name, nodes, networks) {
+  return Api.post(`simulate/${name}`, {'nodes': nodes, 'networks': networks});
 }

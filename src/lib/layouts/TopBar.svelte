@@ -19,6 +19,7 @@
   import { scenarioName } from '../../store/store';
   import { assembleConfig } from '../../services/LoadService';
   import { saveRemote as saveRemoteScenario, simulate} from '../api/scenarios';
+  import { nodes, networks} from '../../store/scenario'
   
   let visible = true;
   let currName;
@@ -32,7 +33,7 @@
   }
 
   async function runSimulation() {
-    await simulate(currName);
+    await simulate(currName, $nodes, $networks);
   }
 
   async function saveRemote() {
