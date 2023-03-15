@@ -11,7 +11,7 @@
             port: 1,
             start: 0,
             stop: 0,
-            max_packet: 0,
+            max_packets: 0,
         },
         udpserver: {
             port: 1,
@@ -109,7 +109,7 @@
                                 <div class="col">
                                     <input
                                         class="my-input"
-                                        bind:value={$nodes[node_id].l3conf.max_packet}
+                                        bind:value={$nodes[node_id].l3conf.max_packets}
                                         placeholder="max packet"
                                     />
                                 </div>

@@ -14,8 +14,19 @@
     function started(event) {
         circle = select(this); // set circle to the element that has been dragged.
         circle.attr("cx", event.x).attr("cy", event.y); // move the x/y position
-        $nodes[circle.attr("data-id")].mobility[$current_time].x = event.x
-        $nodes[circle.attr("data-id")].mobility[$current_time].y = event.y
+        
+        let nodeId =  circle.attr("data-id")
+        let x = event.x;
+        let y = event.y;
+        
+        $nodes[nodeId].mobility[$current_time] = {}
+
+        $nodes[nodeId].mobility[$current_time].x = x
+        $nodes[nodeId].mobility[$current_time].y = y
+        $nodes[nodeId].mobility[$current_time].z = 1
+
+        $nodes[nodeId].x = x;
+        $nodes[nodeId].y = y;
         // console.log("moving", $nodes[circle.attr("data-id")]);
     }
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler

@@ -26,10 +26,10 @@ export function initNetworks() {
 }
 
 export function loadConfig(conf) {
-  console.log(conf)
   networks.update(_ => conf.networks);
   initNetworks();
   nodes.update(_ => conf.nodes);
+  max_at.update(_ => conf.max_at);
 }
 
 export function assembleConfig() {

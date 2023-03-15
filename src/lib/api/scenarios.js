@@ -15,6 +15,7 @@ export function saveRemote(name, scenario) {
 
 export async function simulate(name) {
   let config = assembleConfig();
+  console.log(config);
   return Api.post(`simulate/${name}`, config);
 }
 

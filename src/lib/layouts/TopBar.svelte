@@ -22,9 +22,10 @@
   import { saveRemote as saveRemoteScenario, simulate} from '../api/scenarios';
   import { nodes, networks} from '../../store/scenario'
   import { validate } from '../api/scenarios';
+  import { get } from 'svelte/store'
 
   import { getNotificationsContext } from 'svelte-notifications';
-  import { isError, errorData } from '../../store/summary';
+  import { isError, errorData, isOk } from '../../store/summary';
   const { addNotification } = getNotificationsContext();
 
   let visible = true;
@@ -36,7 +37,10 @@
 
   async function runSimulation() {
     simulate(currName).then((resp) => {
-      let name = resp.data.name;
+      let name = get(scenarioName);
+      isError.update(_ => false);
+      isOk.update(_ => true);
+
       addNotification({
         text: `Scenario '${name}' done! View the results in 'Results' tab.`,
         position: 'bottom-center',
@@ -46,6 +50,7 @@
       let data = err.response.data.data;
       errorData.update(_ => data.split('\n'))
       isError.update(_ => true);
+      isOk.update(_ => false);
 
       addNotification({
         text: `Scenario simulation failed. See details in 'Result' tab`,
@@ -79,7 +84,10 @@
 
   function validateSimulation() {
     validate(currName).then((resp) => {
-      let name = resp.data.name;
+      let name = get(scenarioName);
+      isError.update(_ => false);
+      isOk.update(_ => true);
+
       addNotification({
         text: `Scenario '${name}' validated!`,
         position: 'bottom-center',
@@ -87,11 +95,9 @@
       });
     }).catch((err) => {
       let data = err.response.data.data;
-      console.log(data);
-      console.log(data.split('\n'));
-
       errorData.update(_ => data.split('\n'))
       isError.update(_ => true);
+      isOk.update(_ => false);
 
       addNotification({
         text: `Errors while validating scenario. See details in 'Result' tab`,
