@@ -1,4 +1,5 @@
 <script>
+    import '../../assets/nodeconf.css'
     import { slide } from "svelte/transition";
     import { nodes } from "../../store/scenario";
 
@@ -42,14 +43,14 @@
 </script>
 
 <div class="L3">
-    <button on:click={toggle_l3} class="importrant-btn btn-trans">
-        L3
-    </button><br />
+    <button on:click={toggle_l3} class="importrant-btn btn-trans full">
+        | Application config
+    </button>
     {#if open_l3}
         <div transition:slide>
             <div class="row">
                 <div class="col">
-                    L3 type: <br />
+                    Application: <br />
                 </div>
                 <div class="col">
                     <select bind:value={$nodes[node_id].l3} on:change={reset_l3conf}>

@@ -15,7 +15,7 @@
 
   function addContainer(){
     let new_network = {
-        "id": $nextNetworkId,
+        "id": $nextNetworkId.toString(),
         "ssid": name,
         "addr": address,
         "color": color,

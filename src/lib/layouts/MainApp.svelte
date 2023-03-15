@@ -27,7 +27,7 @@
       '/app/source/:code': SourceCode,
       '/app/logs/:code': TraceLogs,
       '/app/console/:code': ConsoleLogs,
-      '*': NotFound
+      '/*': NotFound
     }} />
   </span>
 </AppLayout>

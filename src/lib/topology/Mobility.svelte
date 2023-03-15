@@ -1,6 +1,7 @@
 <script>
   import { slide } from "svelte/transition";
   import { nodes } from "../../store/scenario.js";
+  import '../../assets/nodeconf.css'
 
   export let node_id;
 
@@ -78,8 +79,8 @@
 </script>
 
 <div class="mobility">
-  <button on:click={toggle_mobility} class="importrant-btn btn-trans">
-    Mobility
+  <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
+    | Mobility
   </button><br />
   {#if open_mobility}
     <div transition:slide>
