@@ -1,16 +1,26 @@
 import { nodes, networks, max_at } from "../store/scenario";
 import { scenarioName } from "../store/store";
 import { current_time, current_node } from "../store/store";
+import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
+import Init from "../services/initService";
 
 import { get } from 'svelte/store'
 // import { max_at } from "../store/store";
 
 export function clearAll() {
-  current_node.update(_ => null);
-  current_time.update(_ => 0);
-  networks.update(_ => { return {}});
-  nodes.update(_ => { return {}});
-  max_at.update(_ => 0);
+  isOk.set(Init.OK);
+  isValidated.set(Init.VALIDATED);
+  isError.set(Init.ERR);
+  errorData.set(Init.ERR_DATA);
+  loading.set(Init.LOADING);
+  simData.set(Init.SIM_DATA);
+
+  current_node.set(Init.CURRENT_NODE)
+  current_time.set(Init.CURRENT_TIME);
+
+  networks.set(Init.NETWORKS);
+  nodes.update(Init.NODES);
+  max_at.update(Init.MAX_AT);
 }
 
 
