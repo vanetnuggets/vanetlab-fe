@@ -1,10 +1,13 @@
 import { nodes, networks, max_at } from "../store/scenario";
 import { scenarioName } from "../store/store";
+import { current_time, current_node } from "../store/store";
 
 import { get } from 'svelte/store'
 // import { max_at } from "../store/store";
 
 export function clearAll() {
+  current_node.update(_ => null);
+  current_time.update(_ => 0);
   networks.update(_ => { return {}});
   nodes.update(_ => { return {}});
   max_at.update(_ => 0);
