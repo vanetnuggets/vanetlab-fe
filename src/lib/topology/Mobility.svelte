@@ -59,7 +59,6 @@
   }
 
   const add_mobility = () => {
-    // console.log(node_id)
     if (check_missing() && check_format()) {
       mobility[time_input] = { x: x_input, y: y_input, z: z_input };
       $nodes = $nodes;
@@ -74,7 +73,6 @@
       y_input = null;
       z_input = null;
       error_message = "";
-      //console.log($main_config)
     }
   };
 

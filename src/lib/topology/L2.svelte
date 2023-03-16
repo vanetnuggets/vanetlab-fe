@@ -12,7 +12,6 @@
     let open_l2 = false;
     function toggle_l2() {
         open_l2 = !open_l2;
-        //console.log($networks)
     }
 
     $: if ($nodes[node_id].l2id == -1) {

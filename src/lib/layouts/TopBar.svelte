@@ -48,7 +48,7 @@
       });
     }).catch((err) => {
       let data = err.response.data.data;
-      errorData.update(_ => data.split('\n'))
+      errorData.update(_ => data);
       isError.update(_ => true);
       isOk.update(_ => false);
 

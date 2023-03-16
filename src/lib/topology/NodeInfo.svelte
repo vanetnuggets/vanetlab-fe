@@ -16,7 +16,6 @@
   let open_info = true;
   function toggle_info() {
     open_info = !open_info;
-    //console.log($main_config)
   }
 </script>
 

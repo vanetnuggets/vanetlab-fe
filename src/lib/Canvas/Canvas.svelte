@@ -27,7 +27,6 @@
 
         $nodes[nodeId].x = x;
         $nodes[nodeId].y = y;
-        // console.log("moving", $nodes[circle.attr("data-id")]);
     }
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
 
@@ -48,7 +47,6 @@
         .on("zoom", handleZoom);
 
     function handleZoom(e) {
-        // console.log("ev", e.transform);
         select(bindHandleZoom).attr("transform", e.transform);
     }
 
@@ -87,11 +85,9 @@
 
     function selectNode(node) {
         current_node.update(_ => node.id);
-        //console.log($nodes)
     }
 
     function vypis(){
-        console.log($nodes)
     }
 
     onMount(() => {
