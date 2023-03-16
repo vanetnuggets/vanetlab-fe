@@ -5,6 +5,7 @@
     isOk,
     loading,
     simData,
+    isValidated
   } from "../../store/summary";
   import { ProgressBar } from "carbon-components-svelte";
   import { downloadFile } from "../../services/LoadService";
@@ -17,10 +18,15 @@
   let showError = false;
   let showResult = false;
   let name = ""
+  let validated = false;
 
   let errData = [];
   let simulation = {};
   let scenarioLoading = false;
+
+  isValidated.subscribe(val => {
+    validated = val;
+  })
 
   scenarioName.subscribe(val => {
     name = val;
@@ -73,15 +79,11 @@
     {/if}
     {#if showResult}
       <br />
-      <h1>🥂🎉🥳 zbehol ti scenar</h1>
-      <div class="data-holder">
-        TODO: simulate() api call by mal vratit sumar vygenerovanych veci, ktory
-        sa ulozi do store-u <br />
-        tu sa spravi nejaky krasny komponent, ktory pre kazdy vygenerovany
-        <br />
-        file bude ukazovat jeho velkost a nazov a ked na to kliknes tak ho to downloadne<br
-        />
+      <h1>🥂🎉🥳 Scenario simulated! </h1>
 
+      <div class="data-holder">
+        You can download the simulation results here:
+      
         <button
           on:click={() => download(name, 'mobility', 'tcl')}
           class="download-item"
@@ -122,6 +124,10 @@
           </div>
         </button>
       </div>
+    {:else if validated}
+    <br>
+    Simulation validated but has not been ran yet. <br>
+    Simulate the scenario to see output.! <br>
     {/if}
   {/if}
 </div>
