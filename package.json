@@ -11,6 +11,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
     "@types/xml2js": "^0.4.11",
+    "carbon-components-svelte": "^0.73.3",
     "svelte": "^3.52.0",
     "svelte-awesome-color-picker": "^2.4.1",
     "svelte-grid": "^5.1.1",
@@ -30,6 +31,7 @@
     "sax": "^1.2.4",
     "stream-browserify": "^3.0.0",
     "svelte-file-dropzone": "^1.0.0",
+    "svelte-notifications": "^0.9.98",
     "svelte-preprocess": "^4.10.7",
     "svelte-spa-router": "^3.3.0",
     "util": "^0.12.5",

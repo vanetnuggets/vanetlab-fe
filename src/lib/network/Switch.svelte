@@ -6,11 +6,8 @@
 
 
 function resetNodes (){ 
-    //console.log("cau")
     for (const key of Object.keys($nodes)) {
-        //console.log($nodes[key].l2id , networkId)
         if( $nodes[key].l2id == networkId){
-            //console.log("spm")
             $nodes[key].l2 = switchValue.toLowerCase()
             $nodes[key].l2conf = {}
         }

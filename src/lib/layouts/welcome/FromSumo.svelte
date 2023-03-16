@@ -28,6 +28,9 @@ import { scenarioName } from "../../../store/store";
 import { fromSumo } from "../../api/sumo";
 import { loadConfig } from "../../../services/LoadService";
 
+import { getNotificationsContext } from 'svelte-notifications';
+const { addNotification } = getNotificationsContext();
+
 let sumoFile = null
 let simName = ""
 
@@ -35,19 +38,27 @@ async function loadSumo() {
   let data = new FormData;
   data.append('name', simName);
   data.append('sumotrace', sumoFile, simName);
+  
+  fromSumo(data).then((result) => {
+    scenarioName.update(_ => simName);
+    loadConfig(result.data);
+    push('/app/canvas')
+  }).catch((err) => {
+    let error = err.response.data.error;
+    let status = err.response.data.data;
 
-  const result = await fromSumo(data);
-  console.log(result.data);
-
-  scenarioName.update(_ => simName);
-  loadConfig(result.data);
-
-  push('/app/canvas')
+    if (error === true) {
+      addNotification({
+        text: `Failed to create scenario! reason: ${status}`,
+        position: 'bottom-center',
+        type: 'error'
+      })
+    }
+  });
 }
 
 function handleDrop(e) {
   sumoFile = e.detail.acceptedFiles[0];
-  console.log(sumoFile);
 }
 
 </script>

@@ -1,4 +1,5 @@
 <script>
+  import '../../assets/nodeconf.css'
   import { slide } from "svelte/transition";
   import { current_node, current_time } from "../../store/store.js";
   import { nodes } from "../../store/scenario.js";
@@ -15,7 +16,6 @@
   let open_info = true;
   function toggle_info() {
     open_info = !open_info;
-    //console.log($main_config)
   }
 </script>
 
@@ -27,13 +27,14 @@
     {#if open_info == true}
       <div transition:slide class="nodeinfo">
         <div class="general">
-          X: {$nodes[node_id].mobility[$current_time].x.toFixed(2)}
-          Y: {$nodes[node_id].mobility[$current_time].y.toFixed(2)}
+          X: {$nodes[node_id].x.toFixed(2)}
+          Y: {$nodes[node_id].y.toFixed(2)}
         </div>
+        <br>
         <L2 node_id={node_id} />
-        <br />
+        <br>
         <L3 node_id={node_id} />
-        <br />
+        <br>
         <Mobility node_id={node_id} />
       </div>
     {/if}
@@ -48,8 +49,8 @@
 
   .info-wrapper {
     padding: 5px;
-    max-width: 220px;
-    width: 220px;
+    max-width: 340px;
+    width: 280px;
   }
 
   .general {

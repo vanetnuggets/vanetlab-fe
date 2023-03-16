@@ -1,4 +1,7 @@
 import { nodes, networks, max_at } from "../store/scenario";
+import { scenarioName } from "../store/store";
+
+import { get } from 'svelte/store'
 // import { max_at } from "../store/store";
 
 export function clearAll() {
@@ -23,28 +26,31 @@ export function initNetworks() {
 }
 
 export function loadConfig(conf) {
-  // test scenarios do not have x, y values because.. they use ns2 mobility.
-  for (let key of Object.keys(conf.nodes)) {
-    let node = conf.nodes[key];
-    if (node.x === undefined) {
-      node.x = Math.floor(Math.random() * 200);
-    }
-    if (node.y === undefined) {
-      node.y = Math.floor(Math.random() * 200);
-    }
-  }
   networks.update(_ => conf.networks);
   initNetworks();
   nodes.update(_ => conf.nodes);
+  max_at.update(_ => conf.max_at);
 }
 
 export function assembleConfig() {
-  let no_default = $networks;
+  let nets = get(networks);
+  let no_default = JSON.parse(JSON.stringify(nets));
   delete no_default[-1];
 
   return {
-    nodes: $nodes,
+    nodes: get(nodes),
     networks: no_default,
-    max_at: $max_at
+    max_at: get(max_at)
   };
+}
+
+export function saveLocal() {
+  let config = assembleConfig();
+  const dataURI = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config, null, 2));
+  const link = document.createElement("a");
+  link.setAttribute("href", dataURI);
+  link.setAttribute("download", `${get(scenarioName)}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }

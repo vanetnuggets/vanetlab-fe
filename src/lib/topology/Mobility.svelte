@@ -1,6 +1,8 @@
 <script>
   import { slide } from "svelte/transition";
-  import { nodes } from "../../store/scenario.js";
+  import { max_at, nodes } from "../../store/scenario.js";
+  import { get } from 'svelte/store'
+  import '../../assets/nodeconf.css'
 
   export let node_id;
 
@@ -57,17 +59,20 @@
   }
 
   const add_mobility = () => {
-    // console.log(node_id)
     if (check_missing() && check_format()) {
       mobility[time_input] = { x: x_input, y: y_input, z: z_input };
       $nodes = $nodes;
+      
+      // update MaxAt
+      if (get(max_at) < time_input) {
+        max_at.update(_ => time_input);
+      }
 
       time_input = null;
       x_input = null;
       y_input = null;
       z_input = null;
       error_message = "";
-      //console.log($main_config)
     }
   };
 
@@ -78,8 +83,8 @@
 </script>
 
 <div class="mobility">
-  <button on:click={toggle_mobility} class="importrant-btn btn-trans">
-    Mobility
+  <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
+    | Mobility
   </button><br />
   {#if open_mobility}
     <div transition:slide>
@@ -152,7 +157,6 @@
             <span>{time}</span>
             <span>{position.x.toFixed(2)}</span>
             <span>{position.y.toFixed(2)}</span>
-            <span>{position.z.toFixed(2)}</span>
             <button on:click={() => remove_mobility(time)}>&times;</button>
             <br />
           {/each}

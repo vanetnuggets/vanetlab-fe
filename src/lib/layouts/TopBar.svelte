@@ -5,6 +5,7 @@
   <div>
     <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
     <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
+    <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
     <button on:click={() => goto('/app/summary')} class="btn l">📈 Results</button>
     <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
     <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
@@ -17,10 +18,16 @@
 <script>
   import { push } from 'svelte-spa-router'
   import { scenarioName } from '../../store/store';
-  import { assembleConfig } from '../../services/LoadService';
+  import { assembleConfig, saveLocal } from '../../services/LoadService';
   import { saveRemote as saveRemoteScenario, simulate} from '../api/scenarios';
   import { nodes, networks} from '../../store/scenario'
-  
+  import { validate } from '../api/scenarios';
+  import { get } from 'svelte/store'
+
+  import { getNotificationsContext } from 'svelte-notifications';
+  import { isError, errorData, isOk, loading } from '../../store/summary';
+  const { addNotification } = getNotificationsContext();
+
   let visible = true;
   let currName;
 
@@ -28,17 +35,90 @@
     currName = val;
   })
 
-  function saveLocal() {
-    // TODO - zober config zo storu a uloz ho na disk
-  }
-
   async function runSimulation() {
-    await simulate(currName, $nodes, $networks);
+    loading.update(val => ({
+      ...val, scenario: true
+    }));
+    simulate(currName).then((resp) => {
+      let name = get(scenarioName);
+      isError.update(_ => false);
+      isOk.update(_ => true);
+
+      addNotification({
+        text: `Scenario '${name}' done! View the results in 'Results' tab.`,
+        position: 'bottom-center',
+        type: 'success'
+      });
+    }).catch((err) => {
+      let data = err.response.data.data;
+      errorData.update(_ => data);
+      isError.update(_ => true);
+      isOk.update(_ => false);
+      
+      addNotification({
+        text: `Scenario simulation failed. See details in 'Result' tab`,
+        position: 'bottom-center',
+        type: 'error'
+      });
+    }).finally(() => {
+      loading.update(val => ({
+        ...val, scenario: false
+      }));
+    });
   }
 
   async function saveRemote() {
     let config = assembleConfig();
-    await saveRemoteScenario(currName, config);
+    let resp = await saveRemoteScenario(currName, config);
+
+    let error = resp.data.error;
+    let status = resp.data.name;
+
+    if (error == false) {
+      addNotification({
+        text: `Scenario '${status}' successfully saved remotely!`,
+        position: 'bottom-center',
+        type: 'success'
+      });
+    } else {
+      addNotification({
+        text: `Failed to save scenario. reason: ${status}`,
+        position: 'bottom-center',
+        type: 'error'
+      });
+    }
+  }
+
+  function validateSimulation() {
+    loading.update(val => ({
+      ...val, scenario: true
+    }));
+    validate(currName).then((resp) => {
+      let name = get(scenarioName);
+      isError.update(_ => false);
+      isOk.update(_ => true);
+
+      addNotification({
+        text: `Scenario '${name}' validated!`,
+        position: 'bottom-center',
+        type: 'success'
+      });
+    }).catch((err) => {
+      let data = err.response.data.data;
+      errorData.update(_ => data.split('\n'))
+      isError.update(_ => true);
+      isOk.update(_ => false);
+
+      addNotification({
+        text: `Errors while validating scenario. See details in 'Result' tab`,
+        position: 'bottom-center',
+        type: 'error'
+      });
+    }).finally(() => {
+      loading.update(val => ({
+        ...val, scenario: false
+      }));
+    });
   }
 
   function goto(a) {

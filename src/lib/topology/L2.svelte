@@ -1,4 +1,5 @@
 <script>
+    import '../../assets/nodeconf.css'
     import { slide } from "svelte/transition";
     import { nodes, networks } from "../../store/scenario";
 
@@ -11,7 +12,6 @@
     let open_l2 = false;
     function toggle_l2() {
         open_l2 = !open_l2;
-        //console.log($networks)
     }
 
     $: if ($nodes[node_id].l2id == -1) {
@@ -27,21 +27,21 @@
 </script>
 
 <div class="L2">
-    <button on:click={toggle_l2} class="importrant-btn btn-trans">
-        L2
-    </button><br />
+    <button on:click={toggle_l2} class="importrant-btn btn-trans full">
+        | Network config
+    </button>
     {#if open_l2}
         <div transition:slide>
             <div class="row">
                 <div class="col">
-                    L2 network: <br />
+                    Network: <br />
                 </div>
                 <div class="col">
                     <select
                         bind:value={$nodes[node_id].l2id}
                     >
                         {#each Object.keys($networks) as l2_t}
-                            <option value={parseInt(l2_t)}>
+                            <option value={$networks[l2_t].id}>
                                 {$networks[l2_t].ssid}
                             </option>
                         {/each}
