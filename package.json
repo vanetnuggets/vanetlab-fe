@@ -11,6 +11,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
     "@types/xml2js": "^0.4.11",
+    "carbon-components-svelte": "^0.73.3",
     "svelte": "^3.52.0",
     "svelte-awesome-color-picker": "^2.4.1",
     "svelte-grid": "^5.1.1",

@@ -9,6 +9,8 @@
 </Notifications>
 
 <script>
+import "carbon-components-svelte/css/white.css";
+
 import Router from 'svelte-spa-router'
 import MainApp from "./lib/layouts/MainApp.svelte";
 import Welcome from './lib/layouts/Welcome.svelte';
