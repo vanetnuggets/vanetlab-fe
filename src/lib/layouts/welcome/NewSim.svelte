@@ -13,9 +13,12 @@
 
 <script>
 import Dropzone from "svelte-file-dropzone";
+import { get } from 'svelte/store'
 import { push } from "svelte-spa-router";
 import { scenarioName } from "../../../store/store" 
 import { clearAll, initNetworks } from "../../../services/LoadService";
+import { nodes, networks } from "../../../store/scenario";
+
 let sim_name = "";
 
 function new_sim() {
@@ -23,7 +26,6 @@ function new_sim() {
   clearAll();
   initNetworks();
   scenarioName.update(_ => sim_name);
-  
   push('/app/canvas');
 }
 
