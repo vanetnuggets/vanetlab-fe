@@ -9,3 +9,5 @@ export const loading = writable({
   scenario: false,
   validation: false
 })
+
+export const simData = writable({});

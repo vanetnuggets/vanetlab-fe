@@ -31,7 +31,7 @@ export default {
       params: params
     });
   },
-  getBlob(path, params) {
+  getBlob(path, params={}) {
     return api.get(path, {
       headers: {
         'Referrer-Policy': 'no-referrer'

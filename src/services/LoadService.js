@@ -47,12 +47,26 @@ export function assembleConfig() {
   };
 }
 
-export function saveLocal() {
-  let config = assembleConfig();
-  const dataURI = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config, null, 2));
+export function download(data, type) {
+  const dataURI = `data:${type};charset=utf-8,` + encodeURIComponent(JSON.stringify(data, null, 2));
   const link = document.createElement("a");
   link.setAttribute("href", dataURI);
   link.setAttribute("download", `${get(scenarioName)}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+export function saveLocal() {
+  let config = assembleConfig();
+  download(config, 'application/json')
+}
+
+export function downloadFile(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
