@@ -25,7 +25,7 @@
   import { get } from 'svelte/store'
 
   import { getNotificationsContext } from 'svelte-notifications';
-  import { isError, errorData, isOk, loading } from '../../store/summary';
+  import { isError, errorData, isOk, loading, simData } from '../../store/summary';
   const { addNotification } = getNotificationsContext();
 
   let visible = true;
@@ -40,10 +40,12 @@
       ...val, scenario: true
     }));
     simulate(currName).then((resp) => {
+      let data = resp.data.data;
       let name = get(scenarioName);
       isError.update(_ => false);
       isOk.update(_ => true);
-
+      simData.update(_ => data);
+      
       addNotification({
         text: `Scenario '${name}' done! View the results in 'Results' tab.`,
         position: 'bottom-center',
