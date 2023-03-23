@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@bulatdashiev/svelte-slider": "^1.0.3",
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
     "@types/xml2js": "^0.4.11",
     "carbon-components-svelte": "^0.73.3",
