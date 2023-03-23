@@ -17,10 +17,9 @@ export function clearAll() {
 
   current_node.set(Init.CURRENT_NODE)
   current_time.set(Init.CURRENT_TIME);
-
   networks.set(Init.NETWORKS);
-  nodes.update(Init.NODES);
-  max_at.update(Init.MAX_AT);
+  nodes.set(Init.NODES);
+  max_at.set(Init.MAX_AT);
 }
 
 
