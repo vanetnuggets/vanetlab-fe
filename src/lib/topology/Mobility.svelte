@@ -14,6 +14,9 @@
 
   let mobility;
   nodes.subscribe((n) => {
+    if (n[node_id] === undefined) {
+      return {};
+    }
     mobility = n[node_id].mobility;
   });
 

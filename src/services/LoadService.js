@@ -1,13 +1,25 @@
 import { nodes, networks, max_at } from "../store/scenario";
 import { scenarioName } from "../store/store";
+import { current_time, current_node } from "../store/store";
+import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
+import Init from "../services/initService";
 
 import { get } from 'svelte/store'
 // import { max_at } from "../store/store";
 
 export function clearAll() {
-  networks.update(_ => { return {}});
-  nodes.update(_ => { return {}});
-  max_at.update(_ => 0);
+  isOk.set(Init.OK);
+  isValidated.set(Init.VALIDATED);
+  isError.set(Init.ERR);
+  errorData.set(Init.ERR_DATA);
+  loading.set(Init.LOADING);
+  simData.set(Init.SIM_DATA);
+
+  current_node.set(Init.CURRENT_NODE)
+  current_time.set(Init.CURRENT_TIME);
+  networks.set(Init.NETWORKS);
+  nodes.set(Init.NODES);
+  max_at.set(Init.MAX_AT);
 }
 
 
@@ -44,12 +56,26 @@ export function assembleConfig() {
   };
 }
 
-export function saveLocal() {
-  let config = assembleConfig();
-  const dataURI = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config, null, 2));
+export function download(data, type) {
+  const dataURI = `data:${type};charset=utf-8,` + encodeURIComponent(JSON.stringify(data, null, 2));
   const link = document.createElement("a");
   link.setAttribute("href", dataURI);
   link.setAttribute("download", `${get(scenarioName)}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+export function saveLocal() {
+  let config = assembleConfig();
+  download(config, 'application/json')
+}
+
+export function downloadFile(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

@@ -1,5 +1,5 @@
 <script>
-    import { zoom, select, drag, randomInt } from "d3";
+    import { zoom, select, drag, randomInt, timeDay } from "d3";
     import { onMount } from "svelte";
     import {
         nextNodeId,
@@ -16,6 +16,21 @@
 
     $: nodearr = Object.values($nodes);
     $: nodepos = {0:{x:5,y:5}}
+
+    current_time.subscribe(timeRaw => {
+        let time = timeRaw.toString() + '.0'
+        for (let key of Object.keys($nodes)) {
+            let node = $nodes[key];
+            
+            if (node.mobility[time] !== undefined) {
+                node.x = node.mobility[time].x
+                node.y = node.mobility[time].y 
+            } else {
+                // vypocitaj;
+            }
+        }
+        $nodes = $nodes;
+    })
 
     function started(event) {
         circle = select(this); // set circle to the element that has been dragged.

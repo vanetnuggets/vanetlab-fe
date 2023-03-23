@@ -25,7 +25,7 @@
   import { get } from 'svelte/store'
 
   import { getNotificationsContext } from 'svelte-notifications';
-  import { isError, errorData, isOk, loading } from '../../store/summary';
+  import { isError, isValidated, errorData, isOk, loading, simData } from '../../store/summary';
   const { addNotification } = getNotificationsContext();
 
   let visible = true;
@@ -40,10 +40,11 @@
       ...val, scenario: true
     }));
     simulate(currName).then((resp) => {
+      let data = resp.data.data;
       let name = get(scenarioName);
       isError.update(_ => false);
       isOk.update(_ => true);
-
+      simData.update(_ => data);
       addNotification({
         text: `Scenario '${name}' done! View the results in 'Results' tab.`,
         position: 'bottom-center',
@@ -95,8 +96,9 @@
     }));
     validate(currName).then((resp) => {
       let name = get(scenarioName);
-      isError.update(_ => false);
-      isOk.update(_ => true);
+      isError.set(false);
+      isOk.set(false);
+      isValidated.set(true);
 
       addNotification({
         text: `Scenario '${name}' validated!`,
@@ -105,9 +107,10 @@
       });
     }).catch((err) => {
       let data = err.response.data.data;
-      errorData.update(_ => data.split('\n'))
-      isError.update(_ => true);
-      isOk.update(_ => false);
+      errorData.set(data.split('\n'))
+      isError.set(true);
+      isOk.set(false);
+      isValidated.set(false);
 
       addNotification({
         text: `Errors while validating scenario. See details in 'Result' tab`,

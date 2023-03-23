@@ -22,3 +22,7 @@ export async function validate(name) {
   let config = assembleConfig();
   return Api.post(`validate/${name}`, config);
 }
+
+export async function getFile(name, file) {
+  return Api.getBlob(`get/${name}/${file}`);
+}
