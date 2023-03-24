@@ -13,6 +13,8 @@
   let error_message = "";
 
   let mobility;
+
+
   nodes.subscribe((n) => {
     if (n[node_id] === undefined) {
       return {};
@@ -63,7 +65,7 @@
 
   const add_mobility = () => {
     if (check_missing() && check_format()) {
-      mobility[time_input] = { x: x_input, y: y_input, z: z_input };
+      mobility[time_input.toString() + '.0'] = { x: x_input, y: y_input, z: z_input };
       $nodes = $nodes;
       
       // update MaxAt
