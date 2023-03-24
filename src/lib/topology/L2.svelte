@@ -52,7 +52,7 @@
                 <div transition:slide>
                     <div class="row">
                         <div class="col">
-                            {$nodes[node_id].l2} type: <br />
+                            Node type: <br />
                         </div>
                         <div class="col">
                             <select bind:value={$nodes[node_id].l2conf.type}>

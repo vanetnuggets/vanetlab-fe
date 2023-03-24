@@ -16,7 +16,7 @@
     //let colors = ["blue", "pink", "brown", "yellow"];
 
     $: nodearr = Object.values($nodes);
-    $: current_time_string = $current_time.toString() + '.0'
+    $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
 
     current_time.subscribe(timeRaw => {
         let time = timeRaw.toString() + '.0'
@@ -32,7 +32,7 @@
                     return (curr > prev && curr <= timeRaw ? curr : prev);
                 });
 
-                let closest_str = closest.toString() + '.0'
+                let closest_str = closest === 0 ? closest.toString() : closest.toString() + '.0'
 
                 if (node.mobility[closest_str] !== undefined) {
                     node.x = node.mobility[closest_str].x
@@ -59,11 +59,25 @@
         let x = event.x;
         let y = event.y;
 
+        let order = false
+        if ($nodes[nodeId].mobility[current_time_string] === undefined) 
+            order = true
+        
         $nodes[nodeId].mobility[current_time_string] = {};
 
         $nodes[nodeId].mobility[current_time_string].x = x;
         $nodes[nodeId].mobility[current_time_string].y = y;
         $nodes[nodeId].mobility[current_time_string].z = 1;
+
+        if(order){
+            $nodes[nodeId].mobility = Object.keys($nodes[nodeId].mobility).sort(function(a, b){return +a-+b}).reduce(
+                (obj, key) => { 
+                    obj[key] = $nodes[nodeId].mobility[key]; 
+                    return obj;
+                }, {}
+            );
+        }
+
 
         $nodes[nodeId].x = x;
         $nodes[nodeId].y = y;
@@ -107,7 +121,7 @@
             y:y
   
         };
-        newNode.mobility['0.0'] = { x: x, y: y, z: 0 };
+        newNode.mobility['0'] = { x: x, y: y, z: 0 };
 
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;

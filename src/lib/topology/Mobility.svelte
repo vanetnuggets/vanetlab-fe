@@ -65,7 +65,14 @@
 
   const add_mobility = () => {
     if (check_missing() && check_format()) {
-      mobility[time_input.toString() + '.0'] = { x: x_input, y: y_input, z: z_input };
+
+      mobility[time_input === 0 ? time_input.toString() : time_input.toString() + '.0'] = { x: x_input, y: y_input, z: z_input };
+      $nodes[node_id].mobility = Object.keys(mobility).sort(function(a, b){return +a-+b}).reduce(
+          (obj, key) => { 
+              obj[key] = mobility[key]; 
+              return obj;
+          }, {}
+      );
       $nodes = $nodes;
       
       // update MaxAt
