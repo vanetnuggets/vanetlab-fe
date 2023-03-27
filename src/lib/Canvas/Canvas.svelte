@@ -12,10 +12,11 @@
     let radius = 15;
     let svg;
     let circle;
+    let nodepos;
     //let colors = ["blue", "pink", "brown", "yellow"];
 
     $: nodearr = Object.values($nodes);
-    $: nodepos = {0:{x:5,y:5}}
+    $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
 
     current_time.subscribe(timeRaw => {
         let time = timeRaw.toString() + '.0'
@@ -27,6 +28,24 @@
                 node.y = node.mobility[time].y 
             } else {
                 // vypocitaj;
+                let closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
+                    return (curr > prev && curr <= timeRaw ? curr : prev);
+                });
+
+                let closest_str = closest === 0 ? closest.toString() : closest.toString() + '.0'
+
+                if (node.mobility[closest_str] !== undefined) {
+                    node.x = node.mobility[closest_str].x
+                    node.y = node.mobility[closest_str].y
+                } else {
+                    if (node.mobility[closest] !== undefined) {
+                        node.x = node.mobility[closest].x
+                        node.y = node.mobility[closest].y
+                    } else {
+                        node.x = 0
+                        node.y = 0
+                    }
+                }
             }
         }
         $nodes = $nodes;
@@ -40,11 +59,25 @@
         let x = event.x;
         let y = event.y;
 
-        $nodes[nodeId].mobility[$current_time] = {};
+        let order = false
+        if ($nodes[nodeId].mobility[current_time_string] === undefined) 
+            order = true
+        
+        $nodes[nodeId].mobility[current_time_string] = {};
 
-        $nodes[nodeId].mobility[$current_time].x = x;
-        $nodes[nodeId].mobility[$current_time].y = y;
-        $nodes[nodeId].mobility[$current_time].z = 1;
+        $nodes[nodeId].mobility[current_time_string].x = x;
+        $nodes[nodeId].mobility[current_time_string].y = y;
+        $nodes[nodeId].mobility[current_time_string].z = 1;
+
+        if(order){
+            $nodes[nodeId].mobility = Object.keys($nodes[nodeId].mobility).sort(function(a, b){return +a-+b}).reduce(
+                (obj, key) => { 
+                    obj[key] = $nodes[nodeId].mobility[key]; 
+                    return obj;
+                }, {}
+            );
+        }
+
 
         $nodes[nodeId].x = x;
         $nodes[nodeId].y = y;
@@ -88,7 +121,7 @@
             y:y
   
         };
-        newNode.mobility[$current_time] = { x: x, y: y, z: 0 };
+        newNode.mobility['0'] = { x: x, y: y, z: 0 };
 
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;
@@ -125,8 +158,8 @@
     </div>
     <TimeManagment/>
 </div>
-
-<svg bind:this={bind} height="97%" width="100%">
+<!-- height="97%" -->
+<svg bind:this={bind} height="91%" width="100%">
     <g bind:this={bindHandleZoom}>
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>

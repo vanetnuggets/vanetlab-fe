@@ -2,6 +2,9 @@
  	import { current_time, node } from "../../store/store.js";
 	import { max_at ,nodes} from "../../store/scenario.js";
 
+	const max = "(max :"
+	const end = ")"
+
 	$: if ($current_time > $max_at) {
 		$current_time = $max_at
 	}
@@ -19,15 +22,18 @@
 </script>
 
 <div class="slidecontainer">
-	Max time: 
-	<input type=number bind:value={$max_at} min=0>
-	<button on:click ={setMaxAt} class="btn s">
+	
+	<!-- <button on:click ={setMaxAt} class="btn s">
 		Set max
-	</button>
+	</button> -->
 
 	
-	<p>Current time: {$current_time}</p>
-	<input type="range" min="0" max={$max_at} bind:value={$current_time}>
+	<p>Current time: {$current_time}
+		{max}
+		<input type=number bind:value={$max_at} min=0 style="padding: 0" >
+		{end}
+	</p>
+	<input type="range" min="0" max={$max_at} bind:value={$current_time} style="padding: 0">
 </div>
 
 <style>
