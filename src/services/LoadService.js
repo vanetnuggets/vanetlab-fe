@@ -20,6 +20,8 @@ export function clearAll() {
   networks.set(Init.NETWORKS);
   nodes.set(Init.NODES);
   max_at.set(Init.MAX_AT);
+  nextNetworkId.set(0)
+  nextNodeId.set(0)
 }
 
 
@@ -32,7 +34,7 @@ export function initNetworks() {
       ssid: "default",
       type: null,
       addr: null
-    }
+    };
     return tmp;
   })
 }

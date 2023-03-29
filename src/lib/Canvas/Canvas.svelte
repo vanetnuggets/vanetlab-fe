@@ -122,7 +122,6 @@
   
         };
         newNode.mobility['0'] = { x: x, y: y, z: 0 };
-
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;
         // wait until it is rendered and add draghandler
