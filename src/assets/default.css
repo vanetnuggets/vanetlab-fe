@@ -230,3 +230,16 @@ option {
   padding-right: 8px;
 }
 
+.mobility_table {
+  width: 100%;
+  border: 1px gray solid;
+}
+
+.mobility_table td {
+  border: 1px gray solid;
+}
+
+.mobility_table th {
+  border: 1px gray solid;
+  padding: 7px;
+}

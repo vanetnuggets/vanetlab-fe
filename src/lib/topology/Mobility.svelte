@@ -104,7 +104,7 @@
     <div transition:slide>
       <div class="add_mobility">
         <button on:click={toggle_add_mobility} class="importrant-btn btn-trans">
-          Add
+          Toggle
         </button><br />
         {#if open_add_mobility}
           <div transition:slide>
@@ -188,19 +188,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .mobility_table {
-    width: 100%;
-    border: 1px gray solid;
-  }
-
-  .mobility_table td {
-    border: 1px gray solid;
-  }
-
-  .mobility_table th {
-    border: 1px gray solid;
-    padding: 7px;
-  }
-</style>

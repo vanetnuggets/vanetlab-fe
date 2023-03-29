@@ -5,7 +5,9 @@
   import { nodes } from "../../store/scenario.js";
   import Mobility from "./Mobility.svelte";
   import L2 from "./L2.svelte";
-  import L3 from "./L3.svelte"
+  import L3 from "./L3.svelte";
+  import SdnController from "./SdnController.svelte";
+  import SdnNeighbors from "./SdnNeighbors.svelte";
 
   let node_id = null;
 
@@ -31,10 +33,18 @@
           Y: {$nodes[node_id].y.toFixed(2)}
         </div>
         <br>
-        <L2 node_id={node_id} />
-        <br>
-        <L3 node_id={node_id} />
-        <br>
+        {#if $nodes[node_id].type != "sdn"}
+          <L2 node_id={node_id} />
+          <br>
+          <L3 node_id={node_id} />
+          <br>
+        {/if}
+        {#if $nodes[node_id].type == "sdn"}
+          <SdnController node_id={node_id} />
+          <br>
+          <SdnNeighbors node_id={node_id} />
+          <br>
+        {/if}
         <Mobility node_id={node_id} />
       </div>
     {/if}

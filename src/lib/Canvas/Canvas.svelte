@@ -5,9 +5,11 @@
         nextNodeId,
         current_node,
         current_time,
+        node_id,
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
+    import OvsIcon from "../../assets/ovs.png";
 
     let radius = 15;
     let svg;
@@ -151,11 +153,12 @@
         select(bind).call(zoomX);
     }
 
-    function add_node() {
+    function add_node(sdn = false) {
         let x = width / 2;
         let y = height / 2;
         let newNode = {
             id: $nextNodeId,
+            type: "basic",
             mobility: {},
             l2id: -1,
             l2: null,
@@ -167,7 +170,11 @@
   
         };
         newNode.mobility['0'] = { x: x, y: y, z: 0 };
-
+        if (sdn){
+            newNode.type = "sdn";
+            newNode["switch_nodes"] = [];
+            newNode["controller"] = ""
+        }
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;
         // wait until it is rendered and add draghandler
@@ -211,7 +218,8 @@
 
 <div class="toolbar">
     <div class="action">
-        <button on:click={add_node} class="btn s">Add node</button>
+        <button on:click={() => add_node()} class="btn s">Add node</button>
+        <button on:click={() => add_node(true)} class="btn s">Add OVSWITCH</button>
         <button on:click={vypis} class="btn s">Vypis</button>
     </div>
     <TimeManagment/>
@@ -245,7 +253,7 @@
                 <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
             {/each}
         {/each}
-        {#each nodearr as d, i}
+        {#each nodearr as d}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <circle
                 on:click={() => selectNode(d)}
@@ -257,6 +265,7 @@
                 fill={$networks[d.l2id].color}
             />
             <circle
+                class="no_tap"
                 cx={d.x + radius - 5}
                 cy={d.y + radius - 7}
                 r={8}
@@ -265,7 +274,7 @@
             <text
                 alignment-baseline="middle"
                 text-anchor="middle"
-                class = id_text
+                class="id_text no_tap"
                 x={d.x + radius - 5}
                 y={d.y + radius - 5}>{d.id}</text
             >
@@ -276,14 +285,27 @@
                 alignment-baseline="middle"
                 text-anchor="middle"
                 x={d.x + radius }
-                y={d.y + radius - 30}>   
+                y={d.y + radius - 30}
+                style="z-index:1">   
                 x</text
             >
+            {#if d.type == "sdn"}
+                <image class="no_tap"
+                    href={OvsIcon}
+                    x={d.x - 20}
+                    y={d.y - 20}
+                    width={20}
+                    height={20}
+                />   
+            {/if}
         {/each}
     </g>
 </svg>
 
 <style scoped>
+    .no_tap {
+        pointer-events:none; 
+    }
     .remove_node { 
         cursor: pointer; 
         user-select: none;
