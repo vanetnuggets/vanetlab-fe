@@ -63,7 +63,7 @@
   {#if scenarioLoading}
     <div class="loading-holder">
       <div class="tmp">
-        <ProgressBar kind="indented" size="sm" id="#css-loading-bar" />
+        <ProgressBar kind="indented" size="sm"/>
       </div>
     </div>
   {:else}
@@ -89,7 +89,7 @@
           class="download-item"
         >
           <div class="data-icon">
-            <img src={mapIcon}  height=64px width=64px>
+            <img src={mapIcon}  height=64px width=64px alt="map_icon">
           </div>
           <div class="data-text">
             Mobility TCL <br />
@@ -102,7 +102,7 @@
           class="download-item"
         >
           <div class="data-icon">
-            <img src={terminalIcon}  height=64px width=64px>
+            <img src={terminalIcon}  height=64px width=64px alt="terminal_icon">
           </div>
           <div class="data-text">
             Terminal output <br />
@@ -115,7 +115,7 @@
           class="download-item"
         >
           <div class="data-icon">
-            <img src={networkIcon} height=64px width=64px >
+            <img src={networkIcon} height=64px width=64px alt="network_icon">
           </div>
           <div class="data-text">
             Trace file <br />
@@ -156,6 +156,7 @@
   }
 
   .loading-holder {
+    margin-top: -10px;
     width: 100%;
   }
 
@@ -190,9 +191,5 @@
 
   .data-text {
     text-align: left;
-  }
-
-  #css-loading-bar {
-    color: red;
   }
 </style>

@@ -3,7 +3,6 @@
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks, nodes } from '../../store/scenario.js';
     import Switch from './Switch.svelte';
-    import ConsoleLogs from '../vizualize/ConsoleLogs.svelte';
     export let network
 
     let rgb
