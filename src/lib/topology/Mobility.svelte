@@ -165,15 +165,40 @@
       </button><br />
       {#if open_list_mobility}
         <div transition:slide>
-          {#each Object.entries($nodes[node_id].mobility) as [time, position]}
-            <span>{time}</span>
-            <span>{position.x.toFixed(2)}</span>
-            <span>{position.y.toFixed(2)}</span>
-            <button on:click={() => remove_mobility(time)}>&times;</button>
-            <br />
+          <table class="mobility_table">
+            <tr>
+              <th style="width:25%">Time</th>
+              <th>X</th>
+              <th>Y</th>
+              <th>Delete</th>
+            </tr>
+            {#each Object.entries($nodes[node_id].mobility) as [time, position]}
+            <tr>
+              <td>{time}</td>
+              <td>{position.x.toFixed(2)}</td>
+              <td>{position.y.toFixed(2)}</td>
+              <td><button on:click={() => remove_mobility(time)}>&times;</button></td>
+            </tr>
           {/each}
+          </table>
         </div>
       {/if}
     </div>
   {/if}
 </div>
+
+<style>
+  .mobility_table {
+    width: 100%;
+    border: 1px gray solid;
+  }
+
+  .mobility_table td {
+    border: 1px gray solid;
+  }
+
+  .mobility_table th {
+    border: 1px gray solid;
+    padding: 7px;
+  }
+</style>
