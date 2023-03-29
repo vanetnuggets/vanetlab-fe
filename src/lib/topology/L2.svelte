@@ -2,6 +2,7 @@
     import '../../assets/nodeconf.css'
     import { slide } from "svelte/transition";
     import { nodes, networks } from "../../store/scenario";
+    import OptionalAttributes from "./L2attributes.svelte"
 
     export let node_id;
     const l2_types = {
@@ -21,8 +22,8 @@
         $nodes[node_id].l2 = $networks[$nodes[node_id].l2id].type.toLowerCase();
     }
     
-    $: if ($nodes[node_id].l2 != null && !l2_types[$nodes[node_id].l2].includes($nodes[node_id].l2conf.type))
-        $nodes[node_id].l2conf={}
+    // $: if ($nodes[node_id].l2 != null && !l2_types[$nodes[node_id].l2].includes($nodes[node_id].l2conf.type))
+    //     $nodes[node_id].l2conf={}
         
 </script>
 
@@ -64,7 +65,10 @@
                             </select>
                         </div>
                     </div>
+                    <OptionalAttributes node_id={node_id} />
+
                 </div>
+                
             {/if}
         </div>
     {/if}
