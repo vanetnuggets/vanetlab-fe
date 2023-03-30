@@ -8,8 +8,6 @@
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
-    import { areaAnchor } from "leader-line-new";
-    import { element } from "svelte/internal";
 
     let radius = 15;
     let svg;
@@ -19,9 +17,9 @@
 
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
-    $: sietky = araaaaa(nodearr);
+    $: sietky = createPairs(nodearr);
 
-    function araaaaa(nodes){
+    function createPairs(nodes){
         let arr = {}
         
         // zober nody podľa sieti
@@ -40,7 +38,7 @@
             }
 
         });
-        console.log(arr)
+        
         let connects = []
         // sprav páry jednotlivých nodov
         for (const index in arr) {
@@ -57,7 +55,6 @@
             }
             connects.push(second_layer)
         }
-        console.log(connects)
         return Object.values(connects)
     }
 
