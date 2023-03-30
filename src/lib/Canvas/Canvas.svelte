@@ -194,6 +194,13 @@
             current_node.update((_) => null)
         delete $nodes[node.id]
         $nodes = $nodes
+        let index
+        $connections.forEach(e => {
+            if (e.node_from === node.id || e.node_to === node.id)
+                index = $connections.indexOf(e)
+                $connections.splice(index, 1)
+                $connections = $connections
+        });
     }
 
     onMount(() => {
@@ -231,11 +238,11 @@
             <rect width="100%" height="100%" fill="url(#smallGrid)" />
         </svg>
         {#each $connections as c}
-            <line x1={nodearr[c.node_from].x} y1={nodearr[c.node_from].y} x2={nodearr[c.node_to].x} y2={nodearr[c.node_to].y} stroke="black" />
+            <line x1={$nodes[c.node_from].x} y1={$nodes[c.node_from].y} x2={$nodes[c.node_to].x} y2={$nodes[c.node_to].y} stroke="black" />
         {/each}
         {#each sietky as siet}
             {#each siet.nodes as nody}
-                <line x1={nodearr[nody[0]].x} y1={nodearr[nody[0]].y} x2={nodearr[nody[1]].x} y2={nodearr[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
+                <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
             {/each}
         {/each}
         {#each nodearr as d, i}
