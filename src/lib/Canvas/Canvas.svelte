@@ -28,11 +28,16 @@
                 node.y = node.mobility[time].y 
             } else {
                 // vypocitaj;
-                let closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
-                    return (curr > prev && curr <= timeRaw ? curr : prev);
-                });
+                let closest = null
+                let closest_str = null
+                if (Object.keys(node.mobility).length !== 0){ 
+                    closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
+                        return (curr > prev && curr <= timeRaw ? curr : prev);
+                    });
+                    closest_str = closest === 0 ? closest.toString() : closest.toString() + '.0'
+                }
 
-                let closest_str = closest === 0 ? closest.toString() : closest.toString() + '.0'
+                
 
                 if (node.mobility[closest_str] !== undefined) {
                     node.x = node.mobility[closest_str].x
@@ -42,8 +47,8 @@
                         node.x = node.mobility[closest].x
                         node.y = node.mobility[closest].y
                     } else {
-                        node.x = 0
-                        node.y = 0
+                        node.x = 10
+                        node.y = 10
                     }
                 }
             }
@@ -138,11 +143,17 @@
 
     function selectNode(node) {
         current_node.update((_) => node.id);
-        //console.log(node)
     }
 
     function vypis() {
         console.log($nodes)
+    }
+
+    function remove_node(node){
+        if ($current_node === node.id)
+            current_node.update((_) => null)
+        delete $nodes[node.id]
+        $nodes = $nodes
     }
 
     onMount(() => {
@@ -180,6 +191,7 @@
             <rect width="100%" height="100%" fill="url(#smallGrid)" />
         </svg>
         {#each nodearr as d, i}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <circle
                 on:click={() => selectNode(d)}
                 class="myPoint"
@@ -198,12 +210,32 @@
             <text
                 alignment-baseline="middle"
                 text-anchor="middle"
+                class = id_text
                 x={d.x + radius - 5}
                 y={d.y + radius - 5}>{d.id}</text
+            >
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <text
+                on:click={() => remove_node(d)}
+                class = remove_node
+                alignment-baseline="middle"
+                text-anchor="middle"
+                x={d.x + radius }
+                y={d.y + radius - 30}>   
+                x</text
             >
         {/each}
     </g>
 </svg>
 
 <style scoped>
+    .remove_node { 
+        cursor: pointer; 
+        user-select: none;
+		font-weight: bold;      
+    }
+    .id_text {
+        cursor:auto;
+        user-select: none;
+    }
 </style>

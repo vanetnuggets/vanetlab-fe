@@ -89,8 +89,10 @@
   };
 
   const remove_mobility = (time) => {
-    mobility = delete mobility[time] && mobility;
-    $nodes = $nodes;
+    if(Object.keys(mobility).length !== 1){
+      mobility = delete mobility[time] && mobility;
+      $nodes = $nodes;
+    }
   };
 </script>
 
@@ -98,7 +100,7 @@
   <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
     | Mobility
   </button><br />
-  {#if open_mobility}
+  {#if open_mobility && $nodes[node_id] !== undefined}
     <div transition:slide>
       <div class="add_mobility">
         <button on:click={toggle_add_mobility} class="importrant-btn btn-trans">
