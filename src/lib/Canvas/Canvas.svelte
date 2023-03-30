@@ -1,12 +1,12 @@
 <script>
-    import { zoom, select, drag, randomInt, timeDay } from "d3";
+    import { zoom, select, drag } from "d3";
     import { onMount } from "svelte";
     import {
         nextNodeId,
         current_node,
         current_time,
     } from "../../store/store.js";
-    import { nodes, networks } from "../../store/scenario";
+    import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
 
     let radius = 15;
@@ -122,6 +122,7 @@
   
         };
         newNode.mobility['0'] = { x: x, y: y, z: 0 };
+
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;
         // wait until it is rendered and add draghandler
@@ -178,6 +179,9 @@
             </defs>
             <rect width="100%" height="100%" fill="url(#smallGrid)" />
         </svg>
+        {#each $connections as c}
+            <line x1={nodearr[c.node_from].x} y1={nodearr[c.node_from].y} x2={nodearr[c.node_to].x} y2={nodearr[c.node_to].y} stroke="black" />
+        {/each}
         {#each nodearr as d, i}
             <circle
                 on:click={() => selectNode(d)}
