@@ -8,6 +8,8 @@
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
+    import { areaAnchor } from "leader-line-new";
+    import { element } from "svelte/internal";
 
     let radius = 15;
     let svg;
@@ -17,6 +19,47 @@
 
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
+    $: sietky = araaaaa(nodearr);
+
+    function araaaaa(nodes){
+        let arr = {}
+        
+        // zober nody podľa sieti
+        nodes.forEach(element => {
+            if (element.l2id in arr) {
+                arr[element.l2id].nodes.push(element.id)
+            } 
+            else {
+                arr[element.l2id] = {
+                    id: element.l2id,
+                    nodes: [
+                        element.id
+                    ]
+                }
+                    
+            }
+
+        });
+        console.log(arr)
+        let connects = []
+        // sprav páry jednotlivých nodov
+        for (const index in arr) {
+            if (index === "-1")
+                continue;
+            let second_layer = {
+                id: parseInt(arr[index].id),
+                nodes: []
+            }
+            for (var i = 0; i < arr[index].nodes.length - 1; i++) {
+                for (var j = i; j < arr[index].nodes.length - 1; j++) {
+                    second_layer.nodes.push([arr[index].nodes[i], arr[index].nodes[j+1]])
+                }
+            }
+            connects.push(second_layer)
+        }
+        console.log(connects)
+        return Object.values(connects)
+    }
 
     current_time.subscribe(timeRaw => {
         let time = timeRaw.toString() + '.0'
@@ -181,6 +224,11 @@
         </svg>
         {#each $connections as c}
             <line x1={nodearr[c.node_from].x} y1={nodearr[c.node_from].y} x2={nodearr[c.node_to].x} y2={nodearr[c.node_to].y} stroke="black" />
+        {/each}
+        {#each sietky as siet}
+            {#each siet.nodes as nody}
+                <line x1={nodearr[nody[0]].x} y1={nodearr[nody[0]].y} x2={nodearr[nody[1]].x} y2={nodearr[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
+            {/each}
         {/each}
         {#each nodearr as d, i}
             <circle
