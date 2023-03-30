@@ -28,6 +28,12 @@
     function toggle_creation() {
         show = !show;
     }
+
+
+    function deleteConnection(index) {
+        $connections.splice(index, 1)
+        $connections = $connections
+    }
 </script>
 
 <div style="margin-top:69px;">
@@ -58,6 +64,9 @@
                             </option>
                         {/each}
                     </select>
+                </div>
+                <div>
+                    <button on:click={() => deleteConnection(i)} class="btn-basic remover {confirm ? "confirm": ""}">X</button>
                 </div>
             </div>
         {/each}

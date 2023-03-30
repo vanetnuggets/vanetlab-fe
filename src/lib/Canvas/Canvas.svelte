@@ -1,12 +1,12 @@
 <script>
-    import { zoom, select, drag, randomInt, timeDay } from "d3";
+    import { zoom, select, drag } from "d3";
     import { onMount } from "svelte";
     import {
         nextNodeId,
         current_node,
         current_time,
     } from "../../store/store.js";
-    import { nodes, networks } from "../../store/scenario";
+    import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
 
     let radius = 15;
@@ -17,6 +17,46 @@
 
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
+    $: sietky = createPairs(nodearr);
+
+    function createPairs(nodes){
+        let arr = {}
+        
+        // zober nody podľa sieti
+        nodes.forEach(element => {
+            if (element.l2id in arr) {
+                arr[element.l2id].nodes.push(element.id)
+            } 
+            else {
+                arr[element.l2id] = {
+                    id: element.l2id,
+                    nodes: [
+                        element.id
+                    ]
+                }
+                    
+            }
+
+        });
+        
+        let connects = []
+        // sprav páry jednotlivých nodov
+        for (const index in arr) {
+            if (index === "-1")
+                continue;
+            let second_layer = {
+                id: parseInt(arr[index].id),
+                nodes: []
+            }
+            for (var i = 0; i < arr[index].nodes.length - 1; i++) {
+                for (var j = i; j < arr[index].nodes.length - 1; j++) {
+                    second_layer.nodes.push([arr[index].nodes[i], arr[index].nodes[j+1]])
+                }
+            }
+            connects.push(second_layer)
+        }
+        return Object.values(connects)
+    }
 
     current_time.subscribe(timeRaw => {
         let time = timeRaw.toString() + '.0'
@@ -122,6 +162,7 @@
   
         };
         newNode.mobility['0'] = { x: x, y: y, z: 0 };
+
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;
         // wait until it is rendered and add draghandler
@@ -178,6 +219,14 @@
             </defs>
             <rect width="100%" height="100%" fill="url(#smallGrid)" />
         </svg>
+        {#each $connections as c}
+            <line x1={nodearr[c.node_from].x} y1={nodearr[c.node_from].y} x2={nodearr[c.node_to].x} y2={nodearr[c.node_to].y} stroke="black" />
+        {/each}
+        {#each sietky as siet}
+            {#each siet.nodes as nody}
+                <line x1={nodearr[nody[0]].x} y1={nodearr[nody[0]].y} x2={nodearr[nody[1]].x} y2={nodearr[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
+            {/each}
+        {/each}
         {#each nodearr as d, i}
             <circle
                 on:click={() => selectNode(d)}
