@@ -1,6 +1,6 @@
 import { nodes, networks, max_at } from "../store/scenario";
 import { scenarioName } from "../store/store";
-import { current_time, current_node } from "../store/store";
+import { current_time, current_node, nextNetworkId, nextNodeId } from "../store/store";
 import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
 import Init from "../services/initService";
 
@@ -20,6 +20,8 @@ export function clearAll() {
   networks.set(Init.NETWORKS);
   nodes.set(Init.NODES);
   max_at.set(Init.MAX_AT);
+  nextNetworkId.set(0)
+  nextNodeId.set(0)
 }
 
 
@@ -32,7 +34,7 @@ export function initNetworks() {
       ssid: "default",
       type: null,
       addr: null
-    }
+    };
     return tmp;
   })
 }
@@ -42,6 +44,8 @@ export function loadConfig(conf) {
   initNetworks();
   nodes.update(_ => conf.nodes);
   max_at.update(_ => conf.max_at);
+  nextNetworkId.update(_ => parseInt(Object.keys(conf.networks).reduce((a, b) => conf.networks[a].id > conf.networks[b].id ? a : b))+1)
+  nextNodeId.update(_ => parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
 }
 
 export function assembleConfig() {

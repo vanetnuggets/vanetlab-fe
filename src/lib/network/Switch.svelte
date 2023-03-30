@@ -15,28 +15,25 @@ function resetNodes (){
     $nodes=$nodes
 }
 
-function handleClick(event){
-        const target = event.target
-
-        const state = target.getAttribute('aria-checked')
-
-        checked = state === 'true' ? false : true
-
-        switchValue = checked === true ? 'LTE' : 'WIFI'
-        resetNodes()
-    }
-
-    let checked = (switchValue=="LTE" ? true : false)
-
+function handleClick(name){
+    switchValue=name;
+    resetNodes();
+}
 </script>
 
 
 <div class="s s--inner">
-    <button
-        role="switch"
-        aria-checked={checked}
-        on:click={handleClick}>
-            <span>LTE</span>
-            <span>WIFI</span>
-    </button>
+    <button on:click={() => handleClick("ETH")} class="{switchValue == 'ETH' ? 'clicked' : ''}">ETH</button>
+    <button on:click={() => handleClick("LTE")} class="{switchValue == 'LTE' ? 'clicked' : ''}">LTE</button>
+    <button on:click={() => handleClick("WIFI")} class="{switchValue == 'WIFI' ? 'clicked' : ''}">WIFI</button>
 </div>
+
+<style>
+    .clicked {
+        background-color: var(--accent-color);
+    }
+
+    button:hover {
+        outline: var(--accent-color) solid 1px;
+    }
+</style>

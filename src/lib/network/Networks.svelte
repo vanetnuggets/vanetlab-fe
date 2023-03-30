@@ -5,6 +5,7 @@
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
     import Switch from "./Switch.svelte";
+    import Connections from "./Connections.svelte";
 
 
     let rgb;
@@ -97,4 +98,7 @@
     </button>
 </div>
 {/if}
+<div>
+  <Connections/>
+</div>
 

@@ -8,6 +8,7 @@
     const l2_types = {
         lte: ["eu", "enb"],
         wifi: ["sta", "ap"],
+        eth: []
     };
 
     let open_l2 = false;
@@ -40,7 +41,7 @@
                 <div class="col">
                     <select
                         bind:value={$nodes[node_id].l2id}
-                    >
+                        class="my-input">
                         {#each Object.keys($networks) as l2_t}
                             <option value={$networks[l2_t].id}>
                                 {$networks[l2_t].ssid}

@@ -143,8 +143,12 @@ input {
 }
 
 select {
+  outline: none;
+  border-radius: 5px;
+  padding: 2px 10px;
+  margin: 4px 4px;
   font-size: 13px;
-  cursor: pointer;
+  width: 100%;
 }
 
 option {
@@ -226,26 +230,3 @@ option {
   padding-right: 8px;
 }
 
-/* Inner Design Option */
-.s--inner button {
-  padding: 0.5em;
-  border: 1px solid var(--gray);
-}
-
-.s--inner button span {
-  user-select: none;
-  pointer-events:none;
-  padding: 0.25em;
-}
-
-.s--inner button:focus {
-  outline: var(--accent-color) solid 1px;
-}
-
-/* Inner Design Option */
-[role='switch'][aria-checked='true'] :first-child,
-[role='switch'][aria-checked='false'] :last-child {
-  border-radius: 0.25em;
-  background: var(--accent-color);
-  display: inline-block;
-}
