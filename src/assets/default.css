@@ -243,3 +243,6 @@ option {
   border: 1px gray solid;
   padding: 7px;
 }
+.dropdown {
+  cursor: pointer;
+}

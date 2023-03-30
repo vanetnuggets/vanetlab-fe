@@ -315,4 +315,7 @@
         cursor:auto;
         user-select: none;
     }
+    .myPoint {
+        cursor: pointer;
+    }
 </style>

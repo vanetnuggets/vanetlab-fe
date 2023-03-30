@@ -26,6 +26,7 @@
                 </div>
                 <div class="col">
                     <select
+                        class="dropdown"
                         bind:value={$nodes[node_id].controller}
                     >
                         {#each Object.keys(l2_types) as l2_t}
