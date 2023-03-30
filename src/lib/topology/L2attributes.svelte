@@ -63,7 +63,7 @@
     <button on:click={toggle_l2_attributes} class="importrant-btn btn-trans">
         Optional attributes
     </button><br />
-    {#if open_l2_attributes && optional_attributes[node.l2]!== undefined}
+    {#if open_l2_attributes && node !== undefined && optional_attributes[node.l2]!== undefined}
         <div transition:slide>
             <div class="row">
                 <div class="col">

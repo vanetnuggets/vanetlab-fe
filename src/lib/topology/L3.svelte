@@ -89,7 +89,7 @@
     <button on:click={toggle_l3} class="importrant-btn btn-trans full">
         | Application config
     </button>
-    {#if open_l3}
+    {#if open_l3 && $nodes[node_id] !== undefined}
         <div transition:slide>
             <div class="row">
                 <div class="col">

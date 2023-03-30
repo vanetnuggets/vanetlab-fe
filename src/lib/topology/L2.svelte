@@ -16,11 +16,13 @@
         open_l2 = !open_l2;
     }
 
-    $: if ($nodes[node_id].l2id == -1) {
-        $nodes[node_id].l2 = null;
-        $nodes[node_id].l2conf = {};
-    } else {
-        $nodes[node_id].l2 = $networks[$nodes[node_id].l2id].type.toLowerCase();
+    $: if ($nodes[node_id] !== undefined){ 
+        if($nodes[node_id].l2id == -1) {
+            $nodes[node_id].l2 = null;
+            $nodes[node_id].l2conf = {};
+        } else {
+            $nodes[node_id].l2 = $networks[$nodes[node_id].l2id].type.toLowerCase();
+        }
     }
     
     // $: if ($nodes[node_id].l2 != null && !l2_types[$nodes[node_id].l2].includes($nodes[node_id].l2conf.type))
@@ -32,7 +34,7 @@
     <button on:click={toggle_l2} class="importrant-btn btn-trans full">
         | Network config
     </button>
-    {#if open_l2}
+    {#if open_l2 && $nodes[node_id] !== undefined}
         <div transition:slide>
             <div class="row">
                 <div class="col">

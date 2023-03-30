@@ -38,6 +38,8 @@
         <Mobility node_id={node_id} />
       </div>
     {/if}
+    {:else}
+      Please pick one node
   {/if}
 </div>
 
