@@ -30,15 +30,16 @@
     }
 </script>
 
-<div>
-    <button on:click={toggle_creation}>PAIN</button>
+<div style="margin-top:69px;">
+    <hr/>
+    <button on:click={toggle_creation}>Connections</button>
 </div>
 {#if show}
     <div>
         {#each $connections as c, i}
             <div class="row">
                 <div class="col">
-                    fest bs
+                    Existing connection: 
                 </div>
                 <div class="col">
                     <select bind:value={c.node_from}>
@@ -60,7 +61,11 @@
                 </div>
             </div>
         {/each}
+        <hr/>
         <div class="row">
+            <div class="col">
+                New connection: 
+            </div>
             <div class="col">
                 <select bind:value={tmp.node_from}>
                     {#each arr as n}
@@ -80,7 +85,7 @@
                 </select>
             </div>
         </div>
-        <button on:click={bs}>Add connetcio</button>
+        <button on:click={bs}>Add connection</button>
     </div>
 {/if}
 
