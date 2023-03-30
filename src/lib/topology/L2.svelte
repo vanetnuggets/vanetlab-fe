@@ -43,7 +43,7 @@
                 <div class="col">
                     <select
                         bind:value={$nodes[node_id].l2id}
-                        class="my-input">
+                        class="my-input dropdown">
                         {#each Object.keys($networks) as l2_t}
                             <option value={$networks[l2_t].id}>
                                 {$networks[l2_t].ssid}
@@ -59,7 +59,7 @@
                             Node type: <br />
                         </div>
                         <div class="col">
-                            <select bind:value={$nodes[node_id].l2conf.type}>
+                            <select class="dropdown" bind:value={$nodes[node_id].l2conf.type}>
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
                                     <option value={l2_st}>
                                         {l2_st}

@@ -97,6 +97,7 @@
                 </div>
                 <div class="col">
                     <select
+                        class="dropdown"
                         bind:value={$nodes[node_id].l3}
                         on:change={reset_l3conf}
                     >
@@ -118,6 +119,7 @@
                             <div class="col">
                                 {#if validation_attributes[key].validation === 0}
                                     <select
+                                        class="dropdown"
                                         bind:value={$nodes[node_id].l3conf[key]}
                                     >
                                         {#each Object.keys($nodes) as node}
@@ -128,7 +130,7 @@
                                     </select>
                                 {:else}
                                     <input
-                                        class="my-input"
+                                        class="my-input dropdown"
                                         bind:value={$nodes[node_id].l3conf[key]}
                                         placeholder={validation_attributes[key]
                                             .placeholder}
