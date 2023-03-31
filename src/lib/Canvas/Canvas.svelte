@@ -10,11 +10,13 @@
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
+    import BulldozerIcon from "../../assets/bulldozer.svg";
 
     let radius = 15;
     let svg;
     let circle;
     let nodepos;
+    let bulldoze = false;
     //let colors = ["blue", "pink", "brown", "yellow"];
 
     $: nodearr = Object.values($nodes);
@@ -189,7 +191,10 @@
     }
 
     function selectNode(node) {
-        current_node.update((_) => node.id);
+        if (bulldoze == true)
+            remove_node(node)
+        else
+            current_node.update((_) => node.id);
     }
 
     function vypis() {
@@ -210,6 +215,13 @@
         });
     }
 
+    function toggle_bulldoze() {
+        if (bulldoze == true)
+            bulldoze = false;
+        else
+            bulldoze = true;
+    }
+
     onMount(() => {
         svg = select(bind);
         dragHandler(svg.selectAll(".myPoint"));
@@ -221,6 +233,9 @@
         <button on:click={() => add_node()} class="btn s">Add node</button>
         <button on:click={() => add_node(true)} class="btn s">Add OVSWITCH</button>
         <button on:click={vypis} class="btn s">Vypis</button>
+        <button on:click={toggle_bulldoze} class="btn s" style="background-color:{bulldoze ? 'red' : ''}">
+            <img src={BulldozerIcon}  height=24px width=24px alt="map_icon">
+        </button>
     </div>
     <TimeManagment/>
 </div>
@@ -277,17 +292,6 @@
                 class="id_text no_tap"
                 x={d.x + radius - 5}
                 y={d.y + radius - 5}>{d.id}</text
-            >
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <text
-                on:click={() => remove_node(d)}
-                class = remove_node
-                alignment-baseline="middle"
-                text-anchor="middle"
-                x={d.x + radius }
-                y={d.y + radius - 30}
-                style="z-index:1">   
-                x</text
             >
             {#if d.type == "sdn"}
                 <image class="no_tap"
