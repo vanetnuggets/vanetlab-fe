@@ -1,4 +1,4 @@
-import { nodes, networks, max_at } from "../store/scenario";
+import { nodes, networks, max_at, connections } from "../store/scenario";
 import { scenarioName } from "../store/store";
 import { current_time, current_node, nextNetworkId, nextNodeId } from "../store/store";
 import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
@@ -56,7 +56,9 @@ export function assembleConfig() {
   return {
     nodes: get(nodes),
     networks: no_default,
-    max_at: get(max_at)
+    max_at: get(max_at),
+    routing: null,
+    connections: get(connections)
   };
 }
 
