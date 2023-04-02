@@ -6,11 +6,13 @@
         current_node,
         current_time,
         node_id,
+        adding_ovs_neighbors
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
     import BulldozerIcon from "../../assets/bulldozer.svg";
+    import SdnNeighbors from "../topology/SdnNeighbors.svelte";
 
     let radius = 15;
     let svg;
@@ -193,8 +195,39 @@
     function selectNode(node) {
         if (bulldoze == true)
             remove_node(node)
+        else if ($adding_ovs_neighbors)
+            handle_sdn_neighbors(node.id)
         else
             current_node.update((_) => node.id);
+    }
+
+    function handle_sdn_neighbors(neighbor_id) {
+        if (!Number.isInteger(neighbor_id))
+        return;
+        
+        neighbor_id = parseInt(neighbor_id)
+        
+        // if user clicked on the switch node itself
+        if ($current_node == neighbor_id) 
+            return;
+
+        // adding sdn neighbors
+        if (!$nodes[$current_node].switch_nodes.includes(neighbor_id)) {
+            $nodes[$current_node].switch_nodes.push(neighbor_id);
+            $nodes[$current_node].switch_nodes.sort(function(a, b) {
+                return a - b;
+            });
+            $nodes = $nodes;
+        }
+        //removing sdn neighbor if already exists
+        else {
+            remove_sdn_neighbor($current_node, neighbor_id)
+        }
+    };
+
+    function remove_sdn_neighbor(current_id, neighbor_id) {
+        $nodes[current_id].switch_nodes = $nodes[current_id].switch_nodes.filter(item => item !== neighbor_id);
+        $nodes = $nodes;
     }
 
     function vypis() {
@@ -213,6 +246,14 @@
                 $connections.splice(index, 1)
                 $connections = $connections
         });
+
+        // checking to delete sdn neighbor
+        for (const [_, val] of Object.entries($nodes)) {
+            if (val.type == "sdn")
+                if ($nodes[val.id].switch_nodes.includes(node.id)) 
+                    remove_sdn_neighbor($current_node, node.id)
+                    return
+        }
     }
 
     function toggle_bulldoze() {
@@ -234,7 +275,7 @@
         <button on:click={() => add_node(true)} class="btn s">Add OVSWITCH</button>
         <button on:click={vypis} class="btn s">Vypis</button>
         <button on:click={toggle_bulldoze} class="btn s" style="background-color:{bulldoze ? 'red' : ''}">
-            <img src={BulldozerIcon}  height=24px width=24px alt="map_icon">
+            <img src={BulldozerIcon}  height=18px alt="map_icon">
         </button>
     </div>
     <TimeManagment/>
@@ -277,7 +318,7 @@
                 cx={d.x}
                 cy={d.y}
                 r={radius}
-                fill={$networks[d.l2id].color}
+                fill={$adding_ovs_neighbors && $nodes[$current_node].switch_nodes.includes(d.id) ? "red" : $networks[d.l2id].color}
             />
             <circle
                 class="no_tap"
