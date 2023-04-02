@@ -4,7 +4,7 @@ import { writable, readable } from 'svelte/store';
 export const current_node = writable(null) // toto je Dubakove. Nechytat
 export const current_time = writable(0) // toto je Dubakove. Nechytat
 
-
+export const adding_ovs_neighbors = writable(false)
 
 export const moving_type = writable("canvas")
 export const show_rdrawer = writable("container_info");
