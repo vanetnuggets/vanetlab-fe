@@ -252,7 +252,6 @@
             if (val.type == "sdn")
                 if ($nodes[val.id].switch_nodes.includes(node.id)) 
                     remove_sdn_neighbor($current_node, node.id)
-                    return
         }
     }
 
