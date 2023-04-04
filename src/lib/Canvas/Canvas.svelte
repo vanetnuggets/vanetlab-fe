@@ -253,6 +253,10 @@
                 if ($nodes[val.id].switch_nodes.includes(node.id)) 
                     remove_sdn_neighbor($current_node, node.id)
         }
+        
+        // if its the switch itself
+        if (node.type == "sdn")
+            adding_ovs_neighbors.update((_) => false)
     }
 
     function toggle_bulldoze() {
