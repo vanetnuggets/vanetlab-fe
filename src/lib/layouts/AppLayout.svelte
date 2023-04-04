@@ -4,8 +4,6 @@
   </slot>
   </div>
 
-  
-
   <div class="lol">
     
     <div class="myleft">

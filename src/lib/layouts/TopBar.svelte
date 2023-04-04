@@ -1,18 +1,19 @@
-
-<button class="btn l" on:click={toggle}>🍔</button>
-<button on:click={() => goto('/')} class="btn r">🚪 Exit</button>
-{#if visible == true}
-  <div>
-    <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
-    <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
-    <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
-    <button on:click={() => goto('/app/summary')} class="btn l">📈 Results</button>
-    <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
-    <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
-</div>
-{/if}
-<div class="middle">
-  {currName}
+<div class="top" on:mouseenter={handle_hover_topbar_enter} on:mouseleave={handle_hover_topbar_leave}>
+  <button class="btn l" on:click={toggle} style="background-color: {force_visible ? "grey" : "var(--dark-3)"};">🍔</button>
+  <button on:click={() => goto('/')} class="btn r">🚪 Exit</button>
+  {#if visible == true}
+    <div>
+      <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
+      <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
+      <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
+      <button on:click={() => goto('/app/summary')} class="btn l">📈 Results</button>
+      <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
+      <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
+  </div>
+  {/if}
+  <div class="middle">
+    {currName}
+  </div>
 </div>
 
 <script>
@@ -28,7 +29,8 @@
   import { isError, isValidated, errorData, isOk, loading, simData } from '../../store/summary';
   const { addNotification } = getNotificationsContext();
 
-  let visible = true;
+  let visible = false;
+  let force_visible = false;
   let currName;
 
   scenarioName.subscribe(val => {
@@ -129,9 +131,19 @@
   }
 
   function toggle() {
-    visible = !visible;
+    force_visible = !force_visible;
+  }
+  
+  function handle_hover_topbar_enter() {
+    if (!visible) {
+      visible = true
+    }
   }
 
+  function handle_hover_topbar_leave() {
+    if (!force_visible)
+      visible = false
+  }
 </script>
 
 <style>
@@ -159,6 +171,9 @@
   left: 0;
   right: 0;
   z-index: -1;
+  height: 34px;
+  top: 0;
+  bottom: 0;
 }
 
 .l {
