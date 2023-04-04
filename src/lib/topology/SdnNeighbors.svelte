@@ -18,7 +18,7 @@
     function toggle_n_nodes() {
         n_nodes_toggle = !n_nodes_toggle;
     };
-    const remove_mobility = (nb_id) => {
+    const remove_neighbor = (nb_id) => {
         nb_id = parseInt(nb_id)
         $nodes[node_id].switch_nodes = $nodes[node_id].switch_nodes.filter(item => item !== nb_id);
         $nodes = $nodes;
@@ -46,12 +46,14 @@
                             <th style="width:75%">Neighbor_id</th>
                             <th>Delete</th>
                         </tr>
-                        {#each Object.entries($nodes[node_id].switch_nodes) as [_, nb_id]}
-                            <tr>
-                            <td>{nb_id}</td>
-                            <td><button on:click={() => remove_mobility(nb_id)}>&times;</button></td>
-                            </tr>
-                        {/each}
+                        {#if $nodes[node_id] != undefined}
+                            {#each Object.entries($nodes[node_id].switch_nodes) as [_, nb_id]}
+                                <tr>
+                                <td>{nb_id}</td>
+                                <td><button on:click={() => remove_neighbor(nb_id)}>&times;</button></td>
+                                </tr>
+                            {/each}
+                        {/if}
                     </table>
                 </div>
             {/if}
