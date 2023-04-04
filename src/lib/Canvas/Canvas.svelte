@@ -1,12 +1,14 @@
 <script>
-    import { zoom, select, drag } from "d3";
+    import { zoom, select, drag, curveStep } from "d3";
     import { onMount } from "svelte";
     import {
         nextNodeId,
         current_node,
         current_time,
-        node_id,
-        adding_ovs_neighbors
+        // node_id,
+        adding_ovs_neighbors,
+        adding_p2p_conn,
+        node_id
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
@@ -17,8 +19,11 @@
     let radius = 15;
     let svg;
     let circle;
-    let nodepos;
+    let mouse_x = 0;
+    let mouse_y = 0;
+    // let nodepos;
     let bulldoze = false;
+    let first_p2p = null;
     //let colors = ["blue", "pink", "brown", "yellow"];
 
     $: nodearr = Object.values($nodes);
@@ -197,8 +202,41 @@
             remove_node(node)
         else if ($adding_ovs_neighbors)
             handle_sdn_neighbors(node.id)
+        else if ($adding_p2p_conn)
+            handle_p2p_conn(node.id)
         else
             current_node.update((_) => node.id);
+    }
+
+    function handle_p2p_conn(node_id) {
+        if (first_p2p == null)
+            first_p2p = node_id
+        else if (first_p2p == node_id)
+            first_p2p = null
+        else {
+            add_p2p(first_p2p, node_id)
+            first_p2p = null
+        }
+        $nodes=$nodes
+    }
+
+    function add_p2p(node_from, node_to){
+        let already_exists = false
+        if (node_from === -1 || node_to === -1)
+            return
+        
+        // check if connection already exists
+        $connections.forEach(e => {
+            if ((e.node_from === node_from && e.node_to === node_to) || (e.node_from === node_to && e.node_to === node_from)) {
+                already_exists = true
+            }
+        });
+
+        // add only if doesn't exist
+        if (!already_exists) {
+            $connections.push({"node_from": node_from, "node_to": node_to});
+            $connections = $connections
+        }
     }
 
     function handle_sdn_neighbors(neighbor_id) {
@@ -226,12 +264,14 @@
     };
 
     function remove_sdn_neighbor(current_id, neighbor_id) {
+        console.log(current_id, neighbor_id)
         $nodes[current_id].switch_nodes = $nodes[current_id].switch_nodes.filter(item => item !== neighbor_id);
         $nodes = $nodes;
     }
 
     function vypis() {
         console.log($nodes)
+        console.log($connections)
     }
 
     function remove_node(node){
@@ -240,18 +280,23 @@
         delete $nodes[node.id]
         $nodes = $nodes
         let index
+
+        // removing p2p connections
         $connections.forEach(e => {
-            if (e.node_from === node.id || e.node_to === node.id)
+            if (e.node_from === node.id || e.node_to === node.id){
                 index = $connections.indexOf(e)
                 $connections.splice(index, 1)
                 $connections = $connections
+            }
         });
 
         // checking to delete sdn neighbor
         for (const [_, val] of Object.entries($nodes)) {
-            if (val.type == "sdn")
+            console.log($current_node, val)
+            if (val.type == "sdn") {
                 if ($nodes[val.id].switch_nodes.includes(node.id)) 
                     remove_sdn_neighbor($current_node, node.id)
+            }
         }
         
         // if its the switch itself
@@ -264,6 +309,13 @@
             bulldoze = false;
         else
             bulldoze = true;
+    }
+
+    function mouseHandler(e) {
+        const rect = e.currentTarget.getBoundingClientRect()
+        mouse_x = e.clientX - rect.x
+        mouse_y = e.clientY - rect.y
+        // console.log(`x: ${e.clientX - rect.x}, y: ${e.clientY - rect.y}`)
     }
 
     onMount(() => {
@@ -284,7 +336,7 @@
     <TimeManagment/>
 </div>
 <!-- height="97%" -->
-<svg bind:this={bind} height="91%" width="100%">
+<svg on:mousemove={mouseHandler} bind:this={bind} height="91%" width="100%">
     <g bind:this={bindHandleZoom}>
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -313,6 +365,10 @@
             {/each}
         {/each}
         {#each nodearr as d}
+            <!-- p2p line -->
+            {#if $adding_p2p_conn && d.id == first_p2p}
+                <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
+            {/if}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <circle
                 on:click={() => selectNode(d)}
@@ -335,8 +391,8 @@
                 text-anchor="middle"
                 class="id_text no_tap"
                 x={d.x + radius - 5}
-                y={d.y + radius - 5}>{d.id}</text
-            >
+                y={d.y + radius - 5}>{d.id}
+            </text>
             {#if d.type == "sdn"}
                 <image class="no_tap"
                     href={OvsIcon}
@@ -353,11 +409,6 @@
 <style scoped>
     .no_tap {
         pointer-events:none; 
-    }
-    .remove_node { 
-        cursor: pointer; 
-        user-select: none;
-		font-weight: bold;      
     }
     .id_text {
         cursor:auto;

@@ -1,32 +1,18 @@
 <script>
 
     import { connections, nodes } from "../../store/scenario";
+    import { adding_p2p_conn } from "../../store/store";
 
     let arr;
     nodes.subscribe(val => {
       arr = Object.values(val);
     });
 
-    let tmp = {
-        node_to: -1,
-        node_from: -1,
-    }
-
-    function bs(){
-        if (tmp.node_from === -1 || tmp.node_to === -1)
-            return
-        
-        $connections.push(tmp);
-        tmp = {
-            node_to: -1,
-            node_from: -1,
-        }
-        $connections = $connections
-        
-    }
     let show = false
     function toggle_creation() {
         show = !show;
+        if (!show)
+            adding_p2p_conn.update((_) => false)
     }
 
 
@@ -71,30 +57,10 @@
             </div>
         {/each}
         <hr/>
-        <div class="row">
-            <div class="col">
-                New connection: 
-            </div>
-            <div class="col">
-                <select bind:value={tmp.node_from}>
-                    {#each arr as n}
-                        <option value={n.id}>
-                            {n.id}
-                        </option>
-                    {/each}
-                </select>
-            </div>
-            <div class="col">
-                <select bind:value={tmp.node_to}>
-                    {#each arr as n}
-                        <option value={n.id}>
-                            {n.id}
-                        </option>
-                    {/each}
-                </select>
-            </div>
-        </div>
-        <button on:click={bs}>Add connection</button>
+        <label>
+            <input type="checkbox" bind:checked={$adding_p2p_conn} />
+            Add p2p connections
+        </label>
     </div>
 {/if}
 
