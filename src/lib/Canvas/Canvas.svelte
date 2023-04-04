@@ -353,7 +353,7 @@
     });
 </script>
 
-<div style="height: 100vh">
+<div class="canvas">
     <div class="toolbar">
         <div class="action">
             <button on:click={() => bHandler("add_node")} class="btn s" style="background-color:{add_node_toggle ? 'red' : ''}">Add node</button>
@@ -442,6 +442,14 @@
 </div>
 
 <style scoped>
+    .canvas {
+        height: calc(100vh - 39px);
+        width: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
     .no_tap {
         pointer-events:none; 
     }
