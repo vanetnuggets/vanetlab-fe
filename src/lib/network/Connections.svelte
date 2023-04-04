@@ -1,7 +1,6 @@
 <script>
 
     import { connections, nodes } from "../../store/scenario";
-    import { adding_p2p_conn } from "../../store/store";
 
     let arr;
     nodes.subscribe(val => {
@@ -11,8 +10,6 @@
     let show = false
     function toggle_creation() {
         show = !show;
-        if (!show)
-            adding_p2p_conn.update((_) => false)
     }
 
 
@@ -27,6 +24,9 @@
     <button on:click={toggle_creation}>Connections</button>
 </div>
 {#if show}
+    {#if $connections.length == 0 }
+        No p2p connections
+    {/if}
     <div>
         {#each $connections as c, i}
             <div class="row">
@@ -57,10 +57,6 @@
             </div>
         {/each}
         <hr/>
-        <label>
-            <input type="checkbox" bind:checked={$adding_p2p_conn} />
-            Add p2p connections
-        </label>
     </div>
 {/if}
 

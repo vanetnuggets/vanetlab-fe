@@ -1,30 +1,27 @@
 <script>
-    import { zoom, select, drag, curveStep } from "d3";
+    import { zoom, select, drag} from "d3";
     import { onMount } from "svelte";
     import {
         nextNodeId,
         current_node,
         current_time,
-        // node_id,
-        adding_ovs_neighbors,
-        adding_p2p_conn,
-        node_id
+        adding_ovs_neighbors
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
     import BulldozerIcon from "../../assets/bulldozer.svg";
-    import SdnNeighbors from "../topology/SdnNeighbors.svelte";
 
     let radius = 15;
     let svg;
     let circle;
     let mouse_x = 0;
     let mouse_y = 0;
-    // let nodepos;
-    let bulldoze = false;
     let first_p2p = null;
-    //let colors = ["blue", "pink", "brown", "yellow"];
+    let add_node_toggle = false;
+    let add_sdn_toggle = false;
+    let add_p2p_toggle = false;
+    let bulldoze_toggle = false;
 
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
@@ -44,10 +41,8 @@
                     nodes: [
                         element.id
                     ]
-                }
-                    
+                } 
             }
-
         });
         
         let connects = []
@@ -163,8 +158,8 @@
     }
 
     function add_node(sdn = false) {
-        let x = width / 2;
-        let y = height / 2;
+        let x = mouse_x;
+        let y = mouse_y;
         let newNode = {
             id: $nextNodeId,
             type: "basic",
@@ -198,14 +193,21 @@
     }
 
     function selectNode(node) {
-        if (bulldoze == true)
+        if (bulldoze_toggle == true)
             remove_node(node)
         else if ($adding_ovs_neighbors)
             handle_sdn_neighbors(node.id)
-        else if ($adding_p2p_conn)
+        else if (add_p2p_toggle)
             handle_p2p_conn(node.id)
         else
             current_node.update((_) => node.id);
+    }
+
+    function add_nodes_canvas() {
+        if (add_node_toggle)
+            add_node()
+        else if (add_sdn_toggle)
+            add_node(true)
     }
 
     function handle_p2p_conn(node_id) {
@@ -264,7 +266,6 @@
     };
 
     function remove_sdn_neighbor(current_id, neighbor_id) {
-        console.log(current_id, neighbor_id)
         $nodes[current_id].switch_nodes = $nodes[current_id].switch_nodes.filter(item => item !== neighbor_id);
         $nodes = $nodes;
     }
@@ -292,7 +293,6 @@
 
         // checking to delete sdn neighbor
         for (const [_, val] of Object.entries($nodes)) {
-            console.log($current_node, val)
             if (val.type == "sdn") {
                 if ($nodes[val.id].switch_nodes.includes(node.id)) 
                     remove_sdn_neighbor($current_node, node.id)
@@ -304,18 +304,46 @@
             adding_ovs_neighbors.update((_) => false)
     }
 
-    function toggle_bulldoze() {
-        if (bulldoze == true)
-            bulldoze = false;
-        else
-            bulldoze = true;
-    }
-
     function mouseHandler(e) {
         const rect = e.currentTarget.getBoundingClientRect()
         mouse_x = e.clientX - rect.x
         mouse_y = e.clientY - rect.y
         // console.log(`x: ${e.clientX - rect.x}, y: ${e.clientY - rect.y}`)
+    }
+
+    function bHandler(type) {
+        let tmp;
+        switch (type) {
+            case 'add_node':
+                tmp = add_node_toggle;
+                clear_buttons();
+                add_node_toggle = !tmp;
+                break;
+            case 'add_sdn':
+                tmp = add_sdn_toggle;
+                clear_buttons();
+                add_sdn_toggle = !tmp;
+                break;
+            case 'add_p2p':
+                tmp = add_p2p_toggle;
+                clear_buttons();
+                add_p2p_toggle = !tmp;
+                break;
+            case 'bulldoze':
+                tmp = bulldoze_toggle;
+                clear_buttons();
+                bulldoze_toggle = !tmp;
+                break;
+            default:
+                console.log('zly butoň');
+        }
+    }
+
+    function clear_buttons() {
+        add_node_toggle = false;
+        add_sdn_toggle = false;
+        add_p2p_toggle = false;
+        bulldoze_toggle = false;
     }
 
     onMount(() => {
@@ -326,19 +354,21 @@
 
 <div class="toolbar">
     <div class="action">
-        <button on:click={() => add_node()} class="btn s">Add node</button>
-        <button on:click={() => add_node(true)} class="btn s">Add OVSWITCH</button>
-        <button on:click={vypis} class="btn s">Vypis</button>
-        <button on:click={toggle_bulldoze} class="btn s" style="background-color:{bulldoze ? 'red' : ''}">
+        <button on:click={() => bHandler("add_node")} class="btn s" style="background-color:{add_node_toggle ? 'red' : ''}">Add node</button>
+        <button on:click={() => bHandler("add_sdn")} class="btn s" style="background-color:{add_sdn_toggle ? 'red' : ''}">Add OVSWITCH</button>
+        <button on:click={() => bHandler("add_p2p")} class="btn s" style="background-color:{add_p2p_toggle ? 'red' : ''}">P2P connection</button>
+        <button on:click={() => bHandler("bulldoze")} class="btn s" style="background-color:{bulldoze_toggle ? 'red' : ''}">
             <img src={BulldozerIcon}  height=18px alt="map_icon">
         </button>
+        <button on:click={vypis} class="btn s" style="background-color: grey;">Vypis</button>
     </div>
     <TimeManagment/>
 </div>
 <!-- height="97%" -->
 <svg on:mousemove={mouseHandler} bind:this={bind} height="91%" width="100%">
     <g bind:this={bindHandleZoom}>
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <svg on:click={add_nodes_canvas} width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <pattern
                     id="smallGrid"
@@ -366,7 +396,7 @@
         {/each}
         {#each nodearr as d}
             <!-- p2p line -->
-            {#if $adding_p2p_conn && d.id == first_p2p}
+            {#if add_p2p_toggle && d.id == first_p2p}
                 <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
             {/if}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
