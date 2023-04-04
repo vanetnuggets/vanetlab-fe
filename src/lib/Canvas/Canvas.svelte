@@ -295,13 +295,14 @@
         for (const [_, val] of Object.entries($nodes)) {
             if (val.type == "sdn") {
                 if ($nodes[val.id].switch_nodes.includes(node.id)) 
-                    remove_sdn_neighbor($current_node, node.id)
+                    remove_sdn_neighbor(val.id, node.id)
             }
         }
         
         // if its the switch itself
         if (node.type == "sdn")
-            adding_ovs_neighbors.update((_) => false)
+            adding_ovs_neighbors.set(false)
+        
     }
 
     function mouseHandler(e) {
