@@ -103,13 +103,26 @@
     })
 
     function started(event) {
-        circle = select(this); // set circle to the element that has been dragged.
-        circle.attr("cx", event.x).attr("cy", event.y); // move the x/y position
-
-        let nodeId = circle.attr("data-id");
+  
+        
         let x = event.x;
         let y = event.y;
+        
+        if(x<8)
+            x=8
+        if(x>width-15)
+            x=width-15
+        if(y<8)
+            y=8 
+        if(y>height-24)
+            y=height-24
 
+        circle = select(this); // set circle to the element that has been dragged.
+        circle.attr("cx", x).attr("cy", y); // move the x/y position
+        let nodeId = circle.attr("data-id");
+        
+        
+        
         let order = false
         if ($nodes[nodeId].mobility[current_time_string] === undefined) 
             order = true
@@ -139,6 +152,7 @@
 
     $: width = document.getElementById("bs").offsetWidth;
     $: height = document.getElementById("bs").offsetHeight;
+    
 
     $: zoomX = zoom()
         .scaleExtent([1, 5])
