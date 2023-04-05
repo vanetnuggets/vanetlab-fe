@@ -489,5 +489,6 @@
         left: 0;
         right: 0;
         bottom: 23px;
+        pointer-events: none;
     }
 </style>

@@ -59,6 +59,11 @@
 .inside {
   width: 400px;
   min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: stretch;
 }
 
 .btn-basic {
@@ -132,20 +137,6 @@
       let result = await listScenarios();
       scenarioList.update(_ => result.data.data);
     } 
-  }
-
-
-
-  
-
-
-
-  function load_local() {
-
-  }
-
-  function load_remote() {
-
   }
 
 </script>

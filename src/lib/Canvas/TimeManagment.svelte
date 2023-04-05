@@ -22,10 +22,10 @@
 </script>
 
 <div class="slidecontainer">
-	<input type="range" min="0" max={$max_at} bind:value={$current_time} style="padding: 0; width: 80%; margin-bottom: 0">
+	<input type="range" min="0" max={$max_at} bind:value={$current_time} style="width: 80%; padding: 0; margin-bottom: 0; pointer-events: all">
 	<p>Current time: {$current_time}
 		{max}
-		<input type=number bind:value={$max_at} min=0 style="padding: 0; width: 50px; background: transparent" >
+		<input type=number bind:value={$max_at} min=0 style="width: 50px; padding: 0; background: transparent; pointer-events: all;" >
 		{end}
 	</p>
 </div>
