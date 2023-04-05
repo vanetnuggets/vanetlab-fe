@@ -2,6 +2,7 @@
     import "../../assets/nodeconf.css";
     import { slide } from "svelte/transition";
     import { nodes } from "../../store/scenario";
+    import OptionalAttributes from "./L3attributes.svelte";
 
     export let node_id;
 
@@ -10,10 +11,7 @@
             port: "1",
             start: "0",
             stop: "0",
-            interval: "0",
-            packet_size: "0",
-            max_packets: "0",
-            comm: null,
+            comm: node_id.toString(),
         },
         udpserver: {
             port: "1",
@@ -24,8 +22,7 @@
             port: "1",
             start: "0",
             stop: "0",
-            max_bytes: "0",
-            comm: null,
+            comm: node_id.toString(),
         },
         tcpserver: {
             port: "1",
@@ -33,7 +30,7 @@
             stop: "0",
         },
     };
-
+        
     const validation_attributes = {
         port: {
             name: "Port",
@@ -112,33 +109,36 @@
             {#if $nodes[node_id].l3 != null}
                 <div transition:slide>
                     {#each Object.keys($nodes[node_id].l3conf) as key}
-                        <div class="row">
-                            <div class="col">
-                                {validation_attributes[key].name}: <br />
+                        {#if key !== "attributes"}
+                            <div class="row">
+                                <div class="col">
+                                    {validation_attributes[key].name}: <br />
+                                </div>
+                                <div class="col">
+                                    {#if validation_attributes[key].validation === 0}
+                                        <select
+                                            class="dropdown"
+                                            bind:value={$nodes[node_id].l3conf[key]}
+                                        >
+                                            {#each Object.keys($nodes) as node}
+                                                <option value={node}>
+                                                    {node}
+                                                </option>
+                                            {/each}
+                                        </select>
+                                    {:else}
+                                        <input
+                                            class="my-input dropdown"
+                                            bind:value={$nodes[node_id].l3conf[key]}
+                                            placeholder={validation_attributes[key]
+                                                .placeholder}
+                                        />
+                                    {/if}
+                                </div>
                             </div>
-                            <div class="col">
-                                {#if validation_attributes[key].validation === 0}
-                                    <select
-                                        class="dropdown"
-                                        bind:value={$nodes[node_id].l3conf[key]}
-                                    >
-                                        {#each Object.keys($nodes) as node}
-                                            <option value={node}>
-                                                {node}
-                                            </option>
-                                        {/each}
-                                    </select>
-                                {:else}
-                                    <input
-                                        class="my-input dropdown"
-                                        bind:value={$nodes[node_id].l3conf[key]}
-                                        placeholder={validation_attributes[key]
-                                            .placeholder}
-                                    />
-                                {/if}
-                            </div>
-                        </div>
+                        {/if}
                     {/each}
+                    <OptionalAttributes node_id={node_id} />
                 </div>
             {/if}
         </div>
