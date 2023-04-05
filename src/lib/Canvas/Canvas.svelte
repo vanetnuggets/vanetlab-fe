@@ -10,6 +10,8 @@
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
+    import ApIcon from "../../assets/ap.png";
+    import BtsIcon from "../../assets/bts.png";
     import BulldozerIcon from "../../assets/bulldozer.svg";
 
     let radius = 15;
@@ -287,6 +289,7 @@
     function vypis() {
         console.log($nodes)
         console.log($connections)
+        console.log($networks)
     }
 
     function remove_node(node){
@@ -439,6 +442,24 @@
                 {#if d.type == "sdn"}
                     <image class="no_tap"
                         href={OvsIcon}
+                        x={d.x - 20}
+                        y={d.y - 20}
+                        width={20}
+                        height={20}
+                    />   
+                {/if}
+                {#if d.type == "basic" && d.l2 == "wifi" && d.l2conf["type"] == "ap" }
+                    <image class="no_tap"
+                        href={ApIcon}
+                        x={d.x - 20}
+                        y={d.y - 20}
+                        width={20}
+                        height={20}
+                    />   
+                {/if}
+                {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "enb" }
+                    <image class="no_tap"
+                        href={BtsIcon}
                         x={d.x - 20}
                         y={d.y - 20}
                         width={20}
