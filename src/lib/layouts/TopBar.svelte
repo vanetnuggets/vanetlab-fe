@@ -2,7 +2,7 @@
   <button class="btn l" on:click={toggle} style="background-color: {force_visible ? "grey" : "var(--dark-3)"};">🍔</button>
   <button on:click={() => goto('/')} class="btn r">🚪 Exit</button>
   {#if visible == true}
-    <div>
+    <div transition:fade={{ duration: 50}}>
       <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
       <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
       <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
@@ -17,11 +17,11 @@
 </div>
 
 <script>
+  import { fade } from 'svelte/transition'
   import { push } from 'svelte-spa-router'
   import { scenarioName } from '../../store/store';
   import { assembleConfig, saveLocal } from '../../services/LoadService';
   import { saveRemote as saveRemoteScenario, simulate} from '../api/scenarios';
-  import { nodes, networks} from '../../store/scenario'
   import { validate } from '../api/scenarios';
   import { get } from 'svelte/store'
 
@@ -50,7 +50,8 @@
       addNotification({
         text: `Scenario '${name}' done! View the results in 'Results' tab.`,
         position: 'bottom-center',
-        type: 'success'
+        type: 'success',
+        removeAfter: 1500
       });
     }).catch((err) => {
       let data = err.response.data.data;
@@ -61,7 +62,8 @@
       addNotification({
         text: `Scenario simulation failed. See details in 'Result' tab`,
         position: 'bottom-center',
-        type: 'error'
+        type: 'error',
+        removeAfter: 1500
       });
     }).finally(() => {
       loading.update(val => ({
@@ -81,13 +83,16 @@
       addNotification({
         text: `Scenario '${status}' successfully saved remotely!`,
         position: 'bottom-center',
-        type: 'success'
+        type: 'success',
+        removeAfter: 1500
       });
+      console.log("iz")
     } else {
       addNotification({
         text: `Failed to save scenario. reason: ${status}`,
         position: 'bottom-center',
-        type: 'error'
+        type: 'error',
+        removeAfter: 1500
       });
     }
   }
@@ -105,7 +110,8 @@
       addNotification({
         text: `Scenario '${name}' validated!`,
         position: 'bottom-center',
-        type: 'success'
+        type: 'success',
+        removeAfter: 1500
       });
     }).catch((err) => {
       let data = err.response.data.data;
@@ -117,7 +123,8 @@
       addNotification({
         text: `Errors while validating scenario. See details in 'Result' tab`,
         position: 'bottom-center',
-        type: 'error'
+        type: 'error',
+        removeAfter: 1500
       });
     }).finally(() => {
       loading.update(val => ({

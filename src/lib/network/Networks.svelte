@@ -60,10 +60,10 @@
 {/each}
 
 <button on:click={toggle_creation}>
-    Add network
+    New network
 </button>
 {#if network_open == true}
-  <div transition:slide>
+  <div transition:slide style="padding: 10px;">
     <div class="row">
       <div class="col">
         Network name:

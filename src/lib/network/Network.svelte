@@ -65,49 +65,59 @@
     .confirm {
         color: red;
     }
-</style>
-
+    .span {
+        border-radius: 57px;
+        padding: 1px;
+        float: left;
+        color: grey;
+    }
+  </style>
+  
+  
 <div class="topology_container parent">
-    <div class="child">
+    <div class="child" style="display: flex;">
         <button on:click={clickHandler} class="btn-basic name">
-        {network.ssid}
-        <span style="color:{network.color}">⬤</span>
-    </button>
-    <button on:click={deleteContainer} class="btn-basic remover {confirm ? "confirm": ""}">X</button>
-</div>
+        <div>
+          <span class="span">{Array.from(network.type)[0]}</span>
+          {network.ssid}
+          <span style="color:{network.color}">⬤</span>
+        </div>
+        </button>
+        <button on:click={deleteContainer} class="btn-basic remover {confirm ? 'confirm': ''}">X</button>
+      </div>
     
-{#if open}
-<div>
-    <div class="row">
-        <div class="col">
-            Network name:
+    {#if open}
+    <div>
+        <div class="row">
+            <div class="col">
+                Network name:
+            </div>
+            <div class="col">
+                <input class="my-input" bind:value={network.ssid} placeholder="example_name">
+            </div>
         </div>
-        <div class="col">
-            <input class="my-input" bind:value={network.ssid} placeholder="example_name">
+        <div class="row">
+            <div class="col">
+                Network address:
+            </div>
+            <div class="col">
+                <input class="my-input" bind:value={network.addr} placeholder="example_address">
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            Network address:
+        <div class="row">
+            <div class="col" style="padding-bottom: 10px;">
+                <ColorPicker bind:rgb bind:hex={network.color}/>
+            </div>
         </div>
-        <div class="col">
-            <input class="my-input" bind:value={network.addr} placeholder="example_address">
+        <div class="row">
+            <div class="col">
+                Network type:
+            </div>
+            <div class="col" style="text-align: center;">
+                {network.type}
+            </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <ColorPicker bind:rgb bind:hex={network.color}/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            Network type:
-        </div>
-        <div class="col">
-            <Switch bind:switchValue={network.type}/> 
-        </div>
-        </div>
-    </div>
-{/if}
+    {/if}
 </div>
 

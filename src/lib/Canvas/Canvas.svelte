@@ -10,6 +10,8 @@
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
+    import ApIcon from "../../assets/ap.png";
+    import BtsIcon from "../../assets/bts.png";
     import BulldozerIcon from "../../assets/bulldozer.svg";
 
     let radius = 15;
@@ -287,43 +289,42 @@
     function vypis() {
         console.log($nodes)
         console.log($connections)
+        console.log($networks)
     }
 
     function remove_node(node){
         if ($current_node === node.id)
             current_node.update((_) => null)
-        delete $nodes[node.id]
-        $nodes = $nodes
-        let index
 
-        // removing p2p connections
-        $connections.forEach(e => {
-            if (e.node_from === node.id || e.node_to === node.id){
-                index = $connections.indexOf(e)
-                $connections.splice(index, 1)
-                $connections = $connections
+            // removing p2p connections(cannot use for each, index is broken then!)
+            let index = $connections.length - 1;
+            while (index >= 0) {
+                if ($connections[index].node_from === node.id || $connections[index].node_to === node.id) {
+                    $connections.splice(index, 1);
+                }
+                index -= 1;
             }
-        });
-
-        // checking to delete sdn neighbor
-        for (const [_, val] of Object.entries($nodes)) {
-            if (val.type == "sdn") {
-                if ($nodes[val.id].switch_nodes.includes(node.id)) 
+            
+            // checking to delete sdn neighbor
+            for (const [_, val] of Object.entries($nodes)) {
+                if (val.type == "sdn") {
+                    if ($nodes[val.id].switch_nodes.includes(node.id)) 
                     remove_sdn_neighbor(val.id, node.id)
+                }
             }
-        }
-        
-        // if its the switch itself
-        if (node.type == "sdn")
+            
+            // if its the switch itself
+            if (node.type == "sdn")
             adding_ovs_neighbors.set(false)
-        
+            
+            delete $nodes[node.id]
+            $nodes = $nodes
     }
 
     function mouseHandler(e) {
         const rect = e.currentTarget.getBoundingClientRect()
         mouse_x = e.clientX - rect.x
         mouse_y = e.clientY - rect.y
-        // console.log(`x: ${e.clientX - rect.x}, y: ${e.clientY - rect.y}`)
     }
 
     function bHandler(type) {
@@ -412,7 +413,7 @@
             {#each nodearr as d}
                 <!-- p2p line -->
                 {#if add_p2p_toggle && d.id == first_p2p}
-                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
+                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black" style="pointer-events: none;"/>
                 {/if}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <circle
@@ -441,6 +442,24 @@
                 {#if d.type == "sdn"}
                     <image class="no_tap"
                         href={OvsIcon}
+                        x={d.x - 20}
+                        y={d.y - 20}
+                        width={20}
+                        height={20}
+                    />   
+                {/if}
+                {#if d.type == "basic" && d.l2 == "wifi" && d.l2conf["type"] == "ap" }
+                    <image class="no_tap"
+                        href={ApIcon}
+                        x={d.x - 20}
+                        y={d.y - 20}
+                        width={20}
+                        height={20}
+                    />   
+                {/if}
+                {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "enb" }
+                    <image class="no_tap"
+                        href={BtsIcon}
                         x={d.x - 20}
                         y={d.y - 20}
                         width={20}
@@ -489,5 +508,6 @@
         left: 0;
         right: 0;
         bottom: 23px;
+        pointer-events: none;
     }
 </style>
