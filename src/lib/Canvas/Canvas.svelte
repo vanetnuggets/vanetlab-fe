@@ -413,8 +413,18 @@
             {#each nodearr as d}
                 <!-- p2p line -->
                 {#if add_p2p_toggle && d.id == first_p2p}
-                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black" style="pointer-events: none;"/>
+                <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
                 {/if}
+                <!-- sdn neighbor lines -->
+                {#if d.type == "sdn"}
+                    {#if d.switch_nodes.length > 0}
+                        {#each d.switch_nodes as neighbor}
+                            <line x1={d.x} y1={d.y} x2={$nodes[neighbor].x} y2={$nodes[neighbor].y} stroke="grey" stroke-dasharray="10"/>
+                        {/each}
+                    {/if} 
+                {/if}
+            {/each}
+            {#each nodearr as d}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <circle
                     on:click={() => selectNode(d)}
@@ -508,6 +518,9 @@
         left: 0;
         right: 0;
         bottom: 23px;
+        pointer-events: none;
+    }
+    line {
         pointer-events: none;
     }
 </style>
