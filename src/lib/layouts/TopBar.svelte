@@ -74,27 +74,25 @@
 
   async function saveRemote() {
     let config = assembleConfig();
-    let resp = await saveRemoteScenario(currName, config);
-
-    let error = resp.data.error;
-    let status = resp.data.name;
-
-    if (error == false) {
+    let text = "";
+    let type = "";
+    saveRemoteScenario(currName, config).then((resp) => {
+      let name = resp.data.name;
+      text = `Scenario '${name}' successfully saved remotely!`;
+      type = "success";
+    }).catch((err) => {
+      console.log(err);
+      let reason = err.response.data.message;
+      text = `Failed to save scenario remotely. reason: ${reason}`;
+      type = 'error';
+    }).finally(() => {
       addNotification({
-        text: `Scenario '${status}' successfully saved remotely!`,
+        text: text,
         position: 'bottom-center',
-        type: 'success',
+        type: type,
         removeAfter: 1500
       });
-      console.log("iz")
-    } else {
-      addNotification({
-        text: `Failed to save scenario. reason: ${status}`,
-        position: 'bottom-center',
-        type: 'error',
-        removeAfter: 1500
-      });
-    }
+    });
   }
 
   function validateSimulation() {

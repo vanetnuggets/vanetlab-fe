@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-// let baseURL = `https://vanetlab.ml/api`
 let baseURL = `https://vanetlab.ml/api`
 
 if (import.meta.env.VITE_BE_API_URL != null) {
@@ -10,6 +9,14 @@ if (import.meta.env.VITE_BE_API_URL != null) {
 let api = axios.create({
   baseURL: baseURL
 })
+
+function addApiKey(headers) {
+  let key = localStorage.getItem("apiKey");
+  if (key == null) {
+    return
+  }
+  headers['Authorization'] = `Bearer: ${key}`;
+}
 
 export default {
   post(path, data, other=null){
@@ -21,23 +28,30 @@ export default {
         }
       }
     }
+    addApiKey(other['headers']);
     return api.post(path, data, other)
   },
+
   get(path, params={}) {
+    let headers = {
+      'Referrer-Policy': 'no-referrer'
+    };
+    addApiKey(headers);
     return api.get(path, {
-      headers: {
-        'Referrer-Policy': 'no-referrer'
-      },
+      headers: headers,
       params: params
     });
   },
+
   getBlob(path, params={}) {
+    let headers = {
+      'Referrer-Policy': 'no-referrer'
+    };
+    addApiKey(headers);
     return api.get(path, {
-      headers: {
-        'Referrer-Policy': 'no-referrer'
-      },
+      headers: headers,
       responseType: 'blob',
       params: params
-    })
+    });
   }
 }
