@@ -19,6 +19,10 @@
         <div class="row">  
           <button on:click={click_load_remote} class="btn-basic">Load remote</button>
         </div>
+        <div class="row bottom">
+          Api key: <input id="api-key-input" placeholder="api key" bind:value={apiSecret}/>
+          <button on:click={setApiKey} class="">set</button>
+        </div>
       </div>
     </div>
   </div>
@@ -110,6 +114,7 @@
 
   let curr_option = null
   let loadRemoteComponent;
+  let apiSecret;
 
   function click_new_sim() {
     if (curr_option == 'NEW')
@@ -137,6 +142,10 @@
       let result = await listScenarios();
       scenarioList.update(_ => result.data.data);
     } 
+  }
+
+  function setApiKey() {
+    localStorage.setItem("apiKey", apiSecret);
   }
 
 </script>
