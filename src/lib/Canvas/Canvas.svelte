@@ -26,7 +26,7 @@
     let bulldoze_toggle = false;
 
     $: nodearr = Object.values($nodes);
-    $: current_time_string = $current_time === 0 ? $current_time.toString() : $current_time.toString() + '.0'
+    $: current_time_string = $current_time === 0 ? $current_time.toString() + '.0' : $current_time.toString() + '.0'
     $: sietky = createPairs(nodearr);
 
     function createPairs(nodes){
@@ -105,8 +105,6 @@
     })
 
     function started(event) {
-  
-        
         let x = event.x;
         let y = event.y;
         
@@ -123,14 +121,10 @@
         circle.attr("cx", x).attr("cy", y); // move the x/y position
         let nodeId = circle.attr("data-id");
         
-        
-        
         let order = false
         if ($nodes[nodeId].mobility[current_time_string] === undefined) 
             order = true
-        
         $nodes[nodeId].mobility[current_time_string] = {};
-
         $nodes[nodeId].mobility[current_time_string].x = x;
         $nodes[nodeId].mobility[current_time_string].y = y;
         $nodes[nodeId].mobility[current_time_string].z = 1;
@@ -143,7 +137,6 @@
                 }, {}
             );
         }
-
 
         $nodes[nodeId].x = x;
         $nodes[nodeId].y = y;
@@ -189,7 +182,7 @@
             y:y
   
         };
-        newNode.mobility['0'] = { x: x, y: y, z: 0 };
+        newNode.mobility['0.0'] = { x: x, y: y, z: 0 };
         if (sdn){
             newNode.type = "sdn";
             newNode["switch_nodes"] = [];
@@ -415,7 +408,7 @@
             {#each nodearr as d}
                 <!-- p2p line -->
                 {#if add_p2p_toggle && d.id == first_p2p}
-                <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
+                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
                 {/if}
                 <!-- sdn neighbor lines -->
                 {#if d.type == "sdn"}
@@ -425,6 +418,8 @@
                         {/each}
                     {/if} 
                 {/if}
+            {/each}
+            {#each nodearr as d}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <circle
                     on:click={() => selectNode(d)}
@@ -522,5 +517,6 @@
     }
     line {
         pointer-events: none;
+
     }
 </style>
