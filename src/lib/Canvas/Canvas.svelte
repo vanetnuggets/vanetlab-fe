@@ -344,6 +344,8 @@
                 tmp = add_p2p_toggle;
                 clear_buttons();
                 add_p2p_toggle = !tmp;
+                if (!add_p2p_toggle)
+                    first_p2p = null
                 break;
             case 'bulldoze':
                 tmp = bulldoze_toggle;
@@ -423,8 +425,6 @@
                         {/each}
                     {/if} 
                 {/if}
-            {/each}
-            {#each nodearr as d}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <circle
                     on:click={() => selectNode(d)}
