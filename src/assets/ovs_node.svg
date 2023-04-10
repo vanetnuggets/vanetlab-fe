@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="197.944 150.048 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <style bx:fonts="Average Sans">@import url(https://fonts.googleapis.com/css2?family=Average+Sans%3Aital%2Cwght%400%2C400&amp;display=swap);</style>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, -0.213861, -0.213853)">
+    <g transform="matrix(1, 0, 0, 1, 1.496932, 0.427698)">
+      <g transform="matrix(1, 0, 0, 1, 13.900145, 2.138484)">
+        <circle fill="#FFFFFF" cx="198.761" cy="163.696" r="16"/>
+        <text style="fill: rgb(0, 0, 0); font-family: &quot;Average Sans&quot;; font-size: 15px; white-space: pre;" x="183.502" y="169.224">OVS</text>
+      </g>
+    </g>
+  </g>
+</svg>

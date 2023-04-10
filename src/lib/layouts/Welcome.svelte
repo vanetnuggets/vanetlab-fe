@@ -19,8 +19,9 @@
         <div class="row">  
           <button on:click={click_load_remote} class="btn-basic">Load remote</button>
         </div>
-        <div class="row bottom">
-          Api key: <input id="api-key-input" placeholder="api key" bind:value={apiSecret}/>
+        <div class="row bottom" style="padding-left: 10px;">
+          <p style="padding-left: 10px; text-align: justify; width: 30%;">Api key:</p>
+          <input id="api-key-input" placeholder="api key" bind:value={apiSecret} style="width: 100%;"/>
           <button on:click={setApiKey} class="">set</button>
         </div>
       </div>
