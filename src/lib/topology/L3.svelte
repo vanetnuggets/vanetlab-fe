@@ -5,6 +5,7 @@
     import OptionalAttributes from "./L3attributes.svelte";
 
     export let node_id;
+    export let editable
 
     const l3_types = {
         udpclient: {
@@ -97,6 +98,7 @@
                         class="dropdown"
                         bind:value={$nodes[node_id].l3}
                         on:change={reset_l3conf}
+                        disabled={!editable}
                     >
                         {#each Object.keys(l3_types) as l3_typ}
                             <option value={l3_typ}>
@@ -119,6 +121,7 @@
                                         <select
                                             class="dropdown"
                                             bind:value={$nodes[node_id].l3conf[key]}
+                                            disabled={!editable}
                                         >
                                             {#each Object.keys($nodes) as node}
                                                 <option value={node}>
@@ -132,13 +135,14 @@
                                             bind:value={$nodes[node_id].l3conf[key]}
                                             placeholder={validation_attributes[key]
                                                 .placeholder}
+                                                disabled={!editable}
                                         />
                                     {/if}
                                 </div>
                             </div>
                         {/if}
                     {/each}
-                    <OptionalAttributes node_id={node_id} />
+                    <OptionalAttributes node_id={node_id} editable={editable} />
                 </div>
             {/if}
         </div>

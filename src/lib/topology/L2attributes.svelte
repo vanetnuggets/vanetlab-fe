@@ -4,6 +4,7 @@
 
 
     export let node_id;
+    export let editable
 
     const optional_attributes = {
         wifi: {
@@ -60,14 +61,14 @@
 </script>
 
 <div class="l2_attributes">
-    <button on:click={toggle_l2_attributes} class="importrant-btn btn-trans">
+    <button on:click={toggle_l2_attributes} class="importrant-btn btn-trans" >
         Optional attributes
     </button><br />
     {#if open_l2_attributes && node !== undefined && optional_attributes[node.l2]!== undefined}
         <div transition:slide>
             <div class="row">
                 <div class="col">
-                    <select bind:value={attributes_input}>
+                    <select bind:value={attributes_input} disabled={!editable}>
                         {#each Object.keys(optional_attributes[node.l2]) as attribute}
                             {#if node.l2conf["attributes"] == undefined || !Object.keys(node.l2conf["attributes"]).includes(attribute)}
                             <option value={attribute}>
@@ -78,7 +79,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <button on:click={add_attribute}> Add </button>
+                    <button on:click={add_attribute} disabled={!editable}> Add </button>
                 </div>
                 <br/>
             </div>
@@ -91,10 +92,11 @@
                         placeholder={ optional_attributes[node.l2][attribute]
                             .validation}
                         size="10"
+                        disabled={!editable}
                     />
                     {optional_attributes[node.l2][attribute].end}
                     <!-- <span>{value}</span> -->
-                    <button on:click={() => remove_l2_attributes(attribute)}>&times;</button>
+                    <button on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
                     <br />
                 {/each}
             {/if}

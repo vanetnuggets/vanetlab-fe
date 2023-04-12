@@ -5,6 +5,7 @@
     import OptionalAttributes from "./L2attributes.svelte"
 
     export let node_id;
+    export let editable
     const l2_types = {
         lte: ["eu", "enb"],
         wifi: ["sta", "ap"],
@@ -43,7 +44,8 @@
                 <div class="col">
                     <select
                         bind:value={$nodes[node_id].l2id}
-                        class="my-input dropdown">
+                        class="my-input dropdown"
+                        disabled={!editable}>
                         {#each Object.keys($networks) as l2_t}
                             <option value={$networks[l2_t].id}>
                                 {$networks[l2_t].ssid}
@@ -59,7 +61,7 @@
                             Node type: <br />
                         </div>
                         <div class="col">
-                            <select class="dropdown" bind:value={$nodes[node_id].l2conf.type}>
+                            <select class="dropdown" bind:value={$nodes[node_id].l2conf.type} disabled={!editable}>
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
                                     <option value={l2_st}>
                                         {l2_st}
@@ -68,7 +70,7 @@
                             </select>
                         </div>
                     </div>
-                    <OptionalAttributes node_id={node_id} />
+                    <OptionalAttributes node_id={node_id} editable={editable}/>
 
                 </div>
                 

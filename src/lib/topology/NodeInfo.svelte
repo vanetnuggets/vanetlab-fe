@@ -10,6 +10,7 @@
   import SdnNeighbors from "./SdnNeighbors.svelte";
 
   let node_id = null;
+  let editable = false
 
   current_node.subscribe((val) => {
     node_id = val;
@@ -32,11 +33,13 @@
           X: {$nodes[node_id].x.toFixed(2)}
           Y: {$nodes[node_id].y.toFixed(2)}
         </div>
+        <input type="checkbox" bind:checked={editable}/>
+        <input type="checkbox" disabled={!editable}/>
         <br>
         {#if $nodes[node_id].type != "sdn"}
-          <L2 node_id={node_id} />
+          <L2 node_id={node_id} editable={editable}/>
           <br>
-          <L3 node_id={node_id} />
+          <L3 node_id={node_id} editable={editable}/>
           <br>
         {/if}
         {#if $nodes[node_id].type == "sdn"}
