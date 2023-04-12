@@ -5,15 +5,26 @@
     import OptionalAttributes from "./L2attributes.svelte"
 
     export let node_id;
+    export let editable
     const l2_types = {
         lte: ["eu", "enb"],
         wifi: ["sta", "ap"],
         eth: []
     };
 
+    const wifi_standards = ["802.11b", "802.11a", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be", "802.11p"]
+
     let open_l2 = false;
     function toggle_l2() {
         open_l2 = !open_l2;
+    }
+
+    function set_default() {
+        console.log("cay")
+        if($nodes[node_id].l2conf.type == "ap")
+            $nodes[node_id].l2conf.standard = "802.11n"
+        else
+            $nodes[node_id].l2conf = delete $nodes[node_id].l2conf.standard && $nodes[node_id].l2conf;
     }
 
     $: if ($nodes[node_id] !== undefined){ 
@@ -43,7 +54,8 @@
                 <div class="col">
                     <select
                         bind:value={$nodes[node_id].l2id}
-                        class="my-input dropdown">
+                        class="my-input dropdown"
+                        disabled={!editable}>
                         {#each Object.keys($networks) as l2_t}
                             <option value={$networks[l2_t].id}>
                                 {$networks[l2_t].ssid}
@@ -59,7 +71,7 @@
                             Node type: <br />
                         </div>
                         <div class="col">
-                            <select class="dropdown" bind:value={$nodes[node_id].l2conf.type}>
+                            <select class="dropdown" bind:value={$nodes[node_id].l2conf.type} on:change = {set_default} disabled={!editable}>
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
                                     <option value={l2_st}>
                                         {l2_st}
@@ -68,7 +80,23 @@
                             </select>
                         </div>
                     </div>
-                    <OptionalAttributes node_id={node_id} />
+                    {#if $nodes[node_id].l2conf.type == "ap"}
+                        <div class="row">
+                            <div class="col">
+                                Standart: <br />
+                            </div>
+                            <div class="col">
+                                <select class="dropdown" bind:value={$nodes[node_id].l2conf.standard} disabled={!editable}>
+                                    {#each wifi_standards as wifi_standart}
+                                        <option value={wifi_standart}>
+                                            {wifi_standart}
+                                        </option>
+                                    {/each}
+                                </select>
+                            </div>
+                        </div>
+                    {/if}
+                    <OptionalAttributes node_id={node_id} editable={editable}/>
 
                 </div>
                 

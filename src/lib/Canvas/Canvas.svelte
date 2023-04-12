@@ -13,6 +13,9 @@
     import ApIcon from "../../assets/ap.png";
     import BtsIcon from "../../assets/bts.png";
     import BulldozerIcon from "../../assets/bulldozer.svg";
+    import P2pIcon from "../../assets/p2p.svg";
+    import NodeIcon from "../../assets/node.svg";
+    import OvsNodeIcon from "../../assets/ovs_node.svg";
 
     let radius = 15;
     let svg;
@@ -26,7 +29,7 @@
     let bulldoze_toggle = false;
 
     $: nodearr = Object.values($nodes);
-    $: current_time_string = $current_time === 0 ? $current_time.toString() + '.0' : $current_time.toString() + '.0'
+    $: current_time_string = $current_time.toString() + '.0'
     $: sietky = createPairs(nodearr);
 
     function createPairs(nodes){
@@ -76,28 +79,20 @@
                 node.y = node.mobility[time].y 
             } else {
                 // vypocitaj;
-                let closest = null
                 let closest_str = null
                 if (Object.keys(node.mobility).length !== 0){ 
-                    closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
+                    let closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
                         return (curr > prev && curr <= timeRaw ? curr : prev);
                     });
-                    closest_str = closest === 0 ? closest.toString() : closest.toString() + '.0'
+                    closest_str = closest.toString() + '.0'
                 }
-
-                
 
                 if (node.mobility[closest_str] !== undefined) {
                     node.x = node.mobility[closest_str].x
                     node.y = node.mobility[closest_str].y
                 } else {
-                    if (node.mobility[closest] !== undefined) {
-                        node.x = node.mobility[closest].x
-                        node.y = node.mobility[closest].y
-                    } else {
-                        node.x = 10
-                        node.y = 10
-                    }
+                    node.x = 20
+                    node.y = 20
                 }
             }
         }
@@ -366,11 +361,17 @@
 <div class="canvas">
     <div class="toolbar">
         <div class="action">
-            <button on:click={() => bHandler("add_node")} class="btn s" style="background-color:{add_node_toggle ? 'red' : ''}">Add node</button>
-            <button on:click={() => bHandler("add_sdn")} class="btn s" style="background-color:{add_sdn_toggle ? 'red' : ''}">Add OVSWITCH</button>
-            <button on:click={() => bHandler("add_p2p")} class="btn s" style="background-color:{add_p2p_toggle ? 'red' : ''}">P2P connection</button>
-            <button on:click={() => bHandler("bulldoze")} class="btn s" style="background-color:{bulldoze_toggle ? 'red' : ''}">
-                <img src={BulldozerIcon}  height=18px alt="map_icon">
+            <button on:click={() => bHandler("add_node")} class="btn s" title="node" style="background-color:{add_node_toggle ? 'red' : ''}">
+                <img src={NodeIcon} height=18px width=18px alt="map_icon">
+            </button>
+            <button on:click={() => bHandler("add_sdn")} class="btn s" title="ovs" style="background-color:{add_sdn_toggle ? 'red' : ''}">
+                <img src={OvsNodeIcon} height=18px width=18px alt="map_icon">
+            </button>
+            <button on:click={() => bHandler("add_p2p")} class="btn s" title="p2p connection" style="background-color:{add_p2p_toggle ? 'red' : ''}">
+                <img src={P2pIcon} height=18px width=18px alt="map_icon">
+              </button>
+            <button on:click={() => bHandler("bulldoze")} class="btn s" title="delete" style="background-color:{bulldoze_toggle ? 'red' : ''}">
+                <img src={BulldozerIcon}  height=28px alt="map_icon">
             </button>
             <button on:click={vypis} class="btn s" style="background-color: grey;">Vypis</button>
         </div>
@@ -507,6 +508,9 @@
     }
     .toolbar button {
         pointer-events: all;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .bottom {
         position: absolute;
@@ -517,6 +521,8 @@
     }
     line {
         pointer-events: none;
-
+    }
+    .action {
+        display: inline-flex;
     }
 </style>
