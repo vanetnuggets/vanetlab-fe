@@ -3,6 +3,8 @@
     import { nodes} from "../../store/scenario";
 
     export let node_id;
+    export let editable;
+    
     const l2_types = {
         drop: "drop",
         learning: "learning"
@@ -28,6 +30,7 @@
                     <select
                         class="dropdown"
                         bind:value={$nodes[node_id].controller}
+                        disabled={!editable}
                     >
                         {#each Object.keys(l2_types) as l2_t}
                             <option value={l2_t}>

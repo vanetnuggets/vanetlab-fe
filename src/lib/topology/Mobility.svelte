@@ -164,7 +164,7 @@
               </div>
             </div>
             {error_message}
-            <button on:click={add_mobility} disabled={!editable}>
+            <button class="btn-basic" on:click={add_mobility} disabled={!editable}>
               Add keyframe
             </button>
             <br />

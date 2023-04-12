@@ -48,9 +48,9 @@
           <br>
         {/if}
         {#if $nodes[node_id].type == "sdn"}
-          <SdnController node_id={node_id} />
+          <SdnController node_id={node_id} editable={editable} />
           <br>
-          <SdnNeighbors node_id={node_id} />
+          <SdnNeighbors node_id={node_id} editable={editable} />
           <br>
         {/if}
         <Mobility node_id={node_id}  editable={editable}/>
