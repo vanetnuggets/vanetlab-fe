@@ -1,10 +1,11 @@
 <script>
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
-  import { get } from 'svelte/store'
-  import '../../assets/nodeconf.css'
+  import { get } from "svelte/store";
+  import "../../assets/nodeconf.css";
 
   export let node_id;
+  export let editable;
 
   let time_input = null;
   let x_input = null;
@@ -13,7 +14,6 @@
   let error_message = "";
 
   let mobility;
-
 
   nodes.subscribe((n) => {
     if (n[node_id] === undefined) {
@@ -65,19 +65,22 @@
 
   const add_mobility = () => {
     if (check_missing() && check_format()) {
-
-      mobility[time_input === 0 ? time_input.toString() : time_input.toString() + '.0'] = { x: x_input, y: y_input, z: z_input };
-      $nodes[node_id].mobility = Object.keys(mobility).sort(function(a, b){return +a-+b}).reduce(
-          (obj, key) => { 
-              obj[key] = mobility[key]; 
-              return obj;
-          }, {}
-      );
+      mobility[
+        time_input === 0 ? time_input.toString() : time_input.toString() + ".0"
+      ] = { x: x_input, y: y_input, z: z_input };
+      $nodes[node_id].mobility = Object.keys(mobility)
+        .sort(function (a, b) {
+          return +a - +b;
+        })
+        .reduce((obj, key) => {
+          obj[key] = mobility[key];
+          return obj;
+        }, {});
       $nodes = $nodes;
-      
+
       // update MaxAt
       if (get(max_at) < time_input) {
-        max_at.update(_ => time_input);
+        max_at.update((_) => time_input);
       }
 
       time_input = null;
@@ -89,7 +92,7 @@
   };
 
   const remove_mobility = (time) => {
-    if(Object.keys(mobility).length !== 1){
+    if (Object.keys(mobility).length !== 1) {
       mobility = delete mobility[time] && mobility;
       $nodes = $nodes;
     }
@@ -117,6 +120,7 @@
                   class="my-input"
                   bind:value={time_input}
                   placeholder="Movement end time"
+                  disabled={!editable}
                 />
               </div>
             </div>
@@ -129,6 +133,7 @@
                   class="my-input"
                   bind:value={x_input}
                   placeholder="Position on x-axis "
+                  disabled={!editable}
                 />
               </div>
             </div>
@@ -141,6 +146,7 @@
                   class="my-input"
                   bind:value={y_input}
                   placeholder="Position on y-axis"
+                  disabled={!editable}
                 />
               </div>
             </div>
@@ -153,11 +159,14 @@
                   class="my-input"
                   bind:value={z_input}
                   placeholder="Speed?"
+                  disabled={!editable}
                 />
               </div>
             </div>
             {error_message}
-            <button on:click={add_mobility}> Add keyframe </button>
+            <button on:click={add_mobility} disabled={!editable}>
+              Add keyframe
+            </button>
             <br />
           </div>
         {/if}
@@ -175,13 +184,18 @@
               <th>Delete</th>
             </tr>
             {#each Object.entries($nodes[node_id].mobility) as [time, position]}
-            <tr>
-              <td>{time}</td>
-              <td>{position.x.toFixed(2)}</td>
-              <td>{position.y.toFixed(2)}</td>
-              <td><button on:click={() => remove_mobility(time)}>&times;</button></td>
-            </tr>
-          {/each}
+              <tr>
+                <td>{time}</td>
+                <td>{position.x.toFixed(2)}</td>
+                <td>{position.y.toFixed(2)}</td>
+                <td
+                  ><button
+                    disabled={!editable}
+                    on:click={() => remove_mobility(time)}>&times;</button
+                  ></td
+                >
+              </tr>
+            {/each}
           </table>
         </div>
       {/if}

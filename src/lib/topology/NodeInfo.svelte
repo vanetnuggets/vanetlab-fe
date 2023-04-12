@@ -48,7 +48,7 @@
           <SdnNeighbors node_id={node_id} />
           <br>
         {/if}
-        <Mobility node_id={node_id} />
+        <Mobility node_id={node_id}  editable={editable}/>
       </div>
     {/if}
     {:else}
