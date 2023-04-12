@@ -21,7 +21,7 @@
 
 <div style="margin-top:69px;">
     <hr/>
-    <button on:click={toggle_creation}>Connections</button>
+    <button class="btn-basic" on:click={toggle_creation}>Connections</button>
 </div>
 {#if show}
     {#if $connections.length == 0 }

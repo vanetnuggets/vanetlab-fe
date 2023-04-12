@@ -36,7 +36,7 @@
                 Add neighbors
               </label>
         </div>
-        <button on:click={toggle_n_nodes} class="importrant-btn btn-trans">
+        <button on:click={toggle_n_nodes} class="btn-basic">
             Neighbors
         </button><br />
             {#if n_nodes_toggle}
