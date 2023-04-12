@@ -38,6 +38,8 @@
   })
 
   async function runSimulation() {
+    let notifText = "";
+    let notifType = "";
     loading.update(val => ({
       ...val, scenario: true
     }));
@@ -47,28 +49,25 @@
       isError.update(_ => false);
       isOk.update(_ => true);
       simData.update(_ => data);
-      addNotification({
-        text: `Scenario '${name}' done! View the results in 'Results' tab.`,
-        position: 'bottom-center',
-        type: 'success',
-        removeAfter: 1500
-      });
+      notifType = "success";
+      notifText = `Scenario '${name}' done! View the results in 'Results' tab.`
     }).catch((err) => {
       let data = err.response.data.data;
       errorData.update(_ => data);
       isError.update(_ => true);
       isOk.update(_ => false);
-      
-      addNotification({
-        text: `Scenario simulation failed. See details in 'Result' tab`,
-        position: 'bottom-center',
-        type: 'error',
-        removeAfter: 1500
-      });
+      notifText = `Scenario simulation failed. See details in 'Result' tab`;
+      notifType = "error";
     }).finally(() => {
       loading.update(val => ({
         ...val, scenario: false
       }));
+      addNotification({
+        text: notifText,
+        position: 'bottom-center',
+        type: notifType,
+        removeAfter: 1500
+      });
     });
   }
 
@@ -99,35 +98,34 @@
     loading.update(val => ({
       ...val, scenario: true
     }));
+    let notifType = "";
+    let notifText = "";
+      
     validate(currName).then((resp) => {
       let name = get(scenarioName);
       isError.set(false);
       isOk.set(false);
       isValidated.set(true);
-
-      addNotification({
-        text: `Scenario '${name}' validated!`,
-        position: 'bottom-center',
-        type: 'success',
-        removeAfter: 1500
-      });
+      notifText = `Scenario '${name}' validated!`;
+      notifType = "success";
     }).catch((err) => {
       let data = err.response.data.data;
       errorData.set(data.split('\n'))
       isError.set(true);
       isOk.set(false);
       isValidated.set(false);
-
-      addNotification({
-        text: `Errors while validating scenario. See details in 'Result' tab`,
-        position: 'bottom-center',
-        type: 'error',
-        removeAfter: 1500
-      });
+      notifText = `Errors while validating scenario. See details in 'Result' tab`;
+      notifType = "error";
     }).finally(() => {
       loading.update(val => ({
         ...val, scenario: false
       }));
+      addNotification({
+        text: notifText,
+        position: 'bottom-center',
+        type: notifType,
+        removeAfter: 1500
+      });
     });
   }
 
