@@ -8,6 +8,7 @@
   import L3 from "./L3.svelte";
   import SdnController from "./SdnController.svelte";
   import SdnNeighbors from "./SdnNeighbors.svelte";
+  import EditIcon from "../../assets/edit.svg";
 
   let node_id = null;
   let editable = false
@@ -29,12 +30,16 @@
     </button>
     {#if open_info == true}
       <div transition:slide class="nodeinfo">
-        <div class="general">
-          X: {$nodes[node_id].x.toFixed(2)}
-          Y: {$nodes[node_id].y.toFixed(2)}
+        <div class="general row">
+          <p class="col">
+            X: {$nodes[node_id].x.toFixed(2)}
+            Y: {$nodes[node_id].y.toFixed(2)}
+          </p>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <div class="col" style="pointer-events:none">
+            <img class="edit" on:click={(_) => editable = !editable} src={EditIcon} title="edit" height=18px width=18px alt="map_icon" style="background:{editable ? 'red' : ''};">
+          </div>
         </div>
-        <input type="checkbox" bind:checked={editable}/>
-        <input type="checkbox" disabled={!editable}/>
         <br>
         {#if $nodes[node_id].type != "sdn"}
           <L2 node_id={node_id} editable={editable}/>
@@ -70,6 +75,8 @@
 
   .general {
     padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
   }
 
   .btn-trans {
@@ -78,5 +85,11 @@
     border-radius: 0px;
     border-left: 3px solid var(--dark-1);
     font-size: 16px;
+  }
+
+  .edit {
+    float: right;
+    pointer-events:all;
+    cursor:pointer;
   }
 </style>
