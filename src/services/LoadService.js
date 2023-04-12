@@ -42,10 +42,11 @@ export function initNetworks() {
 export function loadConfig(conf) {
   networks.update(_ => conf.networks);
   initNetworks();
-  nodes.update(_ => conf.nodes);
-  max_at.update(_ => conf.max_at);
-  nextNetworkId.update(_ => parseInt(Object.keys(conf.networks).reduce((a, b) => conf.networks[a].id > conf.networks[b].id ? a : b))+1)
-  nextNodeId.update(_ => parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
+  nodes.set(conf.nodes);
+  max_at.set(conf.max_at);
+  nextNetworkId.set(parseInt(Object.keys(conf.networks).reduce((a, b) => conf.networks[a].id > conf.networks[b].id ? a : b))+1)
+  nextNodeId.set(parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
+  connections.set(conf.connections);
 }
 
 export function assembleConfig() {
