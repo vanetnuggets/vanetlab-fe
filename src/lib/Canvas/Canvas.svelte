@@ -29,7 +29,7 @@
     let bulldoze_toggle = false;
 
     $: nodearr = Object.values($nodes);
-    $: current_time_string = $current_time === 0 ? $current_time.toString() + '.0' : $current_time.toString() + '.0'
+    $: current_time_string = $current_time.toString() + '.0'
     $: sietky = createPairs(nodearr);
 
     function createPairs(nodes){
@@ -79,28 +79,20 @@
                 node.y = node.mobility[time].y 
             } else {
                 // vypocitaj;
-                let closest = null
                 let closest_str = null
                 if (Object.keys(node.mobility).length !== 0){ 
-                    closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
+                    let closest = Object.keys(node.mobility).map(Number).reduce(function(prev, curr) {
                         return (curr > prev && curr <= timeRaw ? curr : prev);
                     });
-                    closest_str = closest === 0 ? closest.toString() : closest.toString() + '.0'
+                    closest_str = closest.toString() + '.0'
                 }
-
-                
 
                 if (node.mobility[closest_str] !== undefined) {
                     node.x = node.mobility[closest_str].x
                     node.y = node.mobility[closest_str].y
                 } else {
-                    if (node.mobility[closest] !== undefined) {
-                        node.x = node.mobility[closest].x
-                        node.y = node.mobility[closest].y
-                    } else {
-                        node.x = 10
-                        node.y = 10
-                    }
+                    node.x = 20
+                    node.y = 20
                 }
             }
         }
