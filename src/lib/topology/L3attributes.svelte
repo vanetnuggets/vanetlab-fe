@@ -4,6 +4,7 @@
 
 
     export let node_id;
+    export let editable
 
     const optional_attributes = {
         udpclient: {
@@ -67,7 +68,7 @@
         <div transition:slide>
             <div class="row">
                 <div class="col">
-                    <select bind:value={attributes_input}>
+                    <select bind:value={attributes_input} disabled={!editable}>
                         {#each Object.keys(optional_attributes[node.l3]) as attribute}
                             {#if node.l3conf["attributes"] == undefined || !Object.keys(node.l3conf["attributes"]).includes(attribute)}
                             <option value={attribute}>
@@ -78,7 +79,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <button on:click={add_attribute}> Add </button>
+                    <button on:click={add_attribute} disabled={!editable}> Add </button>
                 </div>
                 <br/>
             </div>
@@ -92,8 +93,9 @@
                             placeholder={ optional_attributes[node.l3][attribute]
                                 .validation}
                             size="10"
+                            disabled={!editable}
                         />
-                        <button on:click={() => remove_l3_attributes(attribute)}>&times;</button>
+                        <button on:click={() => remove_l3_attributes(attribute)} disabled={!editable}>&times;</button>
                         <br />
                     {/if}
                 {/each}
