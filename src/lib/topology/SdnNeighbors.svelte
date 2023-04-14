@@ -5,6 +5,7 @@
 
 
     export let node_id;
+    export let editable;
 
     let n_nodes_toggle = false;
     let neighbors_toggle = false;
@@ -32,11 +33,11 @@
     {#if neighbors_toggle}
         <div transition:slide>
             <label>
-                <input type="checkbox" bind:checked={$adding_ovs_neighbors} />
+                <input type="checkbox" bind:checked={$adding_ovs_neighbors} disabled={!editable}/>
                 Add neighbors
               </label>
         </div>
-        <button on:click={toggle_n_nodes} class="importrant-btn btn-trans">
+        <button on:click={toggle_n_nodes} class="btn-basic">
             Neighbors
         </button><br />
             {#if n_nodes_toggle}
@@ -50,7 +51,7 @@
                             {#each Object.entries($nodes[node_id].switch_nodes) as [_, nb_id]}
                                 <tr>
                                 <td>{nb_id}</td>
-                                <td><button on:click={() => remove_neighbor(nb_id)}>&times;</button></td>
+                                <td><button class="btn-basic" on:click={() => remove_neighbor(nb_id)} disabled={!editable}>&times;</button></td>
                                 </tr>
                             {/each}
                         {/if}

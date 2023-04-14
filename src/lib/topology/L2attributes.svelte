@@ -61,7 +61,7 @@
 </script>
 
 <div class="l2_attributes">
-    <button on:click={toggle_l2_attributes} class="importrant-btn btn-trans" >
+    <button on:click={toggle_l2_attributes} class="btn-basic" >
         Optional attributes
     </button><br />
     {#if open_l2_attributes && node !== undefined && optional_attributes[node.l2]!== undefined}
@@ -79,7 +79,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <button on:click={add_attribute} disabled={!editable}> Add </button>
+                    <button class="btn-basic" on:click={add_attribute} disabled={!editable} style="margin-left: 15px"> Add </button>
                 </div>
                 <br/>
             </div>
@@ -96,7 +96,7 @@
                     />
                     {optional_attributes[node.l2][attribute].end}
                     <!-- <span>{value}</span> -->
-                    <button on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
+                    <button class="btn-basic" on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
                     <br />
                 {/each}
             {/if}

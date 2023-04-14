@@ -106,7 +106,7 @@
   {#if open_mobility && $nodes[node_id] !== undefined}
     <div transition:slide>
       <div class="add_mobility">
-        <button on:click={toggle_add_mobility} class="importrant-btn btn-trans">
+        <button on:click={toggle_add_mobility} class="btn-basic">
           Toggle
         </button><br />
         {#if open_add_mobility}
@@ -164,14 +164,14 @@
               </div>
             </div>
             {error_message}
-            <button on:click={add_mobility} disabled={!editable}>
+            <button class="btn-basic" on:click={add_mobility} disabled={!editable}>
               Add keyframe
             </button>
             <br />
           </div>
         {/if}
       </div>
-      <button on:click={toggle_list_mobility} class="importrant-btn btn-trans">
+      <button on:click={toggle_list_mobility} class="btn-basic">
         List
       </button><br />
       {#if open_list_mobility}
@@ -189,7 +189,7 @@
                 <td>{position.x.toFixed(2)}</td>
                 <td>{position.y.toFixed(2)}</td>
                 <td
-                  ><button
+                  ><button class="btn-basic"
                     disabled={!editable}
                     on:click={() => remove_mobility(time)}>&times;</button
                   ></td

@@ -21,7 +21,7 @@
 
 <div style="margin-top:69px;">
     <hr/>
-    <button on:click={toggle_creation}>Connections</button>
+    <button class="btn-basic" on:click={toggle_creation}>Connections</button>
 </div>
 {#if show}
     {#if $connections.length == 0 }
@@ -43,7 +43,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <select bind:value={c.node_to}>
+                    <select bind:value={c.node_to} style="margin-left:12px">
                         {#each arr as n}
                             <option value={n.id}>
                                 {n.id}
@@ -52,7 +52,7 @@
                     </select>
                 </div>
                 <div>
-                    <button on:click={() => deleteConnection(i)} class="btn-basic remover {confirm ? "confirm": ""}">X</button>
+                    <button on:click={() => deleteConnection(i)} class="btn-basic remover {confirm ? "confirm": ""}" style="margin-left:20px">X</button>
                 </div>
             </div>
         {/each}

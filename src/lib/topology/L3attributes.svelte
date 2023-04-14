@@ -61,7 +61,7 @@
 </script>
 
 <div class="l3_attributes">
-    <button on:click={toggle_l3_attributes} class="importrant-btn btn-trans">
+    <button on:click={toggle_l3_attributes} class="btn-basic">
         Optional attributes
     </button><br />
     {#if open_l3_attributes && node !== undefined && optional_attributes[node.l3]!== undefined}
@@ -79,7 +79,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <button on:click={add_attribute} disabled={!editable}> Add </button>
+                    <button class="btn-basic" on:click={add_attribute} disabled={!editable} style="margin-left: 15px"> Add </button>
                 </div>
                 <br/>
             </div>
@@ -95,7 +95,7 @@
                             size="10"
                             disabled={!editable}
                         />
-                        <button on:click={() => remove_l3_attributes(attribute)} disabled={!editable}>&times;</button>
+                        <button class="btn-basic" on:click={() => remove_l3_attributes(attribute)} disabled={!editable}>&times;</button>
                         <br />
                     {/if}
                 {/each}

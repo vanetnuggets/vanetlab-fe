@@ -59,7 +59,7 @@
   {/if}
 {/each}
 
-<button on:click={toggle_creation}>
+<button class="btn-basic" on:click={toggle_creation}>
     New network
 </button>
 {#if network_open == true}
@@ -93,7 +93,7 @@
           <Switch bind:switchValue={switchValue} networkId = {$nextNetworkId}/> 
       </div>
     </div>
-    <button on:click={addContainer}>
+    <button class="btn-basic" on:click={addContainer}>
         Create
     </button>
 </div>
