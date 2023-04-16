@@ -8,7 +8,8 @@
   import L3 from "./L3.svelte";
   import SdnController from "./SdnController.svelte";
   import SdnNeighbors from "./SdnNeighbors.svelte";
-  import EditIcon from "../../assets/edit.svg";
+  import LockedIcon from "../../assets/locked.svg";
+  import UnlockedIcon from "../../assets/unlocked.svg";
 
   let node_id = null;
   let editable = false
@@ -37,15 +38,17 @@
           </p>
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <div class="col" style="pointer-events:none">
-            <img class="edit" on:click={(_) => editable = !editable} src={EditIcon} title="edit" height=18px width=18px alt="map_icon" style="background:{editable ? 'red' : ''};">
+            <img class="edit" on:click={(_) => editable = !editable} src={!editable? LockedIcon: UnlockedIcon} title="edit" height=18px width=18px alt="map_icon">
           </div>
         </div>
         <br>
-        {#if $nodes[node_id].type != "sdn"}
-          <L2 node_id={node_id} editable={editable}/>
-          <br>
-          <L3 node_id={node_id} editable={editable}/>
-          <br>
+        {#if $nodes[node_id].type == "basic" && $nodes[node_id].l2conf.type != "pgw"}
+          <!-- {#if $nodes[node_id].type != "sdn"} -->
+            <L2 node_id={node_id} editable={editable}/>
+            <br>
+            <L3 node_id={node_id} editable={editable}/>
+            <br>
+          <!-- {/if} -->
         {/if}
         {#if $nodes[node_id].type == "sdn"}
           <SdnController node_id={node_id} editable={editable} />

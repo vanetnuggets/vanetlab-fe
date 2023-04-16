@@ -5,9 +5,9 @@
     import OptionalAttributes from "./L2attributes.svelte"
 
     export let node_id;
-    export let editable
+    export let editable;
     const l2_types = {
-        lte: ["eu", "enb"],
+        lte: ["ue", "enb"],
         wifi: ["sta", "ap"],
         eth: []
     };
@@ -20,7 +20,6 @@
     }
 
     function set_default() {
-        console.log("cay")
         if($nodes[node_id].l2conf.type == "ap")
             $nodes[node_id].l2conf.standard = "802.11n"
         else
