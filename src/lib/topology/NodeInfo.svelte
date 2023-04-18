@@ -1,14 +1,15 @@
 <script>
   import '../../assets/nodeconf.css'
   import { slide } from "svelte/transition";
-  import { current_node, current_time } from "../../store/store.js";
+  import { current_node, current_time, pgw_exists } from "../../store/store.js";
   import { nodes } from "../../store/scenario.js";
   import Mobility from "./Mobility.svelte";
   import L2 from "./L2.svelte";
   import L3 from "./L3.svelte";
   import SdnController from "./SdnController.svelte";
   import SdnNeighbors from "./SdnNeighbors.svelte";
-  import EditIcon from "../../assets/edit.svg";
+  import LockedIcon from "../../assets/locked.svg";
+  import UnlockedIcon from "../../assets/unlocked.svg";
 
   let node_id = null;
   let editable = false
@@ -37,15 +38,15 @@
           </p>
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <div class="col" style="pointer-events:none">
-            <img class="edit" on:click={(_) => editable = !editable} src={EditIcon} title="edit" height=18px width=18px alt="map_icon" style="background:{editable ? 'red' : ''};">
+            <img class="edit" on:click={(_) => editable = !editable} src={!editable? LockedIcon: UnlockedIcon} title="edit" height=18px width=18px alt="map_icon">
           </div>
         </div>
         <br>
-        {#if $nodes[node_id].type != "sdn"}
-          <L2 node_id={node_id} editable={editable}/>
-          <br>
-          <L3 node_id={node_id} editable={editable}/>
-          <br>
+        {#if $nodes[node_id].type == "basic" && $nodes[node_id].l2conf.type != "pgw"}
+            <L2 node_id={node_id} editable={editable}/>
+            <br>
+            <L3 node_id={node_id} editable={editable}/>
+            <br>
         {/if}
         {#if $nodes[node_id].type == "sdn"}
           <SdnController node_id={node_id} editable={editable} />

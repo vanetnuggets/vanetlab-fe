@@ -1,13 +1,13 @@
 <script>
-    import { visibleNetwork } from '../../store/store.js';
+    import { lte_exists, pgw_exists, visibleNetwork} from '../../store/store.js';
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks, nodes } from '../../store/scenario.js';
-    import Switch from './Switch.svelte';
-    export let network
+    import { onMount } from "svelte";
+    
+    export let network;
 
     let rgb
     let isShown = false
-  
     function clickHandler() {
         isShown = !isShown
         if (isShown) 
@@ -39,6 +39,10 @@
             }
             $nodes=$nodes
             let tmp = $networks;
+            if (tmp[network.id].type == "LTE") {
+                lte_exists.set(false)
+                pgw_exists.set(false)
+            }
             delete tmp[network.id];
             networks.update(_ => tmp);
         } else {
@@ -52,6 +56,9 @@
                 true
             : false
         : handleClosing()
+
+    onMount(() => {
+    });
 </script>
 
 <style>

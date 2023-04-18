@@ -5,7 +5,9 @@
         nextNodeId,
         current_node,
         current_time,
-        adding_ovs_neighbors
+        adding_ovs_neighbors,
+        lte_exists,
+        pgw_exists
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
@@ -16,6 +18,7 @@
     import P2pIcon from "../../assets/p2p.svg";
     import NodeIcon from "../../assets/node.svg";
     import OvsNodeIcon from "../../assets/ovs_node.svg";
+    import PgwIcon from "../../assets/pgw.svg";
 
     let radius = 15;
     let svg;
@@ -27,7 +30,7 @@
     let add_sdn_toggle = false;
     let add_p2p_toggle = false;
     let bulldoze_toggle = false;
-
+    
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time.toString() + '.0'
     $: sietky = createPairs(nodearr);
@@ -281,32 +284,36 @@
     }
 
     function remove_node(node){
-        if ($current_node === node.id)
+        if (node.l2conf.type == "pgw") {
+            pgw_exists.set(false)
+        }
+        if (node != undefined && $current_node === node.id)
             current_node.update((_) => null)
 
-            // removing p2p connections(cannot use for each, index is broken then!)
-            let index = $connections.length - 1;
-            while (index >= 0) {
-                if ($connections[index].node_from === node.id || $connections[index].node_to === node.id) {
-                    $connections.splice(index, 1);
-                }
-                index -= 1;
+        // removing p2p connections(cannot use for each, index is broken then!)
+        let index = $connections.length - 1;
+        while (index >= 0) {
+            if ($connections[index].node_from === node.id || $connections[index].node_to === node.id) {
+                $connections.splice(index, 1);
             }
-            
-            // checking to delete sdn neighbor
-            for (const [_, val] of Object.entries($nodes)) {
-                if (val.type == "sdn") {
-                    if ($nodes[val.id].switch_nodes.includes(node.id)) 
-                    remove_sdn_neighbor(val.id, node.id)
-                }
+            index -= 1;
+        }
+        
+        // checking to delete sdn neighbor
+        for (const [_, val] of Object.entries($nodes)) {
+            if (val.type == "sdn") {
+                if ($nodes[val.id].switch_nodes.includes(node.id)) 
+                remove_sdn_neighbor(val.id, node.id)
             }
-            
-            // if its the switch itself
-            if (node.type == "sdn")
-            adding_ovs_neighbors.set(false)
-            
-            delete $nodes[node.id]
-            $nodes = $nodes
+        }
+        
+        // if its the switch itself
+        if (node.type == "sdn")
+        adding_ovs_neighbors.set(false)
+        
+        delete $nodes[node.id]
+        $nodes = $nodes
+
     }
 
     function mouseHandler(e) {
@@ -352,9 +359,28 @@
         bulldoze_toggle = false;
     }
 
+    function check_lte() {
+        pgw_exists.set(false)
+        lte_exists.set(false)
+
+        // checks if pgw node exists
+        for (const [key, node] of Object.entries($nodes)) {
+            if (node.type == "basic" && node.l2conf.type == "pgw") {
+                pgw_exists.set(true)
+            }
+        }
+        // checks if lte netowrk exists
+        for (const [key, network] of Object.entries($networks)) {
+            if (network.type == "LTE") {
+                lte_exists.set(true)
+            }
+        }
+    }
+
     onMount(() => {
         svg = select(bind);
         dragHandler(svg.selectAll(".myPoint"));
+        check_lte()
     });
 </script>
 
@@ -466,6 +492,15 @@
                 {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "enb" }
                     <image class="no_tap"
                         href={BtsIcon}
+                        x={d.x - 20}
+                        y={d.y - 20}
+                        width={20}
+                        height={20}
+                    />   
+                {/if}
+                {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "pgw" }
+                    <image class="no_tap"
+                        href={PgwIcon}
                         x={d.x - 20}
                         y={d.y - 20}
                         width={20}
