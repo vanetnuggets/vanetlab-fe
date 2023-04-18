@@ -6,9 +6,8 @@
         current_node,
         current_time,
         adding_ovs_neighbors,
-        pgw_node,
-        pgw_flipper
-
+        lte_exists,
+        pgw_exists
     } from "../../store/store.js";
     import { nodes, networks, connections } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
@@ -35,21 +34,6 @@
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time.toString() + '.0'
     $: sietky = createPairs(nodearr);
-    
-    pgw_flipper.subscribe(flip => {
-        // console.log($pgw_node)
-        if ($pgw_node.created != null) {
-            if ($pgw_node.created == false && $pgw_node.node_id != -1) {
-                console.log("removujem")
-                // console.log($nodes[$pgw_node.node_id])
-                remove_node($nodes[$pgw_node.node_id])
-            }
-            if ($pgw_node.created == true && $pgw_node.node_id != -1) {
-                console.log("creatim")
-                add_node(false, true)
-            }
-        }
-    })
 
     function createPairs(nodes){
         let arr = {}
@@ -180,7 +164,7 @@
         select(bind).call(zoomX);
     }
 
-    function add_node(sdn = false, pgw = false) {
+    function add_node(sdn = false) {
         let x = mouse_x;
         let y = mouse_y;
         let newNode = {
@@ -201,15 +185,7 @@
             newNode.type = "sdn";
             newNode["switch_nodes"] = [];
             newNode["controller"] = ""
-        } else if (pgw){
-            pgw_node.update(value => ({ ...value, created: true, node_id: newNode.id }));
-            newNode.x = 10;
-            newNode.y = 10;
-            newNode.l2 = "lte"
-            newNode.l2id = $pgw_node.network_id;
-            newNode.l2conf = {"type": "pgw"};
         }
-        // console.log(newNode)
         $nodes[$nextNodeId] = newNode;
         $nextNodeId += 1;
         // wait until it is rendered and add draghandler
@@ -308,37 +284,36 @@
     }
 
     function remove_node(node){
-        if ((node.l2conf.type != "pgw")) {
-            if (node != undefined && $current_node === node.id)
-                current_node.update((_) => null)
+        if (node.l2conf.type == "pgw") {
+            pgw_exists.set(false)
+        }
+        if (node != undefined && $current_node === node.id)
+            current_node.update((_) => null)
 
-            // removing p2p connections(cannot use for each, index is broken then!)
-            let index = $connections.length - 1;
-            while (index >= 0) {
-                if ($connections[index].node_from === node.id || $connections[index].node_to === node.id) {
-                    $connections.splice(index, 1);
-                }
-                index -= 1;
+        // removing p2p connections(cannot use for each, index is broken then!)
+        let index = $connections.length - 1;
+        while (index >= 0) {
+            if ($connections[index].node_from === node.id || $connections[index].node_to === node.id) {
+                $connections.splice(index, 1);
             }
-            
-            // checking to delete sdn neighbor
-            for (const [_, val] of Object.entries($nodes)) {
-                if (val.type == "sdn") {
-                    if ($nodes[val.id].switch_nodes.includes(node.id)) 
-                    remove_sdn_neighbor(val.id, node.id)
-                }
+            index -= 1;
+        }
+        
+        // checking to delete sdn neighbor
+        for (const [_, val] of Object.entries($nodes)) {
+            if (val.type == "sdn") {
+                if ($nodes[val.id].switch_nodes.includes(node.id)) 
+                remove_sdn_neighbor(val.id, node.id)
             }
-            
-            // if its the switch itself
-            if (node.type == "sdn")
-            adding_ovs_neighbors.set(false)
-            
-            delete $nodes[node.id]
-            $nodes = $nodes
         }
-        else {
-            console.log("Cannot remove pgw!")
-        }
+        
+        // if its the switch itself
+        if (node.type == "sdn")
+        adding_ovs_neighbors.set(false)
+        
+        delete $nodes[node.id]
+        $nodes = $nodes
+
     }
 
     function mouseHandler(e) {
@@ -385,11 +360,19 @@
     }
 
     function check_lte() {
-        pgw_node.update(value => ({ ...value, created: false, node_id: -1, network_id: -1}))
+        pgw_exists.set(false)
+        lte_exists.set(false)
 
+        // checks if pgw node exists
         for (const [key, node] of Object.entries($nodes)) {
             if (node.type == "basic" && node.l2conf.type == "pgw") {
-                pgw_node.update(value => ({ ...value, created: true, node_id: node.id, network_id: node.l2id }))
+                pgw_exists.set(true)
+            }
+        }
+        // checks if lte netowrk exists
+        for (const [key, network] of Object.entries($networks)) {
+            if (network.type == "LTE") {
+                lte_exists.set(true)
             }
         }
     }

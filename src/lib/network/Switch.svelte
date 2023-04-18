@@ -1,7 +1,6 @@
 <script>
- 
     import { nodes } from "../../store/scenario";
-    import { pgw_node } from "../../store/store";
+    import { lte_exists } from "../../store/store";
     export let switchValue;
     export let networkId = 0;
 
@@ -24,7 +23,7 @@ function handleClick(name){
 
 <div class="s s--inner">
     <button on:click={() => handleClick("ETH")} class="{switchValue == 'ETH' ? 'clicked' : ''}">ETH</button>
-    <button on:click={() => handleClick("LTE")} class="{switchValue == 'LTE' ? 'clicked' : ''}" disabled={$pgw_node.created}>LTE</button>
+    <button on:click={() => handleClick("LTE")} class="{switchValue == 'LTE' ? 'clicked' : ''}" disabled={$lte_exists}>LTE</button>
     <button on:click={() => handleClick("WIFI")} class="{switchValue == 'WIFI' ? 'clicked' : ''}">WIFI</button>
 </div>
 

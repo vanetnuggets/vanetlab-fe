@@ -1,5 +1,5 @@
 <script>
-    import { pgw_node, pgw_flipper, visibleNetwork} from '../../store/store.js';
+    import { lte_exists, pgw_exists, visibleNetwork} from '../../store/store.js';
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks, nodes } from '../../store/scenario.js';
     import { onMount } from "svelte";
@@ -40,8 +40,8 @@
             $nodes=$nodes
             let tmp = $networks;
             if (tmp[network.id].type == "LTE") {
-                pgw_node.update(value => ({ ...value, created: false}))
-                pgw_flipper.set(!$pgw_flipper)
+                lte_exists.set(false)
+                pgw_exists.set(false)
             }
             delete tmp[network.id];
             networks.update(_ => tmp);

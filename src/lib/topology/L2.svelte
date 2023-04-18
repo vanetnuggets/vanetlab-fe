@@ -3,11 +3,12 @@
     import { slide } from "svelte/transition";
     import { nodes, networks } from "../../store/scenario";
     import OptionalAttributes from "./L2attributes.svelte"
+    import { pgw_exists, current_node } from '../../store/store';
 
     export let node_id;
     export let editable;
     const l2_types = {
-        lte: ["ue", "enb"],
+        lte: ["ue", "enb", "pgw"],
         wifi: ["sta", "ap"],
         eth: []
     };
@@ -24,6 +25,14 @@
             $nodes[node_id].l2conf.standard = "802.11n"
         else
             $nodes[node_id].l2conf = delete $nodes[node_id].l2conf.standard && $nodes[node_id].l2conf;
+    }
+
+    function handlePwg(event) {
+        if (event.target.value==="pgw") {
+            pgw_exists.set(true)
+            // if (node != undefined && $current_node === node.id)
+            current_node.update((_) => null)
+        } 
     }
 
     $: if ($nodes[node_id] !== undefined){ 
@@ -70,9 +79,9 @@
                             Node type: <br />
                         </div>
                         <div class="col">
-                            <select class="dropdown" bind:value={$nodes[node_id].l2conf.type} on:change = {set_default} disabled={!editable}>
+                            <select class="dropdown" on:change={handlePwg} bind:value={$nodes[node_id].l2conf.type} on:change = {set_default} disabled={!editable}>
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
-                                    <option value={l2_st}>
+                                    <option disabled={$nodes[node_id].l2==="lte" && l2_st==="pgw" && $pgw_exists ? true : false} value={l2_st}>
                                         {l2_st}
                                     </option>
                                 {/each}

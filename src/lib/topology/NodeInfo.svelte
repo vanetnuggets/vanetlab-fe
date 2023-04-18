@@ -1,7 +1,7 @@
 <script>
   import '../../assets/nodeconf.css'
   import { slide } from "svelte/transition";
-  import { current_node, current_time } from "../../store/store.js";
+  import { current_node, current_time, pgw_exists } from "../../store/store.js";
   import { nodes } from "../../store/scenario.js";
   import Mobility from "./Mobility.svelte";
   import L2 from "./L2.svelte";
@@ -43,12 +43,10 @@
         </div>
         <br>
         {#if $nodes[node_id].type == "basic" && $nodes[node_id].l2conf.type != "pgw"}
-          <!-- {#if $nodes[node_id].type != "sdn"} -->
             <L2 node_id={node_id} editable={editable}/>
             <br>
             <L3 node_id={node_id} editable={editable}/>
             <br>
-          <!-- {/if} -->
         {/if}
         {#if $nodes[node_id].type == "sdn"}
           <SdnController node_id={node_id} editable={editable} />

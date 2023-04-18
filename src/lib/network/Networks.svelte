@@ -1,6 +1,6 @@
 <script>
     import Network from "./Network.svelte";
-    import {  nextNetworkId, pgw_node, pgw_flipper } from "../../store/store";
+    import {  lte_exists, nextNetworkId } from "../../store/store";
     import { networks } from "../../store/scenario";
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
@@ -32,8 +32,7 @@
     toggle_creation()
     debugBS()
     if (switchValue == "LTE") {
-      pgw_node.update(value => ({ ...value, created: true, network_id: parseInt(new_network.id)}))
-      pgw_flipper.set(!$pgw_flipper)
+      lte_exists.set(true)
       switchValue = "WIFI";
     }
   }
