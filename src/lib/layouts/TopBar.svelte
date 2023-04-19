@@ -1,5 +1,5 @@
 <div class="top" on:mouseenter={handle_hover_topbar_enter} on:mouseleave={handle_hover_topbar_leave}>
-  <button class="btn l" on:click={toggle} style="background-color: {force_visible ? "grey" : "var(--dark-3)"};">🍔</button>
+  <button class="btn l" on:click={toggle} style="background-color: {!force_visible ? "grey" : "var(--dark-3)"};">🍔</button>
   <button on:click={() => goto('/')} class="btn r">🚪 Exit</button>
   {#if visible == true}
     <div transition:fade={{ duration: 50}}>
@@ -29,8 +29,8 @@
   import { isError, isValidated, errorData, isOk, loading, simData } from '../../store/summary';
   const { addNotification } = getNotificationsContext();
 
-  let visible = false;
-  let force_visible = false;
+  let visible = true;
+  let force_visible = true;
   let currName;
 
   scenarioName.subscribe(val => {

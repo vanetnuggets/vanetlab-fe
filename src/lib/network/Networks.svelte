@@ -1,15 +1,19 @@
 <script>
     import Network from "./Network.svelte";
-    import { nextNetworkId } from "../../store/store";
+    import {  lte_exists, nextNetworkId } from "../../store/store";
     import { networks } from "../../store/scenario";
     import { slide } from 'svelte/transition'
     import ColorPicker from 'svelte-awesome-color-picker';
     import Switch from "./Switch.svelte";
     import Connections from "./Connections.svelte";
 
-
     let rgb;
+    let name = ""
+    let address = ""
+    let color
+    let switchValue = "WIFI"
     let netarr;
+    
     networks.subscribe(val => {
       netarr = Object.values(val);
     })
@@ -27,6 +31,10 @@
     color = "#ff0000"
     toggle_creation()
     debugBS()
+    if (switchValue == "LTE") {
+      lte_exists.set(true)
+      switchValue = "WIFI";
+    }
   }
 
   function debugBS(){
@@ -43,14 +51,6 @@
   function toggle_creation() {
     network_open = !network_open;
   }
-
- 
-  let name = ""
-  let address = ""
-  let color
-  let switchValue = "WIFI"
-
-
 </script>
 
 {#each netarr as n (n.id) }
@@ -90,7 +90,7 @@
           Network type:
       </div>
       <div class="col">
-          <Switch bind:switchValue={switchValue} networkId = {$nextNetworkId}/> 
+          <Switch bind:switchValue={switchValue} networkId={$nextNetworkId}/> 
       </div>
     </div>
     <button class="btn-basic" on:click={addContainer}>
