@@ -40,7 +40,7 @@
         {/if}
         {#if curr_option == 'LOCAL'}
         <div>
-          Drag config json
+          <LoadLocal></LoadLocal>
         </div>
         {/if}
         {#if curr_option == 'REMOTE'}
@@ -109,6 +109,7 @@
   import NewSim from "./welcome/NewSim.svelte";
   import FromSumo from "./welcome/FromSumo.svelte";
   import LoadRemote from "./welcome/LoadRemote.svelte";
+  import LoadLocal from "./welcome/LoadLocal.svelte";
 
   import { listScenarios } from "../api/scenarios";
   import { scenarioList } from "../../store/welcome";
