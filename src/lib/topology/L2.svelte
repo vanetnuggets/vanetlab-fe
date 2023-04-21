@@ -62,7 +62,7 @@
                 <div class="col">
                     <select
                         bind:value={$nodes[node_id].l2id}
-                        class="my-input dropdown"
+                        class="dropdown"
                         disabled={!editable}>
                         {#each Object.keys($networks) as l2_t}
                             <option value={$networks[l2_t].id}>

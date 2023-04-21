@@ -158,10 +158,6 @@ select {
   width: 100%;
 }
 
-/* .disabl {
-  background-color: var(--main-fg-color);
-} */
-
 option {
   font-size: 13px;
   cursor: pointer;
@@ -256,4 +252,12 @@ option {
 
 .dropdown:enabled {
   cursor: pointer;
+}
+
+.my-input:disabled {
+  background-color: rgb(118, 118, 118);
+}
+
+.my-input:disabled::placeholder {
+  color: var(--dark-4);
 }
