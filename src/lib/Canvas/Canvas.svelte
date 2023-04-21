@@ -1,6 +1,7 @@
 <script>
     import { zoom, select, drag} from "d3";
     import { onMount } from "svelte";
+    import * as d3 from 'd3';
     import {
         nextNodeId,
         current_node,
@@ -25,6 +26,9 @@
     let circle;
     let mouse_x = 0;
     let mouse_y = 0;
+    let transform_x = 0;
+    let transform_y = 0;
+    let transform_k = 1
     let first_p2p = null;
     let add_node_toggle = false;
     let add_sdn_toggle = false;
@@ -146,7 +150,6 @@
     $: width = document.getElementById("bs").offsetWidth;
     $: height = document.getElementById("bs").offsetHeight;
     
-
     $: zoomX = zoom()
         .scaleExtent([1, 5])
         // @ts-ignore
@@ -158,6 +161,9 @@
 
     function handleZoom(e) {
         select(bindHandleZoom).attr("transform", e.transform);
+        transform_x = e.transform.x
+        transform_y = e.transform.y
+        transform_k = e.transform.k
     }
 
     $: if (bind) {
@@ -318,8 +324,8 @@
 
     function mouseHandler(e) {
         const rect = e.currentTarget.getBoundingClientRect()
-        mouse_x = e.clientX - rect.x
-        mouse_y = e.clientY - rect.y
+        mouse_x = ((e.clientX - rect.x) - transform_x) / transform_k
+        mouse_y = ((e.clientY - rect.y) - transform_y) / transform_k
     }
 
     function bHandler(type) {

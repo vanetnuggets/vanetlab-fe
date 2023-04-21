@@ -44,6 +44,12 @@
       ...val, scenario: true
     }));
     isOk.set(false);
+    addNotification({
+      text: "Simulation started",
+      position: 'bottom-center',
+      type: "success",
+      removeAfter: 1500000
+    });
     simulate(currName).then((resp) => {
       let data = resp.data.data;
       let name = get(scenarioName);
