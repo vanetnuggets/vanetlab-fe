@@ -8,7 +8,7 @@
   })
 </script>
 
-<div class=drawer>
+<div class=r_drawer>
   <slot>
     <NodeInfo></NodeInfo>
   </slot>

@@ -21,6 +21,10 @@
  --accent-color: CornflowerBlue;
 }
 
+.default-position-style-bottom-center.s-_AjQPokVvqqO {
+  bottom: 30px;
+}
+
 input {
   background-color: var(--main-fg-color);
   border: none;
@@ -34,7 +38,12 @@ select {
 
 .drawer {
   color: white;
-  
+  width: 400px
+}
+
+.r_drawer {
+  color: white;
+  width: 280px
 }
 
 

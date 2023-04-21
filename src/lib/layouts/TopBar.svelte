@@ -48,7 +48,7 @@
       text: "Simulation started",
       position: 'bottom-center',
       type: "success",
-      removeAfter: 1500000
+      removeAfter: 1500
     });
     simulate(currName).then((resp) => {
       let data = resp.data.data;
@@ -107,7 +107,13 @@
     }));
     let notifType = "";
     let notifText = "";
-      
+    
+    addNotification({
+      text: "Check started",
+      position: 'bottom-center',
+      type: "success",
+      removeAfter: 1500
+    });
     validate(currName).then((resp) => {
       let name = get(scenarioName);
       isError.set(false);

@@ -13,6 +13,7 @@
     let color
     let switchValue = "WIFI"
     let netarr;
+    let networks_toggle = true;
     
     networks.subscribe(val => {
       netarr = Object.values(val);
@@ -53,11 +54,21 @@
   }
 </script>
 
-{#each netarr as n (n.id) }
-  {#if n.id != -1}
-    <Network bind:network={$networks[n.id]}/>
-  {/if}
-{/each}
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <button class="btn-basic" on:click={(_)=> networks_toggle = !networks_toggle}>
+    Networks
+  </button>
+</div>
+{#if networks_toggle}
+  <div transition:slide>
+    {#each netarr as n (n.id) }
+        {#if n.id != -1}
+          <Network bind:network={$networks[n.id]}/>
+        {/if}
+      {/each}
+  </div>  
+{/if}
 
 <button class="btn-basic" on:click={toggle_creation}>
     New network
@@ -96,7 +107,7 @@
     <button class="btn-basic" on:click={addContainer}>
         Create
     </button>
-</div>
+  </div>
 {/if}
 <div>
   <Connections/>
