@@ -42,12 +42,12 @@
     let notifText = "";
     let notifType = "";
     localStorage.setItem("apiKey", apiSecret);
-    
+
     validateApiKey()
-    .then((resp) => {
-      notifType = "success";
-      notifText = `Api key validated`;
-      apiSecret=""
+      .then((resp) => {
+        notifType = "success";
+        notifText = `Api key validated`;
+        apiSecret = "";
       })
       .catch((err) => {
         notifText = `Validation failed`;
@@ -72,22 +72,22 @@
       VanetLab
       <div class="inside">
         <div class="row">
-          <button on:click={click_new_sim} class="btn-basic"
+          <button on:click={click_new_sim} class="btn-basic w"
             >New simulation</button
           >
         </div>
         <div class="row">
-          <button on:click={click_load_sumo} class="btn-basic"
+          <button on:click={click_load_sumo} class="btn-basic w"
             >Load from sumo</button
           >
         </div>
         <div class="row">
-          <button on:click={click_load_local} class="btn-basic"
+          <button on:click={click_load_local} class="btn-basic w"
             >Load local</button
           >
         </div>
         <div class="row">
-          <button on:click={click_load_remote} class="btn-basic"
+          <button on:click={click_load_remote} class="btn-basic w"
             >Load remote</button
           >
         </div>
@@ -101,7 +101,7 @@
             bind:value={apiSecret}
             style="width: 100%;"
           />
-          <button on:click={setApiKey} class="">set</button>
+          <button on:click={setApiKey} class="btn-basic">set</button>
         </div>
       </div>
     </div>
@@ -149,7 +149,7 @@
     align-items: stretch;
   }
 
-  .btn-basic {
+  .w {
     width: 100%;
   }
 

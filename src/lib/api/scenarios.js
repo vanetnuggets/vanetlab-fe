@@ -33,6 +33,7 @@ export async function getFile(name, file) {
 
 export function getSummary(name) {
   return Api.get(`summary/${name}`);
+}
   
 export function validateApiKey() {
   return Api.get("key/check")
