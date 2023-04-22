@@ -3,6 +3,7 @@
   import FromSumo from "./welcome/FromSumo.svelte";
   import LoadRemote from "./welcome/LoadRemote.svelte";
   import LoadLocal from "./welcome/LoadLocal.svelte";
+  import Logo from "./Logo.svelte";
 
   import { listScenarios } from "../api/scenarios";
   import { scenarioList } from "../../store/welcome";
@@ -64,7 +65,9 @@
   }
 </script>
 
-<div class="float">ahoj</div>
+<div class="logo">
+  <Logo/>
+</div>
 
 <div class="flex-container">
   <div class="flex-item">
@@ -176,6 +179,20 @@
     transition: opacity 0.4s, transform 1s;
     transition: 0.3s;
     justify-content: space-evenly;
-    height: 100vh;
+    height: 70vh;
+  }
+  .flex-item {
+    margin-top: -30vh;
+  }
+
+  .logo {
+    background-color: var(--dark-2);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    transition: opacity 0.4s, transform 1s;
+    transition: 0.3s;
+    justify-content: space-evenly;
+    height: 30vh;
   }
 </style>
