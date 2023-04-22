@@ -1,7 +1,7 @@
 import { simData, currentStatus, loading, isOk, isError, errorData } from "../store/summary";
 import Api from "./Api";
 
-let baseURL = `ws://vanetlab.ml/api/ws/`
+let baseURL = `wss://vanetlab.ml/ws/`
 if (import.meta.env.VITE_BE_WS_URL != null) {
   baseURL = import.meta.env.VITE_BE_WS_URL
 }
