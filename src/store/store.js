@@ -9,7 +9,6 @@ export const pgw_exists = writable(false)
 export const lte_exists = writable(false)
 
 export const moving_type = writable("canvas")
-export const show_rdrawer = writable("container_info");
 export const node_info = writable(new Map())
 export const node_info2 = writable(null) // opica 🐒
 export const moving = writable(false)

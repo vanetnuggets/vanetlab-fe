@@ -49,10 +49,4 @@ import Networks from "../../lib/network/Networks.svelte";
 import Canvas from '../Canvas/Canvas.svelte';
 import RightDrawer from "../../lib/layouts/RightDrawer.svelte";
 import NodeInfo from "../../lib/topology/NodeInfo.svelte";
-import { show_rdrawer } from '../../store/store.js';
-
-let elem_rdrawer;
-show_rdrawer.subscribe(value => {
-  elem_rdrawer = value;
-})
 </script>

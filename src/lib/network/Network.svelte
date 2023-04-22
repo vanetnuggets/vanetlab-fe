@@ -100,7 +100,7 @@
                 Network name:
             </div>
             <div class="col">
-                <input class="my-input" bind:value={network.ssid} placeholder="example_name">
+                <input class="my-input-l" bind:value={network.ssid} placeholder="example_name">
             </div>
         </div>
         <div class="row">
@@ -108,7 +108,7 @@
                 Network address:
             </div>
             <div class="col">
-                <input class="my-input" bind:value={network.addr} placeholder="example_address">
+                <input class="my-input-l" bind:value={network.addr} placeholder="example_address">
             </div>
         </div>
         <div class="row">

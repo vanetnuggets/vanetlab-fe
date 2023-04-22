@@ -25,6 +25,9 @@
     let circle;
     let mouse_x = 0;
     let mouse_y = 0;
+    let transform_x = 0;
+    let transform_y = 0;
+    let transform_k = 1
     let first_p2p = null;
     let add_node_toggle = false;
     let add_sdn_toggle = false;
@@ -143,10 +146,9 @@
 
     let bindHandleZoom, bind;
 
-    $: width = document.getElementById("bs").offsetWidth;
-    $: height = document.getElementById("bs").offsetHeight;
+    $: width = 3000 //2*document.getElementById("bs").offsetWidth;
+    $: height = 3000 //2*document.getElementById("bs").offsetHeight;
     
-
     $: zoomX = zoom()
         .scaleExtent([1, 5])
         // @ts-ignore
@@ -158,6 +160,9 @@
 
     function handleZoom(e) {
         select(bindHandleZoom).attr("transform", e.transform);
+        transform_x = e.transform.x
+        transform_y = e.transform.y
+        transform_k = e.transform.k
     }
 
     $: if (bind) {
@@ -318,8 +323,8 @@
 
     function mouseHandler(e) {
         const rect = e.currentTarget.getBoundingClientRect()
-        mouse_x = e.clientX - rect.x
-        mouse_y = e.clientY - rect.y
+        mouse_x = ((e.clientX - rect.x) - transform_x) / transform_k
+        mouse_y = ((e.clientY - rect.y) - transform_y) / transform_k
     }
 
     function bHandler(type) {
@@ -406,7 +411,7 @@
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
         <g bind:this={bindHandleZoom}>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <svg on:click={add_nodes_canvas} width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <svg on:click={add_nodes_canvas} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern
                         id="smallGrid"

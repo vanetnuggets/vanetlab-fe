@@ -1,7 +1,7 @@
 <script>
-
     import { connections, nodes } from "../../store/scenario";
-
+    import { slide } from 'svelte/transition'
+    
     let arr;
     nodes.subscribe(val => {
       arr = Object.values(val);
@@ -24,10 +24,10 @@
     <button class="btn-basic" on:click={toggle_creation}>Connections</button>
 </div>
 {#if show}
-    {#if $connections.length == 0 }
-        No p2p connections
-    {/if}
-    <div>
+    <div transition:slide>
+        {#if $connections.length == 0 }
+            No p2p connections
+        {/if}
         {#each $connections as c, i}
             <div class="row">
                 <div class="col">
