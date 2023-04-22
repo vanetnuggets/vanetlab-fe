@@ -2,11 +2,15 @@ import Api from '../../services/Api'
 import { assembleConfig } from '../../services/LoadService';
 
 export function listScenarios() {
-  return Api.get("list")
+  return Api.get("list");
 }
 
 export function getRemote(name) {
-  return Api.get(`scenario/${name}`)
+  return Api.get(`scenario/${name}`);
+}
+
+export function deleteRemote(name) {
+  return Api.delete(`scenario/${name}`);
 }
 
 export function saveRemote(name, scenario) {
@@ -25,4 +29,8 @@ export async function validate(name) {
 
 export async function getFile(name, file) {
   return Api.getBlob(`get/${name}/${file}`);
+}
+
+export function getSummary(name) {
+  return Api.get(`summary/${name}`);
 }

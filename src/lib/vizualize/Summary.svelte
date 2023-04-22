@@ -14,6 +14,7 @@
   import terminalIcon from '../../assets/terminal.svg';
   import { getFile } from "../api/scenarios";
   import { scenarioName } from "../../store/store";
+  import { currentStatus } from "../../store/summary";
 
   let showError = false;
   let showResult = false;
@@ -23,6 +24,11 @@
   let errData = [];
   let simulation = {};
   let scenarioLoading = false;
+  let status = {};
+
+  currentStatus.subscribe(val =>{
+    status = val;
+  })
 
   isValidated.subscribe(val => {
     validated = val;
@@ -65,6 +71,12 @@
       <div class="tmp">
         <ProgressBar kind="indented" size="sm"/>
       </div>
+
+      Activity status: {status.status} <br>
+      <br>
+      Position in queue: {status.position}<br>
+      Scenarios in queue: {status.total_length}<br>
+      Currently being simulated: {status.current}<br>
     </div>
   {:else}
     {#if showError}
