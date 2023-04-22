@@ -3,7 +3,7 @@
   import FromSumo from "./welcome/FromSumo.svelte";
   import LoadRemote from "./welcome/LoadRemote.svelte";
   import LoadLocal from "./welcome/LoadLocal.svelte";
-  import Logo from "./welcome/Logo.svelte";
+  import Logo from "./Logo.svelte";
 
   import { listScenarios } from "../api/scenarios";
   import { scenarioList } from "../../store/welcome";
