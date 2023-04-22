@@ -1,6 +1,6 @@
 <div class="top" on:mouseenter={handle_hover_topbar_enter} on:mouseleave={handle_hover_topbar_leave}>
   <button class="btn l" on:click={toggle} style="background-color: {!force_visible ? "grey" : "var(--dark-3)"};">🍔</button>
-  <button on:click={() => goto('/')} class="btn r">🚪 Exit</button>
+  <button on:click={() => goto_exit('/')} class="btn r">🚪 Exit</button>
   {#if visible == true}
     <div transition:fade={{ duration: 50}}>
       <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
@@ -20,6 +20,7 @@
   import { fade } from 'svelte/transition'
   import { push } from 'svelte-spa-router'
   import { scenarioName } from '../../store/store';
+  import { reset_store } from '../../store/scenario';
   import { assembleConfig, saveLocal } from '../../services/LoadService';
   import { saveRemote as saveRemoteScenario, simulate} from '../api/scenarios';
   import { validate, getSummary } from '../api/scenarios';
@@ -154,6 +155,11 @@
 
   function goto(a) {
     push(`${a}`)
+  }
+
+  function goto_exit(a) {
+    reset_store()
+    goto(a)
   }
 
   function toggle() {
