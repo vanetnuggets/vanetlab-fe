@@ -21,6 +21,10 @@
  --accent-color: CornflowerBlue;
 }
 
+.default-position-style-bottom-center.s-_AjQPokVvqqO {
+  bottom: 30px;
+}
+
 input {
   background-color: var(--main-fg-color);
   border: none;
@@ -34,7 +38,12 @@ select {
 
 .drawer {
   color: white;
-  
+  width: 400px
+}
+
+.r_drawer {
+  color: white;
+  width: 280px
 }
 
 
@@ -149,10 +158,6 @@ select {
   width: 100%;
 }
 
-/* .disabl {
-  background-color: var(--main-fg-color);
-} */
-
 option {
   font-size: 13px;
   cursor: pointer;
@@ -247,4 +252,12 @@ option {
 
 .dropdown:enabled {
   cursor: pointer;
+}
+
+.my-input:disabled {
+  background-color: rgb(118, 118, 118);
+}
+
+.my-input:disabled::placeholder {
+  color: var(--dark-4);
 }

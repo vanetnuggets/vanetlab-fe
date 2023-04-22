@@ -13,6 +13,7 @@
     let color
     let switchValue = "WIFI"
     let netarr;
+    let networks_toggle = true;
     
     networks.subscribe(val => {
       netarr = Object.values(val);
@@ -53,11 +54,21 @@
   }
 </script>
 
-{#each netarr as n (n.id) }
-  {#if n.id != -1}
-    <Network bind:network={$networks[n.id]}/>
-  {/if}
-{/each}
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <button class="btn-basic" on:click={(_)=> networks_toggle = !networks_toggle}>
+    Networks
+  </button>
+</div>
+{#if networks_toggle}
+  <div transition:slide>
+    {#each netarr as n (n.id) }
+        {#if n.id != -1}
+          <Network bind:network={$networks[n.id]}/>
+        {/if}
+      {/each}
+  </div>  
+{/if}
 
 <button class="btn-basic" on:click={toggle_creation}>
     New network
@@ -69,7 +80,7 @@
         Network name:
       </div>
       <div class="col">
-        <input class="my-input" bind:value={name} placeholder="example_name">
+        <input class="my-input-l" bind:value={name} placeholder="example_name">
       </div>
     </div>
     <div class="row">
@@ -77,7 +88,7 @@
         Network address:
       </div>
       <div class="col">
-        <input class="my-input" bind:value={address} placeholder="example_address">
+        <input class="my-input-l" bind:value={address} placeholder="example_address">
       </div>
     </div>
     <div class="row">
@@ -96,7 +107,7 @@
     <button class="btn-basic" on:click={addContainer}>
         Create
     </button>
-</div>
+  </div>
 {/if}
 <div>
   <Connections/>

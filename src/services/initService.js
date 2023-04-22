@@ -14,5 +14,6 @@ export default {
 
   NETWORKS: {},
   NODES: {},
-  MAX_AT: 0
+  MAX_AT: 0,
+  BASE_STATUS: {}
 }
