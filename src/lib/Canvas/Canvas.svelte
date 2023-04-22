@@ -1,7 +1,6 @@
 <script>
     import { zoom, select, drag} from "d3";
     import { onMount } from "svelte";
-    import * as d3 from 'd3';
     import {
         nextNodeId,
         current_node,
@@ -147,8 +146,8 @@
 
     let bindHandleZoom, bind;
 
-    $: width = document.getElementById("bs").offsetWidth;
-    $: height = document.getElementById("bs").offsetHeight;
+    $: width = 3000 //2*document.getElementById("bs").offsetWidth;
+    $: height = 3000 //2*document.getElementById("bs").offsetHeight;
     
     $: zoomX = zoom()
         .scaleExtent([1, 5])
@@ -412,7 +411,7 @@
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
         <g bind:this={bindHandleZoom}>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <svg on:click={add_nodes_canvas} width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <svg on:click={add_nodes_canvas} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern
                         id="smallGrid"

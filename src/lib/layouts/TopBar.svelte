@@ -4,9 +4,9 @@
   {#if visible == true}
     <div transition:fade={{ duration: 50}}>
       <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
-      <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
       <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
-      <button on:click={gotoSummary} class="btn l">📈 Results</button>
+      <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
+      <button on:click={() => goto('/app/summary')} class="btn l">📈 Results</button>
       <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
       <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
   </div>
