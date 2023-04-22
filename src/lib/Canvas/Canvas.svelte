@@ -19,6 +19,9 @@
     import NodeIcon from "../../assets/node.svg";
     import OvsNodeIcon from "../../assets/ovs_node.svg";
     import PgwIcon from "../../assets/pgw.svg";
+    import Coordinates from "./Coordinates.svelte";
+    import Icon from "./Iconn.svelte";
+    import Iconn from "./Iconn.svelte";
 
     let radius = 15;
     let svg;
@@ -406,6 +409,7 @@
             </button>
             <button on:click={vypis} class="btn s" style="background-color: grey;">Vypis</button>
         </div>
+        <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
@@ -415,12 +419,12 @@
                 <defs>
                     <pattern
                         id="smallGrid"
-                        width="8"
-                        height="8"
+                        width="10"
+                        height="10"
                         patternUnits="userSpaceOnUse"
                     >
                         <path
-                            d="M 8 0 L 0 0 0 8"
+                            d="M 10 0 L 0 0 0 10"
                             fill="none"
                             stroke="gray"
                             stroke-width="0.5"
@@ -429,24 +433,38 @@
                 </defs>
                 <rect width="100%" height="100%" fill="url(#smallGrid)" />
             </svg>
+            <!-- p2p connections -->
             {#each $connections as c}
-                <line x1={$nodes[c.node_from].x} y1={$nodes[c.node_from].y} x2={$nodes[c.node_to].x} y2={$nodes[c.node_to].y} stroke="black" />
+                <line x1={$nodes[c.node_from].x} y1={$nodes[c.node_from].y} x2={$nodes[c.node_to].x} y2={$nodes[c.node_to].y} stroke="black" stroke-width="2px"/>
             {/each}
             {#each sietky as siet}
-                {#each siet.nodes as nody}
+            <!-- csma connections -->
+                {#if $networks[siet.id].type == "ETH"}
+                    {#each siet.nodes as nody}
+                        <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-width="1px"/>
+                    {/each}
+                {/if}
+            <!-- wireless connections -->
+                {#if $networks[siet.id].type != "ETH"}
+                    {#each siet.nodes as nody}
                     <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
-                {/each}
+                    {/each}
+                {/if}
             {/each}
             {#each nodearr as d}
                 <!-- p2p line -->
                 {#if add_p2p_toggle && d.id == first_p2p}
-                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
+                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black" stroke-width="2px"/>
                 {/if}
-                <!-- sdn neighbor lines -->
+                <!-- sdn line -->
+                {#if $adding_ovs_neighbors && d.id == $current_node}
+                <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black" stroke-width="1px"/>
+                {/if}
+                <!-- sdn neighbor conenctions -->
                 {#if d.type == "sdn"}
                     {#if d.switch_nodes.length > 0}
                         {#each d.switch_nodes as neighbor}
-                            <line x1={d.x} y1={d.y} x2={$nodes[neighbor].x} y2={$nodes[neighbor].y} stroke="grey" stroke-dasharray="10"/>
+                            <line x1={d.x} y1={d.y} x2={$nodes[neighbor].x} y2={$nodes[neighbor].y} stroke="black" stroke-width="1px"/>
                         {/each}
                     {/if} 
                 {/if}
@@ -460,7 +478,7 @@
                     cx={d.x}
                     cy={d.y}
                     r={radius}
-                    fill={$adding_ovs_neighbors && $nodes[$current_node].switch_nodes.includes(d.id) ? "red" : $networks[d.l2id].color}
+                    fill={$networks[d.l2id].color} 
                 />
                 <circle
                     class="no_tap"
@@ -477,40 +495,16 @@
                     y={d.y + radius - 5}>{d.id}
                 </text>
                 {#if d.type == "sdn"}
-                    <image class="no_tap"
-                        href={OvsIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={OvsIcon} d={d}/>
                 {/if}
                 {#if d.type == "basic" && d.l2 == "wifi" && d.l2conf["type"] == "ap" }
-                    <image class="no_tap"
-                        href={ApIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={ApIcon} d={d}/>     
                 {/if}
                 {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "enb" }
-                    <image class="no_tap"
-                        href={BtsIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={BtsIcon} d={d}/> 
                 {/if}
                 {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "pgw" }
-                    <image class="no_tap"
-                        href={PgwIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={PgwIcon} d={d}/> 
                 {/if}
             {/each}
         </g>
@@ -528,9 +522,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-    }
-    .no_tap {
-        pointer-events:none; 
     }
     .id_text {
         cursor:auto;
@@ -564,5 +555,6 @@
     }
     .action {
         display: inline-flex;
+        padding-left: 80px;
     }
 </style>
