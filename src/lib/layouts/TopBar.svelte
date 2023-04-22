@@ -6,7 +6,7 @@
       <button on:click={() => goto('/app/canvas')} class="btn l">🎨 Canvas</button>
       <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
       <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
-      <button on:click={() => goto('/app/summary')} class="btn l">📈 Results</button>
+      <button on:click={gotoSummary} class="btn l">📈 Results</button>
       <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
       <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
   </div>
@@ -22,9 +22,9 @@
   import { scenarioName } from '../../store/store';
   import { assembleConfig, saveLocal } from '../../services/LoadService';
   import { saveRemote as saveRemoteScenario, simulate} from '../api/scenarios';
-  import { validate } from '../api/scenarios';
+  import { validate, getSummary } from '../api/scenarios';
   import { get } from 'svelte/store'
-
+  import createSock from '../../services/Ws'
   import { getNotificationsContext } from 'svelte-notifications';
   import { isError, isValidated, errorData, isOk, loading, simData } from '../../store/summary';
   const { addNotification } = getNotificationsContext();
@@ -43,25 +43,22 @@
     loading.update(val => ({
       ...val, scenario: true
     }));
+    isOk.set(false);
     simulate(currName).then((resp) => {
       let data = resp.data.data;
       let name = get(scenarioName);
-      isError.update(_ => false);
-      isOk.update(_ => true);
-      simData.update(_ => data);
+      isError.set(false);
+      simData.set(data);
       notifType = "success";
-      notifText = `Scenario '${name}' done! View the results in 'Results' tab.`
+      notifText = `Scenario '${name}' queued up for simulation.`
     }).catch((err) => {
       let data = err.response.data.data;
-      errorData.update(_ => data);
-      isError.update(_ => true);
-      isOk.update(_ => false);
-      notifText = `Scenario simulation failed. See details in 'Result' tab`;
+      errorData.set(data);
+      isError.set(true);
+      isOk.set(false);
+      notifText = `Failed to run simulation.`;
       notifType = "error";
     }).finally(() => {
-      loading.update(val => ({
-        ...val, scenario: false
-      }));
       addNotification({
         text: notifText,
         position: 'bottom-center',
@@ -69,6 +66,10 @@
         removeAfter: 1500
       });
     });
+
+    setTimeout(() => {
+      let sock = createSock(currName);
+    }, 100);
   }
 
   async function saveRemote() {
@@ -127,6 +128,16 @@
         removeAfter: 1500
       });
     });
+  }
+
+  function gotoSummary() {
+    getSummary(currName)
+    .then((resp) => {
+      isOk.set(true);
+      console.log(resp.data.data);
+      simData.set(resp.data.data);
+    })
+    push(`/app/summary`);
   }
 
   function goto(a) {

@@ -43,6 +43,17 @@ export default {
     });
   },
 
+  delete(path, params={}) {
+    let headers = {
+      'Referrer-Policy': 'no-referrer'
+    };
+    addApiKey(headers);
+    return api.delete(path, {
+      headers: headers,
+      params: params
+    });
+  },
+
   getBlob(path, params={}) {
     let headers = {
       'Referrer-Policy': 'no-referrer'

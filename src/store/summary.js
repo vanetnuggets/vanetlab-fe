@@ -10,3 +10,4 @@ export const isValidated = writable(Init.VALIDATED)
 export const loading = writable(Init.LOADING)
 
 export const simData = writable(Init.SIM_DATA);
+export const currentStatus = writable(Init.BASE_STATUS);
