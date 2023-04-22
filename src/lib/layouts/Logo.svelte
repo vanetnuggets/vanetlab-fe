@@ -1,60 +1,82 @@
 
 <div class="data-icon">
-  <svg
-   width="121.526mm"
-   height="59.060001mm"
-   viewBox="0 0 121.526 59.060002"
+   <svg
+   id="svg8"
    version="1.1"
-   id="svg5"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs2">
-    <rect
-       x="87.172974"
-       y="198.48616"
-       width="439.21768"
-       height="280.29465"
-       id="rect3319" />
-    <rect
-       x="138.8062"
-       y="227.3203"
-       width="367.46762"
-       height="91.866905"
-       id="rect2535" />
-  </defs>
-  <g
-     id="layer1"
-     transform="translate(-21.644536,-74.580717)">
-    <path
-       style="fill:none;stroke:none;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1"
-       d="m 45.042991,122.26346 c 42.580646,-48.258064 80.548399,0 80.548399,0"
-       id="path1019" />
-    <text
-       xml:space="preserve"
-       id="text2533"
-       style="font-size:25px;letter-spacing:1.6219px;white-space:pre;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"><textPath
-         xlink:href="#path1019"
-         id="textPath4775">VANETLAB</textPath></text>
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,5.7446044,4.4570084)"
-       id="text3317"
-       style="font-size:80.6667px;white-space:pre;shape-inside:url(#rect3319);display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       style="fill:none;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-dasharray:none;stroke-opacity:1"
-       d="m 34.15388,113.32597 c -8.126813,-3.15037 27.813679,-30.950231 47.969752,-28.852834 10.079433,1.048844 31.584148,-0.06847 22.038438,12.039614 -4.87873,6.18834 1.42687,6.88185 4.61153,3.9723 11.06055,-10.105103 7.94755,-7.475393 22.85004,5.54454 2.91386,4.31047 -0.64249,6.83078 -1.69114,7.53375 -0.91834,0.61563 -2.08848,13.7003 -15.20806,-0.0156 -16.469775,-11.73902 -20.697799,-12.20223 -32.955642,-10.80041 -11.856517,1.35591 -10.683377,-0.68837 -27.189516,12.99597 -8.411109,6.97319 -4.22654,3.86219 -20.425402,-2.41733 z"
-       id="path4777" />
-    <image id="car" xlink:href={car} width="10px" height="10px" x="-15px" y="-5px">
-      <animateMotion xlink:href="#car" dur="20s" repeatCount="indefinite" rotate="auto"><mpath xlink:href="#path4777"/></animateMotion>
-    </image>
-  </g>
+   viewBox="0 0 237 88"
+   height="88mm"
+   width="237mm">
+   <defs
+      id="defs2" />
+   <metadata
+      id="metadata5">
+      <rdf:RDF>
+         <cc:Work
+            rdf:about="">
+            <dc:format>image/svg+xml</dc:format>
+            <dc:type
+               rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+            <dc:title></dc:title>
+         </cc:Work>
+      </rdf:RDF>
+   </metadata>
+   <g
+      transform="translate(0,-209)"
+      id="layer1">
+      <g
+         id="text3717"
+         style="font-style:normal;font-weight:normal;font-size:32.10277939px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         transform="translate(-0.4998605)"
+         aria-label="VANETLAB">
+         <path
+            id="path3725"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 47.707736,248.93947 0.891596,24.82254 -3.835326,1.55415 -16.639676,-18.44111 3.079883,-1.24803 14.496335,16.28216 -0.927417,-21.78055 z" />
+         <path
+            id="path3727"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 76.772123,265.0666 -3.190783,0.87076 -3.920472,-5.6732 -9.738693,2.65768 -0.495209,6.87822 -3.039561,0.82949 2.051391,-24.75368 3.992259,-1.08948 z m -8.735268,-7.12147 -6.9636,-9.97723 -0.945308,12.13555 z" />
+         <path
+            id="path3729"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 97.91761,261.94813 -3.802054,0.54149 -13.900066,-19.11038 2.943942,20.67076 -2.870939,0.40888 -3.290938,-23.10718 4.764207,-0.67852 12.681534,17.44726 -2.687563,-18.87061 2.870939,-0.40888 z" />
+         <path
+            id="path3731"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 119.50032,261.15757 -15.37222,0.39741 -0.6032,-23.33255 15.37222,-0.39741 0.0713,2.75791 -12.26957,0.3172 0.16528,6.39334 12.26957,-0.3172 0.0713,2.75791 -12.26957,0.3172 0.22402,8.66548 12.26957,-0.3172 z" />
+         <path
+            id="path3733"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 142.55375,242.05877 -8.31683,-0.61036 -1.5064,20.52632 -3.09536,-0.22717 1.5064,-20.52632 -8.31683,-0.61036 0.20192,-2.75143 19.72903,1.44789 z" />
+         <path
+            id="path3735"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 158.75116,265.5262 -14.57285,-2.38066 3.76306,-23.035 3.06308,0.5004 -3.31827,20.31226 11.50977,1.88026 z" />
+         <path
+            id="path3737"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 179.60297,270.83153 -3.20185,-0.82914 -0.58471,-6.8712 -9.77247,-2.53066 -3.84628,5.72376 -3.0501,-0.78985 14.07582,-20.4652 4.0061,1.03741 z m -4.04418,-10.51973 -1.08805,-12.11829 -6.84829,10.06311 z" />
+         <path
+            id="path3739"
+            style="font-size:32.10277939px;fill:{color};fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+            d="m 201.97867,271.52093 q -0.61527,1.62753 -1.70224,2.64104 -1.08698,1.0135 -2.43287,1.42639 -1.59748,0.50211 -3.23359,0.35282 -1.62145,-0.14375 -3.89412,-1.00291 l -7.74177,-2.92667 8.25345,-21.83238 6.46614,2.44445 q 2.38998,0.9035 3.51112,1.52842 1.12114,0.62493 1.99553,1.59228 0.96397,1.08501 1.12956,2.28715 0.17113,1.18747 -0.3499,2.56574 -0.58756,1.55422 -1.79505,2.35458 -1.20195,0.7857 -2.771,0.94665 l -0.0443,0.1173 q 2.0422,1.29152 2.75245,3.26932 0.7158,1.96315 -0.14336,4.23582 z m -1.16327,-11.6843 q 0.29932,-0.79177 0.24048,-1.43405 -0.0588,-0.64228 -0.51784,-1.20124 -0.53948,-0.6564 -1.4886,-1.11576 -0.94359,-0.47401 -2.39517,-1.02276 l -3.46033,-1.30814 -2.38347,6.30485 3.75358,1.41899 q 1.36361,0.5155 2.21993,0.6884 0.86186,0.15824 1.71729,-0.0211 0.85542,-0.17935 1.39453,-0.76317 0.55931,-0.59294 0.9196,-1.546 z m -1.90154,10.65975 q 0.49887,-1.31961 0.39676,-2.24638 -0.10211,-0.92677 -0.93805,-1.86283 -0.56523,-0.63263 -1.53814,-1.11773 -0.9527,-0.49422 -2.38962,-1.03743 l -4.56001,-1.72385 -3.0708,8.12299 3.84156,1.45225 q 1.90612,0.72058 3.19516,0.99004 1.29458,0.25479 2.27124,0.0207 1.03727,-0.26143 1.69564,-0.85044 0.65837,-0.589 1.09626,-1.74734 z" />
+            <path
+         id="path4549"
+         d="m 29.765874,252.49963 c 5.538016,0.12071 4.601156,6.6202 10.119147,4.56916 3.187649,-1.18485 0.333477,-9.70963 10.356468,-12.19508 22.934422,-5.68715 43.767932,-12.81554 76.676861,-10.94931 10.27666,0.58278 29.62524,1.35206 28.90225,4.30954 -4.1111,16.81696 1.98848,13.95871 17.25008,3.63496 3.85365,-2.60681 33.49818,11.77855 35.63214,16.10975 2.23873,4.54385 -8.27514,4.00751 -4.84546,7.36608 2.3652,2.31615 3.77182,14.35714 -4.77624,14.01549 -10.42405,-0.41664 -25.10645,-12.03883 -84.45716,-14.96709 -36.216275,-1.78685 -64.502274,15.183 -70.960071,13.89801 -3.322992,-5.08047 -26.548508,-20.91908 -13.898015,-25.79151 z"
+         style="fill:none;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+         <image id="car" xlink:href={car} width="10px" height="10px" x="-5px" y="-5px">
+            <animateMotion xlink:href="#car" dur="20s" repeatCount="indefinite" rotate="auto"><mpath xlink:href="#path4549"/></animateMotion>
+         </image>
+      </g>
+   </g>
 </svg>
 </div>
 
 
-<script>
-  import car from '../../assets/logo.svg';
 
+
+<script>
+import car from '../../assets/logo.svg';
+
+let color = "CornflowerBlue"
 </script>
