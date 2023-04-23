@@ -3,6 +3,7 @@
     import P2pIcon from "../../assets/p2p.svg";
     import NodeIcon from "../../assets/node.svg";
     import OvsNodeIcon from "../../assets/ovs_node.svg";
+    import { adding_ovs_neighbors } from "../../store/store";
     export let add_node_toggle;
     export let add_sdn_toggle;
     export let add_p2p_toggle;
@@ -11,6 +12,7 @@
     export let vypis;
     
     function clear_buttons() {
+        adding_ovs_neighbors.set(false);
         add_node_toggle = false;
         add_sdn_toggle = false;
         add_p2p_toggle = false;

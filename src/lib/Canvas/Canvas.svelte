@@ -18,6 +18,7 @@
     import Coordinates from "./Coordinates.svelte";
     import Iconn from "./Iconn.svelte";
     import CanvasBar from "./CanvasBar.svelte";
+    import VisualConnections from "./VisualConnections.svelte";
 
     let radius = 15;
     let svg;
@@ -35,44 +36,6 @@
     
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time.toString() + '.0'
-    $: sietky = createPairs(nodearr);
-
-    function createPairs(nodes){
-        let arr = {}
-        
-        // zober nody podľa sieti
-        nodes.forEach(element => {
-            if (element.l2id in arr) {
-                arr[element.l2id].nodes.push(element.id)
-            } 
-            else {
-                arr[element.l2id] = {
-                    id: element.l2id,
-                    nodes: [
-                        element.id
-                    ]
-                } 
-            }
-        });
-        
-        let connects = []
-        // sprav páry jednotlivých nodov
-        for (const index in arr) {
-            if (index === "-1")
-                continue;
-            let second_layer = {
-                id: parseInt(arr[index].id),
-                nodes: []
-            }
-            for (var i = 0; i < arr[index].nodes.length - 1; i++) {
-                for (var j = i; j < arr[index].nodes.length - 1; j++) {
-                    second_layer.nodes.push([arr[index].nodes[i], arr[index].nodes[j+1]])
-                }
-            }
-            connects.push(second_layer)
-        }
-        return Object.values(connects)
-    }
 
     current_time.subscribe(timeRaw => {
         let time = timeRaw.toString() + '.0'
@@ -353,7 +316,7 @@
 
 <div class="canvas">
     <div class="toolbar">
-        <CanvasBar add_node_toggle={add_node_toggle} add_sdn_toggle={add_sdn_toggle} add_p2p_toggle={add_p2p_toggle} bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis}/>
+        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis}/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->
@@ -378,42 +341,7 @@
                 </defs>
                 <rect width="100%" height="100%" fill="url(#smallGrid)" />
             </svg>
-            <!-- p2p connections -->
-            {#each $connections as c}
-                <line x1={$nodes[c.node_from].x} y1={$nodes[c.node_from].y} x2={$nodes[c.node_to].x} y2={$nodes[c.node_to].y} stroke="black" stroke-width="2px"/>
-            {/each}
-            {#each sietky as siet}
-            <!-- csma connections -->
-                {#if $networks[siet.id].type == "ETH"}
-                    {#each siet.nodes as nody}
-                        <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-width="1px"/>
-                    {/each}
-                {/if}
-            <!-- wireless connections -->
-                {#if $networks[siet.id].type != "ETH"}
-                    {#each siet.nodes as nody}
-                    <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
-                    {/each}
-                {/if}
-            {/each}
-            {#each nodearr as d}
-                <!-- p2p line -->
-                {#if add_p2p_toggle && d.id == first_p2p}
-                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black" stroke-width="2px"/>
-                {/if}
-                <!-- sdn line -->
-                {#if $adding_ovs_neighbors && d.id == $current_node}
-                <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black" stroke-width="1px"/>
-                {/if}
-                <!-- sdn neighbor conenctions -->
-                {#if d.type == "sdn"}
-                    {#if d.switch_nodes.length > 0}
-                        {#each d.switch_nodes as neighbor}
-                            <line x1={d.x} y1={d.y} x2={$nodes[neighbor].x} y2={$nodes[neighbor].y} stroke="black" stroke-width="1px"/>
-                        {/each}
-                    {/if} 
-                {/if}
-            {/each}
+            <VisualConnections nodearr={nodearr} mouse_x={mouse_x} mouse_y={mouse_y} add_p2p_toggle={add_p2p_toggle} first_p2p={first_p2p}/>
             {#each nodearr as d}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <circle
@@ -487,9 +415,6 @@
         left: 0;
         right: 0;
         bottom: 23px;
-        pointer-events: none;
-    }
-    line {
         pointer-events: none;
     }
 </style>
