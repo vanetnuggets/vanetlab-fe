@@ -137,11 +137,6 @@
 </div>
 
 <style scoped>
-  .float {
-    position: absolute;
-    font-size: 8px;
-  }
-
   .inside {
     width: 400px;
     min-height: 300px;
