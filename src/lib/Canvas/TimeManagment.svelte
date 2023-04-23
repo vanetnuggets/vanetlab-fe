@@ -1,5 +1,5 @@
 <script>
- 	import { current_time, node } from "../../store/store.js";
+ 	import { current_time } from "../../store/store.js";
 	import { max_at ,nodes} from "../../store/scenario.js";
 
 	const max = "(max :"

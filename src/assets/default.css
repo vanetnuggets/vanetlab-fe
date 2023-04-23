@@ -261,3 +261,7 @@ option {
 .my-input:disabled::placeholder {
   color: var(--dark-4);
 }
+
+.no_tap {
+  pointer-events:none; 
+}

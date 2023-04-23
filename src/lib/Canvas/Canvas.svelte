@@ -14,11 +14,11 @@
     import OvsIcon from "../../assets/ovs.png";
     import ApIcon from "../../assets/ap.png";
     import BtsIcon from "../../assets/bts.png";
-    import BulldozerIcon from "../../assets/bulldozer.svg";
-    import P2pIcon from "../../assets/p2p.svg";
-    import NodeIcon from "../../assets/node.svg";
-    import OvsNodeIcon from "../../assets/ovs_node.svg";
     import PgwIcon from "../../assets/pgw.svg";
+    import Coordinates from "./Coordinates.svelte";
+    import Iconn from "./Iconn.svelte";
+    import CanvasBar from "./CanvasBar.svelte";
+    import VisualConnections from "./VisualConnections.svelte";
 
     let radius = 15;
     let svg;
@@ -36,44 +36,6 @@
     
     $: nodearr = Object.values($nodes);
     $: current_time_string = $current_time.toString() + '.0'
-    $: sietky = createPairs(nodearr);
-
-    function createPairs(nodes){
-        let arr = {}
-        
-        // zober nody podľa sieti
-        nodes.forEach(element => {
-            if (element.l2id in arr) {
-                arr[element.l2id].nodes.push(element.id)
-            } 
-            else {
-                arr[element.l2id] = {
-                    id: element.l2id,
-                    nodes: [
-                        element.id
-                    ]
-                } 
-            }
-        });
-        
-        let connects = []
-        // sprav páry jednotlivých nodov
-        for (const index in arr) {
-            if (index === "-1")
-                continue;
-            let second_layer = {
-                id: parseInt(arr[index].id),
-                nodes: []
-            }
-            for (var i = 0; i < arr[index].nodes.length - 1; i++) {
-                for (var j = i; j < arr[index].nodes.length - 1; j++) {
-                    second_layer.nodes.push([arr[index].nodes[i], arr[index].nodes[j+1]])
-                }
-            }
-            connects.push(second_layer)
-        }
-        return Object.values(connects)
-    }
 
     current_time.subscribe(timeRaw => {
         let time = timeRaw.toString() + '.0'
@@ -146,8 +108,8 @@
 
     let bindHandleZoom, bind;
 
-    $: width = 3000 //2*document.getElementById("bs").offsetWidth;
-    $: height = 3000 //2*document.getElementById("bs").offsetHeight;
+    $: width = Infinity
+    $: height = Infinity
     
     $: zoomX = zoom()
         .scaleExtent([1, 5])
@@ -327,43 +289,6 @@
         mouse_y = ((e.clientY - rect.y) - transform_y) / transform_k
     }
 
-    function bHandler(type) {
-        let tmp;
-        switch (type) {
-            case 'add_node':
-                tmp = add_node_toggle;
-                clear_buttons();
-                add_node_toggle = !tmp;
-                break;
-            case 'add_sdn':
-                tmp = add_sdn_toggle;
-                clear_buttons();
-                add_sdn_toggle = !tmp;
-                break;
-            case 'add_p2p':
-                tmp = add_p2p_toggle;
-                clear_buttons();
-                add_p2p_toggle = !tmp;
-                if (!add_p2p_toggle)
-                    first_p2p = null
-                break;
-            case 'bulldoze':
-                tmp = bulldoze_toggle;
-                clear_buttons();
-                bulldoze_toggle = !tmp;
-                break;
-            default:
-                console.log('zly butoň');
-        }
-    }
-
-    function clear_buttons() {
-        add_node_toggle = false;
-        add_sdn_toggle = false;
-        add_p2p_toggle = false;
-        bulldoze_toggle = false;
-    }
-
     function check_lte() {
         pgw_exists.set(false)
         lte_exists.set(false)
@@ -391,36 +316,23 @@
 
 <div class="canvas">
     <div class="toolbar">
-        <div class="action">
-            <button on:click={() => bHandler("add_node")} class="btn s" title="node" style="background-color:{add_node_toggle ? 'red' : ''}">
-                <img src={NodeIcon} height=18px width=18px alt="map_icon">
-            </button>
-            <button on:click={() => bHandler("add_sdn")} class="btn s" title="ovs" style="background-color:{add_sdn_toggle ? 'red' : ''}">
-                <img src={OvsNodeIcon} height=18px width=18px alt="map_icon">
-            </button>
-            <button on:click={() => bHandler("add_p2p")} class="btn s" title="p2p connection" style="background-color:{add_p2p_toggle ? 'red' : ''}">
-                <img src={P2pIcon} height=18px width=18px alt="map_icon">
-              </button>
-            <button on:click={() => bHandler("bulldoze")} class="btn s" title="delete" style="background-color:{bulldoze_toggle ? 'red' : ''}">
-                <img src={BulldozerIcon}  height=28px alt="map_icon">
-            </button>
-            <button on:click={vypis} class="btn s" style="background-color: grey;">Vypis</button>
-        </div>
+        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis}/>
+        <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
         <g bind:this={bindHandleZoom}>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <svg on:click={add_nodes_canvas} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
+            <svg on:click={add_nodes_canvas} width="999999px" height="999999px" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern
                         id="smallGrid"
-                        width="8"
-                        height="8"
+                        width="10"
+                        height="10"
                         patternUnits="userSpaceOnUse"
                     >
                         <path
-                            d="M 8 0 L 0 0 0 8"
+                            d="M 10 0 L 0 0 0 10"
                             fill="none"
                             stroke="gray"
                             stroke-width="0.5"
@@ -429,28 +341,7 @@
                 </defs>
                 <rect width="100%" height="100%" fill="url(#smallGrid)" />
             </svg>
-            {#each $connections as c}
-                <line x1={$nodes[c.node_from].x} y1={$nodes[c.node_from].y} x2={$nodes[c.node_to].x} y2={$nodes[c.node_to].y} stroke="black" />
-            {/each}
-            {#each sietky as siet}
-                {#each siet.nodes as nody}
-                    <line x1={$nodes[nody[0]].x} y1={$nodes[nody[0]].y} x2={$nodes[nody[1]].x} y2={$nodes[nody[1]].y} stroke={$networks[siet.id].color} stroke-dasharray="4"/>
-                {/each}
-            {/each}
-            {#each nodearr as d}
-                <!-- p2p line -->
-                {#if add_p2p_toggle && d.id == first_p2p}
-                    <line x1={d.x} y1={d.y} x2={mouse_x} y2={mouse_y} stroke="black"/>
-                {/if}
-                <!-- sdn neighbor lines -->
-                {#if d.type == "sdn"}
-                    {#if d.switch_nodes.length > 0}
-                        {#each d.switch_nodes as neighbor}
-                            <line x1={d.x} y1={d.y} x2={$nodes[neighbor].x} y2={$nodes[neighbor].y} stroke="grey" stroke-dasharray="10"/>
-                        {/each}
-                    {/if} 
-                {/if}
-            {/each}
+            <VisualConnections nodearr={nodearr} mouse_x={mouse_x} mouse_y={mouse_y} add_p2p_toggle={add_p2p_toggle} first_p2p={first_p2p}/>
             {#each nodearr as d}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <circle
@@ -460,7 +351,7 @@
                     cx={d.x}
                     cy={d.y}
                     r={radius}
-                    fill={$adding_ovs_neighbors && $nodes[$current_node].switch_nodes.includes(d.id) ? "red" : $networks[d.l2id].color}
+                    fill={$networks[d.l2id].color} 
                 />
                 <circle
                     class="no_tap"
@@ -477,40 +368,16 @@
                     y={d.y + radius - 5}>{d.id}
                 </text>
                 {#if d.type == "sdn"}
-                    <image class="no_tap"
-                        href={OvsIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={OvsIcon} d={d}/>
                 {/if}
                 {#if d.type == "basic" && d.l2 == "wifi" && d.l2conf["type"] == "ap" }
-                    <image class="no_tap"
-                        href={ApIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={ApIcon} d={d}/>     
                 {/if}
                 {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "enb" }
-                    <image class="no_tap"
-                        href={BtsIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={BtsIcon} d={d}/> 
                 {/if}
                 {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "pgw" }
-                    <image class="no_tap"
-                        href={PgwIcon}
-                        x={d.x - 20}
-                        y={d.y - 20}
-                        width={20}
-                        height={20}
-                    />   
+                    <Iconn icon={PgwIcon} d={d}/> 
                 {/if}
             {/each}
         </g>
@@ -529,9 +396,6 @@
         right: 0;
         bottom: 0;
     }
-    .no_tap {
-        pointer-events:none; 
-    }
     .id_text {
         cursor:auto;
         user-select: none;
@@ -546,23 +410,11 @@
         top: 5px;
         pointer-events: none;
     }
-    .toolbar button {
-        pointer-events: all;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
     .bottom {
         position: absolute;
         left: 0;
         right: 0;
         bottom: 23px;
         pointer-events: none;
-    }
-    line {
-        pointer-events: none;
-    }
-    .action {
-        display: inline-flex;
     }
 </style>
