@@ -20,7 +20,6 @@
     import OvsNodeIcon from "../../assets/ovs_node.svg";
     import PgwIcon from "../../assets/pgw.svg";
     import Coordinates from "./Coordinates.svelte";
-    import Icon from "./Iconn.svelte";
     import Iconn from "./Iconn.svelte";
 
     let radius = 15;
@@ -149,8 +148,8 @@
 
     let bindHandleZoom, bind;
 
-    $: width = 3000 //2*document.getElementById("bs").offsetWidth;
-    $: height = 3000 //2*document.getElementById("bs").offsetHeight;
+    $: width = Infinity
+    $: height = Infinity
     
     $: zoomX = zoom()
         .scaleExtent([1, 5])
@@ -415,7 +414,7 @@
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
         <g bind:this={bindHandleZoom}>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <svg on:click={add_nodes_canvas} width={width} height={height} xmlns="http://www.w3.org/2000/svg">
+            <svg on:click={add_nodes_canvas} width="999999px" height="999999px" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern
                         id="smallGrid"
