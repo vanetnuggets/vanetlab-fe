@@ -14,13 +14,10 @@
     import OvsIcon from "../../assets/ovs.png";
     import ApIcon from "../../assets/ap.png";
     import BtsIcon from "../../assets/bts.png";
-    import BulldozerIcon from "../../assets/bulldozer.svg";
-    import P2pIcon from "../../assets/p2p.svg";
-    import NodeIcon from "../../assets/node.svg";
-    import OvsNodeIcon from "../../assets/ovs_node.svg";
     import PgwIcon from "../../assets/pgw.svg";
     import Coordinates from "./Coordinates.svelte";
     import Iconn from "./Iconn.svelte";
+    import CanvasBar from "./CanvasBar.svelte";
 
     let radius = 15;
     let svg;
@@ -329,43 +326,6 @@
         mouse_y = ((e.clientY - rect.y) - transform_y) / transform_k
     }
 
-    function bHandler(type) {
-        let tmp;
-        switch (type) {
-            case 'add_node':
-                tmp = add_node_toggle;
-                clear_buttons();
-                add_node_toggle = !tmp;
-                break;
-            case 'add_sdn':
-                tmp = add_sdn_toggle;
-                clear_buttons();
-                add_sdn_toggle = !tmp;
-                break;
-            case 'add_p2p':
-                tmp = add_p2p_toggle;
-                clear_buttons();
-                add_p2p_toggle = !tmp;
-                if (!add_p2p_toggle)
-                    first_p2p = null
-                break;
-            case 'bulldoze':
-                tmp = bulldoze_toggle;
-                clear_buttons();
-                bulldoze_toggle = !tmp;
-                break;
-            default:
-                console.log('zly butoň');
-        }
-    }
-
-    function clear_buttons() {
-        add_node_toggle = false;
-        add_sdn_toggle = false;
-        add_p2p_toggle = false;
-        bulldoze_toggle = false;
-    }
-
     function check_lte() {
         pgw_exists.set(false)
         lte_exists.set(false)
@@ -393,21 +353,7 @@
 
 <div class="canvas">
     <div class="toolbar">
-        <div class="action">
-            <button on:click={() => bHandler("add_node")} class="btn s" title="node" style="background-color:{add_node_toggle ? 'red' : ''}">
-                <img src={NodeIcon} height=18px width=18px alt="map_icon">
-            </button>
-            <button on:click={() => bHandler("add_sdn")} class="btn s" title="ovs" style="background-color:{add_sdn_toggle ? 'red' : ''}">
-                <img src={OvsNodeIcon} height=18px width=18px alt="map_icon">
-            </button>
-            <button on:click={() => bHandler("add_p2p")} class="btn s" title="p2p connection" style="background-color:{add_p2p_toggle ? 'red' : ''}">
-                <img src={P2pIcon} height=18px width=18px alt="map_icon">
-              </button>
-            <button on:click={() => bHandler("bulldoze")} class="btn s" title="delete" style="background-color:{bulldoze_toggle ? 'red' : ''}">
-                <img src={BulldozerIcon}  height=28px alt="map_icon">
-            </button>
-            <button on:click={vypis} class="btn s" style="background-color: grey;">Vypis</button>
-        </div>
+        <CanvasBar add_node_toggle={add_node_toggle} add_sdn_toggle={add_sdn_toggle} add_p2p_toggle={add_p2p_toggle} bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis}/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->
@@ -536,12 +482,6 @@
         top: 5px;
         pointer-events: none;
     }
-    .toolbar button {
-        pointer-events: all;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
     .bottom {
         position: absolute;
         left: 0;
@@ -551,9 +491,5 @@
     }
     line {
         pointer-events: none;
-    }
-    .action {
-        display: inline-flex;
-        padding-left: 80px;
     }
 </style>
