@@ -2,7 +2,10 @@
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
+  import { useForm, required, minLength, maxLength } from "svelte-use-form";
   import "../../assets/nodeconf.css";
+  import TimeManagment from "../Canvas/TimeManagment.svelte";
+    import { format } from "util";
 
   export let node_id;
   export let editable;
@@ -14,6 +17,44 @@
   let error_message = "";
 
   let mobility;
+
+  const form = useForm({
+    Time: { validators: [required, maxLength(8)] },
+    X: { validators: [required, minLength(8)] },
+    Y: { validators: [required, minLength(8)] },
+    Z: { validators: [required, minLength(8)] },
+  });
+
+  const mobility_attributes = {
+    Time: {
+      name: "Time",
+      value: null,
+      end: "s",
+      placeholder: "Movement end time",
+      validation: "Integer",
+    },
+    X: {
+      name: "X",
+      value: null,
+      end: "",
+      placeholder: "Position on x-axis",
+      validation: "Float",
+    },
+    Y: {
+      name: "Y",
+      value: null,
+      end: "",
+      placeholder: "Position on y-axis",
+      validation: "Float",
+    },
+    Z: {
+      name: "Z",
+      value: null,
+      end: "",
+      placeholder: "Position on z-axis",
+      validation: "Float",
+    },
+  };
 
   nodes.subscribe((n) => {
     if (n[node_id] === undefined) {
@@ -65,9 +106,11 @@
 
   const add_mobility = () => {
     if (check_missing() && check_format()) {
-      mobility[
-        time_input.toString() + ".0"
-      ] = { x: x_input, y: y_input, z: z_input };
+      mobility[time_input.toString() + ".0"] = {
+        x: x_input,
+        y: y_input,
+        z: z_input,
+      };
       $nodes[node_id].mobility = Object.keys(mobility)
         .sort(function (a, b) {
           return +a - +b;
@@ -111,63 +154,40 @@
         </button><br />
         {#if open_add_mobility}
           <div transition:slide>
-            <div class="row">
-              <div class="col">
-                Time: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={time_input}
-                  placeholder="Movement end time"
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                X: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={x_input}
-                  placeholder="Position on x-axis "
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                Y: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={y_input}
-                  placeholder="Position on y-axis"
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                Z: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={z_input}
-                  placeholder="Speed?"
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            {error_message}
-            <button class="btn-basic" on:click={add_mobility} disabled={!editable}>
-              Add keyframe
-            </button>
-            <br />
+            <form use:form>
+              {#each Object.entries(mobility_attributes) as [store_name, attribute]}
+                <div class="form-field">
+                  <div class="row">
+                    <div class="col">
+                      <label for={store_name}>{attribute.name}: </label>
+                    </div>
+                    <div class="col">
+                      <input
+                      class="my-input"
+                      bind:value={attribute.value}
+                      placeholder={attribute.placeholder}
+                      disabled={!editable}
+                      type="text"
+                      id={store_name}
+                      name={store_name}
+                      class:field-danger={!$form[store_name].valid}
+                      />
+                    </div>
+                  </div>
+                  <div style="color: red;" hidden={$form[store_name].valid}>
+                    Invalid format. Must be {attribute.validation}
+                  </div>
+                </div>
+              {/each}
+              <button
+                class="btn-basic"
+                on:click={add_mobility}
+                disabled={!editable || !$form.valid}
+              >
+                Add keyframe
+              </button>
+              <br />
+            </form>
           </div>
         {/if}
       </div>
@@ -189,7 +209,8 @@
                 <td>{position.x.toFixed(2)}</td>
                 <td>{position.y.toFixed(2)}</td>
                 <td
-                  ><button class="btn-basic"
+                  ><button
+                    class="btn-basic"
                     disabled={!editable}
                     on:click={() => remove_mobility(time)}>&times;</button
                   ></td
@@ -202,3 +223,9 @@
     </div>
   {/if}
 </div>
+
+<style>
+  .field-danger {
+    border-color: red;
+  }
+</style>

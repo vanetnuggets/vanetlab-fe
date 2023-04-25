@@ -27,7 +27,7 @@
 
 input {
   background-color: var(--main-fg-color);
-  border: none;
+  
 }
 
 select {
