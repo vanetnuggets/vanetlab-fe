@@ -1,3 +1,5 @@
+// toto ani nepouzivam nakoniec ale mozno s tym este cosi planujes
+
 import { writable } from 'svelte/store'
 import { buildValidator } from './BuildValidator.js'
 

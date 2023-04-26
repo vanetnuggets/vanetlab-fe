@@ -3,11 +3,9 @@
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
-  import {emailValidator, requiredValidator,integerValidation,floatValidation} from "../../services/Validation/Validators.js"
-  import { setValidator } from '../../services/Validation/ValidationSevice.js'
-    import { zip } from "d3";
-    import { subscribe } from "svelte/internal";
 
+  import mobility_attributes from "./mobilityAttributes.js"
+  import ValidateInput from "./ValidateInput.svelte";
 
   export let node_id;
   export let editable;
@@ -16,132 +14,87 @@
   let mobility;
   let missing = true
 
-    const validation = setValidator(requiredValidator(), emailValidator())
-    const validity = validation[0]
-    const validate = validation[1]
-    
-    
-    $: console.log(mobility_attributes.Time.validation[0])
-    const mobility_attributes = {
-      Time: {
-        validation: setValidator(requiredValidator(), emailValidator()),
-        name: "Time",
-        value: null,
-        end: "s",
-        placeholder: "Movement end time"
-      },
-      X: {
-        name: "X",
-        value: null,
-        end: "",
-        placeholder: "Position on x-axis",
-        validation: "Positive Float",
-      },
-      Y: {
-        name: "Y",
-        value: null,
-        end: "",
-        placeholder: "Position on y-axis",
-        validation: "Positive Float",
-      },
-      Z: {
-        name: "Z",
-        value: null,
-        end: "",
-        placeholder: "Position on z-axis",
-        validation: "Positive Float",
-      },
+  nodes.subscribe((n) => {
+    if (n[node_id] === undefined) {
+      return {};
+    }
+    mobility = n[node_id].mobility;
+  });
+
+  // sorac toto som rozbil dufam ze ti to nevadi
+  // 
+  // $: if ($mobility_attributes.Time.value != null && $mobility_attributes.X.value != null &&
+  // $mobility_attributes.Y.value != null && $mobility_attributes.Z.value != null){
+  //   missing = false
+  // } else 
+  //   missing = true
+
+  let open_mobility = false;
+  function toggle_mobility() {
+    open_mobility = !open_mobility;
+  }
+
+  let open_add_mobility = false;
+  function toggle_add_mobility() {
+    open_add_mobility = !open_add_mobility;
+  }
+
+  let open_list_mobility = true;
+  function toggle_list_mobility() {
+    open_list_mobility = !open_list_mobility;
+  }
+  
+  function add_mobility() {
+    mobility[mobility_attributes.Time.value.toString() + ".0"] = {
+      x: mobility_attributes.X.value,
+      y: mobility_attributes.Y.value,
+      z: mobility_attributes.Z.value,
     };
-    
+    $nodes[node_id].mobility = Object.keys(mobility)
+      .sort(function (a, b) {
+        return +a - +b;
+      })
+      .reduce((obj, key) => {
+        obj[key] = mobility[key];
+        return obj;
+      }, {});
+    $nodes = $nodes;
 
-    $: console.log()
-    function extractFromValid(validation){
-       
-      return validation
+      //update MaxAt
+    if (get(max_at) < Number(mobility_attributes.Time.value)) {
+      max_at.update((_) => Number(mobility_attributes.Time.value));
     }
 
-    nodes.subscribe((n) => {
-      if (n[node_id] === undefined) {
-        return {};
-      }
-      mobility = n[node_id].mobility;
-    });
+    mobility_attributes.Time.value = null;
+    mobility_attributes.X.value = null;
+    mobility_attributes.Y.value = null;
+    mobility_attributes.Z.value = null;
+  };
 
-    $: if (mobility_attributes.Time.value != null && mobility_attributes.X.value != null &&
-    mobility_attributes.Y.value != null && mobility_attributes.Z.value != null){
-      missing = false
-    } else 
-      missing = true
-
-    let open_mobility = false;
-    function toggle_mobility() {
-      open_mobility = !open_mobility;
-    }
-
-    let open_add_mobility = false;
-    function toggle_add_mobility() {
-      open_add_mobility = !open_add_mobility;
-    }
-
-    let open_list_mobility = true;
-    function toggle_list_mobility() {
-      open_list_mobility = !open_list_mobility;
-    }
-    
-    function add_mobility() {
-      mobility[mobility_attributes.Time.value.toString() + ".0"] = {
-        x: mobility_attributes.X.value,
-        y: mobility_attributes.Y.value,
-        z: mobility_attributes.Z.value,
-      };
-      $nodes[node_id].mobility = Object.keys(mobility)
-        .sort(function (a, b) {
-          return +a - +b;
-        })
-        .reduce((obj, key) => {
-          obj[key] = mobility[key];
-          return obj;
-        }, {});
+  const remove_mobility = (time) => {
+    if (Object.keys(mobility).length !== 1) {
+      mobility = delete mobility[time] && mobility;
       $nodes = $nodes;
+    }
+  };
 
-        //update MaxAt
-      if (get(max_at) < Number(mobility_attributes.Time.value)) {
-        max_at.update((_) => Number(mobility_attributes.Time.value));
-      }
-
-      mobility_attributes.Time.value = null;
-      mobility_attributes.X.value = null;
-      mobility_attributes.Y.value = null;
-      mobility_attributes.Z.value = null;
-    };
-
-    const remove_mobility = (time) => {
-      if (Object.keys(mobility).length !== 1) {
-        mobility = delete mobility[time] && mobility;
-        $nodes = $nodes;
-      }
-    };
-
-    let testovaci = ""
 </script>
+
+<style>
+</style>
 
 <div class="mobility">
   <div class="row">
     <div class="col">
-      <label>Testovaci: </label>
+      <label>Time: </label>
     </div>
-    <div class="col">
-      <input
-        class="my-input"
-        bind:value={testovaci}
-        placeholder="ahoj"
-        class:field-danger={!$validity.valid}
-        use:validate={testovaci}
-      />
-    </div>
+    <ValidateInput attribute={"Time"}></ValidateInput><br>
   </div>
-  <div style="color: red;" hidden={$validity.valid}>
-    { $validity.message }
+  <div class="row">
+    <div class="col">
+      <label>X:</label>
+    </div>
+    <ValidateInput attribute={"X"}></ValidateInput>
   </div>
 </div>
 

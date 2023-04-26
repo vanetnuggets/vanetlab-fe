@@ -1,4 +1,4 @@
-function buildValidator (validators) {
+function buildValidator (...validators) {
     return function validate (value) {
       if (!validators || validators.length === 0) {
         return { valid: true }
