@@ -4,15 +4,24 @@
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
 
-  import mobility_attributes from "./mobilityAttributes.js"
-  import ValidateInput from "./ValidateInput.svelte";
+  import {mobility_attributes} from "../../store/validation.js"
+  import ValidateInput from "../validation/ValidateInput.svelte";
+  import { buildValidator } from "../../services/Validation/ValidationSevice.js";
+  import { positiveFloatValidator} from "../../services/Validation/Validators.js"
 
   export let node_id;
   export let editable;
 
 
   let mobility;
-  let missing = true
+  let valid = false
+
+  let inputs = {
+    time : null,
+    x: null,
+    y: null,
+    z: null
+  }
 
   nodes.subscribe((n) => {
     if (n[node_id] === undefined) {
@@ -20,14 +29,21 @@
     }
     mobility = n[node_id].mobility;
   });
+  
+  const validation =  buildValidator(positiveFloatValidator())
+  
+  $: if ( inputs.time != null && inputs.x != null && inputs.y != null && inputs.z != null){
+        valid = true
+        Object.values(inputs).forEach(value => {
+          let result = validation(value)
+          if(!result.valid)
+            valid = false
+        })
+      } else 
+        valid = false
+  
+  
 
-  // sorac toto som rozbil dufam ze ti to nevadi
-  // 
-  // $: if ($mobility_attributes.Time.value != null && $mobility_attributes.X.value != null &&
-  // $mobility_attributes.Y.value != null && $mobility_attributes.Z.value != null){
-  //   missing = false
-  // } else 
-  //   missing = true
 
   let open_mobility = false;
   function toggle_mobility() {
@@ -45,10 +61,10 @@
   }
   
   function add_mobility() {
-    mobility[mobility_attributes.Time.value.toString() + ".0"] = {
-      x: mobility_attributes.X.value,
-      y: mobility_attributes.Y.value,
-      z: mobility_attributes.Z.value,
+    mobility[inputs.time.toString() + ".0"] = {
+      x: inputs.x,
+      y: inputs.y,
+      z: inputs.z,
     };
     $nodes[node_id].mobility = Object.keys(mobility)
       .sort(function (a, b) {
@@ -61,14 +77,14 @@
     $nodes = $nodes;
 
       //update MaxAt
-    if (get(max_at) < Number(mobility_attributes.Time.value)) {
-      max_at.update((_) => Number(mobility_attributes.Time.value));
+    if (get(max_at) < Number(inputs.time)) {
+      max_at.update((_) => Number(inputs.time));
     }
 
-    mobility_attributes.Time.value = null;
-    mobility_attributes.X.value = null;
-    mobility_attributes.Y.value = null;
-    mobility_attributes.Z.value = null;
+    inputs.time = null;
+    inputs.x = null;
+    inputs.y = null;
+    inputs.z = null;
   };
 
   const remove_mobility = (time) => {
@@ -80,25 +96,9 @@
 
 </script>
 
-<style>
-</style>
-
 <div class="mobility">
-  <div class="row">
-    <div class="col">
-      <label>Time: </label>
-    </div>
-    <ValidateInput attribute={"Time"}></ValidateInput><br>
-  </div>
-  <div class="row">
-    <div class="col">
-      <label>X:</label>
-    </div>
-    <ValidateInput attribute={"X"}></ValidateInput>
-  </div>
-</div>
-
-    <!-- <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
+  
+    <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
       | Mobility
     </button><br />
     {#if open_mobility && $nodes[node_id] !== undefined}
@@ -109,37 +109,14 @@
           </button><br />
           {#if open_add_mobility}
             <div transition:slide>
-              <form use:form>
-                {#each Object.entries(mobility_attributes) as [store_name, attribute]}
-                  <div class="form-field">
-                    <div class="row">
-                      <div class="col">
-                        <label for={store_name}>{attribute.name}: </label>
-                      </div>
-                      <div class="col">
-                        <input
-                        class="my-input"
-                        bind:value={attribute.value}
-                        placeholder={attribute.placeholder}
-                        disabled={!editable}
-                        type="number"
-                        id={store_name}
-                        name={store_name}
-                        class:field-danger={!$form[store_name].valid}
-                        />
-                      </div>
-                    </div>
-                    <div style="color: red;" hidden={$form[store_name].valid}>
-                      Invalid format. Must be {attribute.validation}
-                    </div>
-                  </div>
-                {/each}
-                <br />
-              </form>
+              {#each Object.entries($mobility_attributes) as [store_name, attribute]}
+                <ValidateInput bind:value={inputs[store_name]} attribute={attribute} editable = {editable} ></ValidateInput><br>
+              {/each}
+              <br />
               <button
                 class="btn-basic"
                 on:click={add_mobility}
-                disabled={!editable || !$form.valid || missing}
+                disabled={!editable || !valid}
                 >
                 Add keyframe
               </button>
@@ -177,5 +154,5 @@
           </div>
         {/if}
       </div>
-    {/if}
-  </div> -->
+    {/if} 
+  </div>
