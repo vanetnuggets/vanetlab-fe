@@ -9,6 +9,7 @@
   import { scenarioList } from "../../store/welcome";
   import { validateApiKey } from "../api/scenarios";
   import { getNotificationsContext } from "svelte-notifications";
+  import { push } from "svelte-spa-router";
   const { addNotification } = getNotificationsContext();
 
   let curr_option = null;
@@ -94,6 +95,10 @@
             >Load remote</button
           >
         </div>
+        <div class="row">
+          <button on:click={() => {push('/about')}} class="btn-basic w"
+            >About</button>
+        </div>
         <div class="row bottom" style="padding-left: 10px;">
           <p style="padding-left: 10px; text-align: justify; width: 30%;">
             Api key:
@@ -136,7 +141,7 @@
   {/if}
 </div>
 
-<style scoped>
+<style>
   .inside {
     width: 400px;
     min-height: 300px;
