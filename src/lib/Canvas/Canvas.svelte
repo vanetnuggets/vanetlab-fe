@@ -189,6 +189,19 @@
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
+    function addLabel() {
+        let x = mouse_x;
+        let y = mouse_y;
+        $labels.push({ "text": "sdfsdfsdf", "x": x, "y": y });
+        console.log($labels)
+        $labels = $labels
+
+        delay(100).then(() => {
+            svg = select(bind);
+            dragHandlerLabel(svg.selectAll(".label"));
+        });
+    }
+
     function selectLabel(label) {
         console.log(label)
         // if (bulldoze_toggle == true)
@@ -213,10 +226,13 @@
     }
 
     function add_nodes_canvas() {
+        console.log(label_toggle)
         if (add_node_toggle)
             add_node()
         else if (add_sdn_toggle)
             add_node(true)
+        else if (label_toggle)
+            addLabel()
     }
 
     function handle_p2p_conn(node_id) {
@@ -357,7 +373,7 @@
 
 <div class="canvas">
     <div class="toolbar">
-        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis} label_toggle={label_toggle}/>
+        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis} bind:label_toggle={label_toggle}/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->

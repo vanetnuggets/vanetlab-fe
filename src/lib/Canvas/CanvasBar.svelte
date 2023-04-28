@@ -3,6 +3,7 @@
     import P2pIcon from "../../assets/p2p.svg";
     import NodeIcon from "../../assets/node.svg";
     import OvsNodeIcon from "../../assets/ovs_node.svg";
+    import LabelIcon from "../../assets/label.svg";
     import { adding_ovs_neighbors } from "../../store/store";
     export let add_node_toggle;
     export let add_sdn_toggle;
@@ -82,18 +83,18 @@
         <img src={P2pIcon} height="18px" width="18px" alt="map_icon" />
     </button>
     <button
-        on:click={() => bHandler("bulldoze")}
-        class="btn s"
-        title="delete"
-        style="background-color:{bulldoze_toggle ? 'red' : ''}"
-    >
-        <img src={BulldozerIcon} height="28px" alt="map_icon" />
-    </button>
-    <button
         on:click={() => bHandler("label")}
         class="btn s"
         title="Label"
         style="background-color:{label_toggle ? 'red' : ''}"
+    >
+        <img src={LabelIcon} height="28px" alt="map_icon" />
+    </button>
+    <button
+        on:click={() => bHandler("bulldoze")}
+        class="btn s"
+        title="delete"
+        style="background-color:{bulldoze_toggle ? 'red' : ''}"
     >
         <img src={BulldozerIcon} height="28px" alt="map_icon" />
     </button>
