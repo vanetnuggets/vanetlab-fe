@@ -15,7 +15,6 @@
 			let node_max=parseInt(Object.keys(node.mobility).reduce(function(a, b){ return node.mobility[a] > node.mobility[b] ? a : b }))
 			if (node_max> $max_at)
 				$max_at=node_max
-			console.log(node_max)
 		});
 	}
 

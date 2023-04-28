@@ -19,7 +19,9 @@
     import Iconn from "./Iconn.svelte";
     import CanvasBar from "./CanvasBar.svelte";
     import VisualConnections from "./VisualConnections.svelte";
-
+    import { checkAndLoad } from "../../services/LoadService.js";
+  
+    export let params;
     let radius = 15;
     let svg;
     let circle;
@@ -308,6 +310,11 @@
     }
 
     onMount(() => {
+        // if scenario name is undefined, load remote config.
+        // otherwise just chill
+        checkAndLoad(params.scenario);
+
+
         svg = select(bind);
         dragHandler(svg.selectAll(".myPoint"));
         check_lte()
@@ -384,7 +391,11 @@
     </svg>
     <div class="bottom">
         <TimeManagment/>
+        <div class="tmpshit">
+            Ak ti nejde presuvat nody, tak sa prepni do results a naspat. ak si bombic tak to fixni.    
+        </div>
     </div>
+    
 </div>
 
 <style scoped>
@@ -395,6 +406,9 @@
         left: 0;
         right: 0;
         bottom: 0;
+    }
+    .tmpshit {
+        background-color: red;
     }
     .id_text {
         cursor:auto;

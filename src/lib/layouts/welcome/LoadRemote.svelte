@@ -19,8 +19,8 @@
   async function loadScenario(name) {
     let data = await getRemote(name);
     loadConfig(data.data.data); //datadatadata
-    scenarioName.update((_) => name);
-    push("/app/canvas");
+    scenarioName.set(name);
+    push(`/app/${name}/canvas`);
   }
 
   function removeScenario(name) {

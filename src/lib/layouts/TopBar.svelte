@@ -34,7 +34,6 @@
       ...val,
       scenario: true,
     }));
-    isOk.set(false);
     addNotification({
       text: "Simulation started",
       position: "bottom-center",
@@ -45,16 +44,12 @@
       .then((resp) => {
         let data = resp.data.data;
         let name = get(scenarioName);
-        isError.set(false);
-        simData.set(data);
         notifType = "success";
         notifText = `Scenario '${name}' queued up for simulation.`;
       })
       .catch((err) => {
         let data = err.response.data.data;
         errorData.set(data);
-        isError.set(true);
-        isOk.set(false);
         notifText = `Failed to run simulation.`;
         notifType = "error";
       })
@@ -83,7 +78,6 @@
         type = "success";
       })
       .catch((err) => {
-        console.log(err);
         let reason = err.response.data.message;
         text = `Failed to save scenario remotely. reason: ${reason}`;
         type = "error";
@@ -147,7 +141,6 @@
   function gotoSummary() {
     getSummary(currName).then((resp) => {
       isOk.set(true);
-      console.log(resp.data.data);
       simData.set(resp.data.data);
     });
     push(`/app/summary`);
@@ -192,12 +185,12 @@
   <button on:click={() => goto_exit("/")} class="btn r">🚪 Exit</button>
   {#if visible == true}
     <div transition:fade={{ duration: 50 }}>
-      <button on:click={() => goto("/app/canvas")} class="btn l"
+      <button on:click={() => goto(`/app/${currName}/canvas`)} class="btn l"
         >🎨 Canvas</button
       >
       <button on:click={validateSimulation} class="btn l">⚗️ Check</button>
       <button on:click={runSimulation} class="btn l">☕️ Simulate</button>
-      <button on:click={() => goto("/app/summary")} class="btn l"
+      <button on:click={() => goto(`/app/${currName}/summary`)} class="btn l"
         >📈 Results</button
       >
       <button on:click={saveLocal} class="btn r">🗃️ Save local</button>

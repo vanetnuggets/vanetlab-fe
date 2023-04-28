@@ -10,7 +10,8 @@
     const l2_types = {
         lte: ["ue", "enb", "pgw"],
         wifi: ["sta", "ap"],
-        eth: []
+        eth: [],
+        wave: []
     };
 
     const wifi_standards = ["802.11b", "802.11a", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be", "802.11p"]
@@ -74,6 +75,7 @@
             </div>
             {#if $nodes[node_id].l2 != null}
                 <div transition:slide>
+                    {#if l2_types[$nodes[node_id].l2].length > 0}
                     <div class="row">
                         <div class="col">
                             Node type: <br />
@@ -88,6 +90,7 @@
                             </select>
                         </div>
                     </div>
+                    {/if}
                     {#if $nodes[node_id].l2conf.type == "ap"}
                         <div class="row">
                             <div class="col">

@@ -70,8 +70,7 @@
 
   .info-wrapper {
     padding: 5px;
-    max-width: 340px;
-    width: 280px;
+    direction: ltr;
   }
 
   .general {
