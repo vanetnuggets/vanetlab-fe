@@ -22,7 +22,6 @@
     import { checkAndLoad } from "../../services/LoadService.js";
   
     export let params;
-    import { each } from "svelte/internal";
 
     let radius = 15;
     let svg;
@@ -39,9 +38,10 @@
     let add_p2p_toggle = false;
     let bulldoze_toggle = false;
     let label_toggle = false;
+    let input_value = ""
     
     $: nodearr = Object.values($nodes);
-    $: label_dict = $labels;
+    $: label_dict = Object.values($labels);
     $: current_time_string = $current_time.toString() + '.0'
 
     current_time.subscribe(timeRaw => {
@@ -192,8 +192,10 @@
     function addLabel() {
         let x = mouse_x;
         let y = mouse_y;
-        $labels.push({ "text": "sdfsdfsdf", "x": x, "y": y });
-        console.log($labels)
+        if (input_value == "")
+            return
+
+        $labels.push({ "text": input_value, "x": x, "y": y });
         $labels = $labels
 
         delay(100).then(() => {
@@ -203,15 +205,11 @@
     }
 
     function selectLabel(label) {
-        console.log(label)
-        // if (bulldoze_toggle == true)
-        //     pass
-        // else if ($adding_ovs_neighbors)
-        //     handle_sdn_neighbors(node.id)
-        // else if (add_p2p_toggle)
-        //     handle_p2p_conn(node.id)
-        // else
-        //     current_node.update((_) => node.id);
+        if (bulldoze_toggle) {
+            labels.update(labels => labels.filter(l => l !== label));
+            $labels = $labels
+
+        }
     }
 
     function selectNode(node) {
@@ -226,7 +224,6 @@
     }
 
     function add_nodes_canvas() {
-        console.log(label_toggle)
         if (add_node_toggle)
             add_node()
         else if (add_sdn_toggle)
@@ -373,8 +370,12 @@
 
 <div class="canvas">
     <div class="toolbar">
-        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis} bind:label_toggle={label_toggle}/>
+        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} 
+                   first_p2p={first_p2p} vypis={vypis} bind:label_toggle={label_toggle} bind:input_value/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
+        {#if label_toggle}
+            <input type="text" class="in" placeholder="label text" bind:value={input_value}/>
+        {/if}
     </div>
     <!-- height="97%" -->
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
@@ -443,6 +444,7 @@
                     class="label"
                     x={l.x}
                     y={l.y}
+                    style="cursor:pointer"
                     >{l.text}
                 </text>
             {/each}
@@ -490,4 +492,12 @@
         bottom: 23px;
         pointer-events: none;
     }
+    .in {
+        position: absolute;
+        left: 40%;
+        top: 30px;
+        background-color: rgb(233, 233, 231);
+        z-index:1000;
+        pointer-events: all;
+        }
 </style>

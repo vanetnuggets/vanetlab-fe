@@ -12,6 +12,7 @@
     export let first_p2p;
     export let vypis;
     export let label_toggle;
+    export let input_value;
 
     function clear_buttons() {
         adding_ovs_neighbors.set(false);
@@ -20,6 +21,7 @@
         add_p2p_toggle = false;
         bulldoze_toggle = false;
         label_toggle = false;
+        input_value = ""
     }
     
     function bHandler(type) {
