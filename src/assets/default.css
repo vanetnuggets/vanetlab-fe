@@ -62,13 +62,16 @@ select {
 }
 
 .myright {
-  min-width: 200px;
+  width: 300px;
   background-color: var(--dark-2);
+  max-width: 300px;
 }
 
 .myleft {
   background-color: var(--dark-2);
   padding: 10px;
+  padding-right: 0px;
+  max-width: 440px;
 }
 
 .canvas {
