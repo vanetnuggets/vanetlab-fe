@@ -360,12 +360,23 @@
         // otherwise just chill
         checkAndLoad(params.scenario);
 
-
         svg = select(bind);
         dragHandler(svg.selectAll(".myPoint"));
         dragHandlerLabel(svg.selectAll(".label"));
         check_lte()
     });
+
+    // this fixes ability to move nodes after page refresh
+    window.onload = function() {
+        delay(100).then(() => {
+            svg = select(bind);
+            dragHandler(svg.selectAll(".myPoint"));
+        });
+        delay(100).then(() => {
+            svg = select(bind);
+            dragHandlerLabel(svg.selectAll(".label"));
+        });
+    };
 </script>
 
 <div class="canvas">
@@ -452,9 +463,6 @@
     </svg>
     <div class="bottom">
         <TimeManagment/>
-        <div class="tmpshit">
-            Ak ti nejde presuvat nody, tak sa prepni do results a naspat. ak si bombic tak to fixni.    
-        </div>
     </div>
     
 </div>
@@ -467,9 +475,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-    }
-    .tmpshit {
-        background-color: red;
     }
     .id_text {
         cursor:auto;
