@@ -10,13 +10,15 @@
     export let bulldoze_toggle;
     export let first_p2p;
     export let vypis;
-    
+    export let label_toggle;
+
     function clear_buttons() {
         adding_ovs_neighbors.set(false);
         add_node_toggle = false;
         add_sdn_toggle = false;
         add_p2p_toggle = false;
         bulldoze_toggle = false;
+        label_toggle = false;
     }
     
     function bHandler(type) {
@@ -42,6 +44,11 @@
                 tmp = bulldoze_toggle;
                 clear_buttons();
                 bulldoze_toggle = !tmp;
+                break;
+            case "label":
+                tmp = label_toggle;
+                clear_buttons();
+                label_toggle = !tmp;
                 break;
             default:
                 console.log("zly butoň");
@@ -79,6 +86,14 @@
         class="btn s"
         title="delete"
         style="background-color:{bulldoze_toggle ? 'red' : ''}"
+    >
+        <img src={BulldozerIcon} height="28px" alt="map_icon" />
+    </button>
+    <button
+        on:click={() => bHandler("label")}
+        class="btn s"
+        title="Label"
+        style="background-color:{label_toggle ? 'red' : ''}"
     >
         <img src={BulldozerIcon} height="28px" alt="map_icon" />
     </button>

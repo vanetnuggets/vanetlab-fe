@@ -9,7 +9,7 @@
         lte_exists,
         pgw_exists
     } from "../../store/store.js";
-    import { nodes, networks, connections } from "../../store/scenario";
+    import { nodes, networks, connections, labels } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
     import ApIcon from "../../assets/ap.png";
@@ -22,9 +22,12 @@
     import { checkAndLoad } from "../../services/LoadService.js";
   
     export let params;
+    import { each } from "svelte/internal";
+
     let radius = 15;
     let svg;
     let circle;
+    let label;
     let mouse_x = 0;
     let mouse_y = 0;
     let transform_x = 0;
@@ -35,8 +38,10 @@
     let add_sdn_toggle = false;
     let add_p2p_toggle = false;
     let bulldoze_toggle = false;
+    let label_toggle = false;
     
     $: nodearr = Object.values($nodes);
+    $: label_dict = $labels;
     $: current_time_string = $current_time.toString() + '.0'
 
     current_time.subscribe(timeRaw => {
@@ -106,7 +111,20 @@
         $nodes[nodeId].x = x;
         $nodes[nodeId].y = y;
     }
+
+    function started_label(event) {
+        let x = event.x;
+        let y = event.y;
+
+        label = select(this); // set circle to the element that has been dragged.
+        label.attr("cx", x).attr("cy", y); // move the x/y position
+
+        console.log(x)
+        console.log(y)
+    }
+
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
+    $: dragHandlerLabel = drag().on("drag", started_label);
 
     let bindHandleZoom, bind;
 
@@ -166,6 +184,18 @@
 
     function delay(time) {
         return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+    function selectLabel(label) {
+        console.log(label)
+        // if (bulldoze_toggle == true)
+        //     pass
+        // else if ($adding_ovs_neighbors)
+        //     handle_sdn_neighbors(node.id)
+        // else if (add_p2p_toggle)
+        //     handle_p2p_conn(node.id)
+        // else
+        //     current_node.update((_) => node.id);
     }
 
     function selectNode(node) {
@@ -317,13 +347,14 @@
 
         svg = select(bind);
         dragHandler(svg.selectAll(".myPoint"));
+        dragHandlerLabel(svg.selectAll(".label"));
         check_lte()
     });
 </script>
 
 <div class="canvas">
     <div class="toolbar">
-        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis}/>
+        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis} label_toggle={label_toggle}/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->
@@ -386,6 +417,15 @@
                 {#if d.type == "basic" && d.l2 == "lte" && d.l2conf["type"] == "pgw" }
                     <Iconn icon={PgwIcon} d={d}/> 
                 {/if}
+            {/each}
+            {#each label_dict as l}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <text on:click={() => selectLabel(l)}
+                    class="label"
+                    x={l.x}
+                    y={l.y}
+                    >{l.text}
+                </text>
             {/each}
         </g>
     </svg>
