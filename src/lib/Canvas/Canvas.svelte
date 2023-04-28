@@ -74,10 +74,7 @@
         $nodes = $nodes;
     })
 
-    function started(event) {
-        let x = event.x;
-        let y = event.y;
-        
+    function checkBoundaries(x, y) {
         if(x<8)
             x=8
         if(x>width-15)
@@ -86,6 +83,13 @@
             y=8 
         if(y>height-24)
             y=height-24
+        return [x, y]
+    }
+
+    function started(event) {
+        let x = event.x;
+        let y = event.y;
+        [x, y] = checkBoundaries(x, y)
 
         circle = select(this); // set circle to the element that has been dragged.
         circle.attr("cx", x).attr("cy", y); // move the x/y position
@@ -115,12 +119,11 @@
     function started_label(event) {
         let x = event.x;
         let y = event.y;
+        [x, y] = checkBoundaries(x, y)
 
         label = select(this); // set circle to the element that has been dragged.
-        label.attr("cx", x).attr("cy", y); // move the x/y position
+        label.attr("x", x).attr("y", y); // move the x/y position
 
-        console.log(x)
-        console.log(y)
     }
 
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
