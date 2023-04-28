@@ -2,7 +2,8 @@ import { nodes, networks, max_at, connections } from "../store/scenario";
 import { scenarioName } from "../store/store";
 import { current_time, current_node, nextNetworkId, nextNodeId } from "../store/store";
 import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
-import Init from "../services/initService";
+import Init from "./initService";
+import { getRemote } from "../lib/api/scenarios";
 
 import { get } from 'svelte/store'
 // import { max_at } from "../store/store";
@@ -37,6 +38,24 @@ export function initNetworks() {
     };
     return tmp;
   })
+}
+
+export function checkAndLoad(scenario) {
+  // check if the `scenario_name` store variable is set
+  let name = get(scenarioName);
+  if (name === null || name === undefined || name === "") {
+    getRemote(scenario)
+      .then((data) => {
+        // hopefully enough data's
+        loadConfig(data.data.data);
+        scenarioName.set(scenario);
+      })
+      .catch(() => {
+        // scenario does not exist or be is fucked
+        clearAll();
+        initNetworks();
+      });
+  }
 }
 
 export function loadConfig(conf) {

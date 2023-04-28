@@ -40,9 +40,10 @@ async function loadSumo() {
   data.append('sumotrace', sumoFile, simName);
   
   fromSumo(data).then((result) => {
-    scenarioName.update(_ => simName);
     loadConfig(result.data);
-    push('/app/canvas')
+    scenarioName.set(simName);
+
+    push(`/app/${simName}/canvas`)
   }).catch((err) => {
     let error = err.response.data.error;
     let status = err.response.data.data;

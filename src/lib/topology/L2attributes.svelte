@@ -19,6 +19,18 @@
                 end : ""
             }
         },
+        wave: {
+            RxGain : {
+                validation : "double",
+                default : "64.0",
+                end : ""
+            },
+            TxGain : {
+                validation : "double",
+                default : "64.0",
+                end : ""
+            }
+        },
         eth: {
             DataRate  : {
                 validation : "int",
@@ -61,45 +73,47 @@
 </script>
 
 <div class="l2_attributes">
-    <button on:click={toggle_l2_attributes} class="btn-basic" >
-        Optional attributes
-    </button><br />
-    {#if open_l2_attributes && node !== undefined && optional_attributes[node.l2]!== undefined}
-        <div transition:slide>
-            <div class="row">
-                <div class="col">
-                    <select bind:value={attributes_input} disabled={!editable}>
-                        {#each Object.keys(optional_attributes[node.l2]) as attribute}
-                            {#if node.l2conf["attributes"] == undefined || !Object.keys(node.l2conf["attributes"]).includes(attribute)}
-                            <option value={attribute}>
-                                {attribute}
-                            </option>
-                            {/if}
-                        {/each}
-                    </select>
+    {#if node !== undefined && optional_attributes[node.l2] !== undefined && Object.keys(optional_attributes[node.l2]).length > 0}
+        <button on:click={toggle_l2_attributes} class="btn-basic" >
+            Optional attributes
+        </button><br />
+        {#if open_l2_attributes}
+            <div transition:slide>
+                <div class="row">
+                    <div class="col">
+                        <select bind:value={attributes_input} disabled={!editable}>
+                            {#each Object.keys(optional_attributes[node.l2]) as attribute}
+                                {#if node.l2conf["attributes"] == undefined || !Object.keys(node.l2conf["attributes"]).includes(attribute)}
+                                <option value={attribute}>
+                                    {attribute}
+                                </option>
+                                {/if}
+                            {/each}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button class="btn-basic" on:click={add_attribute} disabled={!editable} style="margin-left: 15px"> Add </button>
+                    </div>
+                    <br/>
                 </div>
-                <div class="col">
-                    <button class="btn-basic" on:click={add_attribute} disabled={!editable} style="margin-left: 15px"> Add </button>
-                </div>
-                <br/>
+                {#if node.l2conf["attributes"] !== undefined}
+                    {#each Object.entries(node.l2conf.attributes) as [attribute, value]}
+                        <span>{attribute}</span>
+                        <input
+                            class="my-input"
+                            bind:value={node.l2conf.attributes[attribute]}
+                            placeholder={ optional_attributes[node.l2][attribute]
+                                .validation}
+                            size="10"
+                            disabled={!editable}
+                        />
+                        {optional_attributes[node.l2][attribute].end}
+                        <!-- <span>{value}</span> -->
+                        <button class="btn-basic" on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
+                        <br />
+                    {/each}
+                {/if}
             </div>
-            {#if node.l2conf["attributes"] !== undefined}
-                {#each Object.entries(node.l2conf.attributes) as [attribute, value]}
-                    <span>{attribute}</span>
-                    <input
-                        class="my-input"
-                        bind:value={node.l2conf.attributes[attribute]}
-                        placeholder={ optional_attributes[node.l2][attribute]
-                            .validation}
-                        size="10"
-                        disabled={!editable}
-                    />
-                    {optional_attributes[node.l2][attribute].end}
-                    <!-- <span>{value}</span> -->
-                    <button class="btn-basic" on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
-                    <br />
-                {/each}
-            {/if}
-        </div>
+        {/if}
     {/if}
 </div>

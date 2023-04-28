@@ -12,9 +12,13 @@
   import mapIcon from '../../assets/map.svg';
   import networkIcon from '../../assets/network.svg';
   import terminalIcon from '../../assets/terminal.svg';
-  import { getFile } from "../api/scenarios";
+  import { getFile, getSummary } from "../api/scenarios";
   import { scenarioName } from "../../store/store";
   import { currentStatus } from "../../store/summary";
+  import { onMount } from "svelte"
+  import { checkAndLoad } from "../../services/LoadService";
+  
+  export let params;
 
   let showError = false;
   let showResult = false;
@@ -63,6 +67,14 @@
     const blob = resp.data;
     downloadFile(blob, `${file}.${ext}`);
   }
+
+  onMount(() => {
+    // if scenario name is undefined, load remote config.
+    // otherwise just chill
+    checkAndLoad(params.scenario);
+  });
+    
+
 </script>
 
 <div class="container">
@@ -78,69 +90,68 @@
       Scenarios in queue: {status.total_length}<br>
       Currently being simulated: {status.current}<br>
     </div>
-  {:else}
-    {#if showError}
-      <br />
-      <h1>Scenario contains an error 🙀</h1>
+  {/if}
+  {#if showError}
+    <br />
+    <h1>Scenario contains an error 🙀</h1>
 
-      <div class="error-holder">
-        {#each errData as line}
-          {line} <br />
-        {/each}
-      </div>
-    {/if}
-    {#if showResult}
-      <br />
-      <h1>🥂🎉🥳 Scenario simulated! </h1>
+    <div class="error-holder">
+      {#each errData as line}
+        {line} <br />
+      {/each}
+    </div>
+  {/if}
+  {#if showResult}
+    <br />
+    <h1>🥂🎉🥳 Scenario simulated! </h1>
 
-      <div class="data-holder">
-        You can download the simulation results here:
-      
-        <button
-          on:click={() => download(name, 'mobility', 'tcl')}
-          class="download-item"
-        >
-          <div class="data-icon">
-            <img src={mapIcon}  height=64px width=64px alt="map_icon">
-          </div>
-          <div class="data-text">
-            Mobility TCL <br />
-            Name: {simulation.mobility.name} <br />
-            Name: {simulation.mobility.size}B <br />
-          </div>
-        </button>
-        <button
-          on:click={() => download(name, 'output', 'txt')}
-          class="download-item"
-        >
-          <div class="data-icon">
-            <img src={terminalIcon}  height=64px width=64px alt="terminal_icon">
-          </div>
-          <div class="data-text">
-            Terminal output <br />
-            Name: {simulation.output.name} <br />
-            Name: {simulation.output.size}B <br />
-          </div>
-        </button>
-        <button
-          on:click={() => download(name, 'trace', 'xml')}
-          class="download-item"
-        >
-          <div class="data-icon">
-            <img src={networkIcon} height=64px width=64px alt="network_icon">
-          </div>
-          <div class="data-text">
-            Trace file <br />
-            Name: {simulation.trace.name} <br />
-            Name: {simulation.trace.size}B <br />
-          </div>
-        </button>
-      </div>
-    {:else if validated}
-    <br>
-    Simulation validated but has not been ran yet. <br>
-    Simulate the scenario to see output.! <br>
-    {/if}
+    <div class="data-holder">
+      You can download the simulation results here:
+    
+      <button
+        on:click={() => download(name, 'mobility', 'tcl')}
+        class="download-item"
+      >
+        <div class="data-icon">
+          <img src={mapIcon}  height=64px width=64px alt="map_icon">
+        </div>
+        <div class="data-text">
+          Mobility TCL <br />
+          Name: {simulation.mobility.name} <br />
+          Name: {simulation.mobility.size}B <br />
+        </div>
+      </button>
+      <button
+        on:click={() => download(name, 'output', 'txt')}
+        class="download-item"
+      >
+        <div class="data-icon">
+          <img src={terminalIcon}  height=64px width=64px alt="terminal_icon">
+        </div>
+        <div class="data-text">
+          Terminal output <br />
+          Name: {simulation.output.name} <br />
+          Name: {simulation.output.size}B <br />
+        </div>
+      </button>
+      <button
+        on:click={() => download(name, 'trace', 'xml')}
+        class="download-item"
+      >
+        <div class="data-icon">
+          <img src={networkIcon} height=64px width=64px alt="network_icon">
+        </div>
+        <div class="data-text">
+          Trace file <br />
+          Name: {simulation.trace.name} <br />
+          Name: {simulation.trace.size}B <br />
+        </div>
+      </button>
+    </div>
+  {:else if validated}
+  <br>
+  Simulation validated but has not been ran yet. <br>
+  Simulate the scenario to see output.! <br>
   {/if}
 </div>
 

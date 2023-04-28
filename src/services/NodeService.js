@@ -32,7 +32,6 @@ function addNode(sdn=false, pgw=false, x=10, y=10, for_network=null) {
       newNode.l2id = for_network;
       newNode.l2conf = {"type": "pgw"};
   }
-  // console.log(newNode)
   let tmpNodes = get(nodes);
   tmpNodes[nodeId] = newNode;
   nodes.set(tmpNodes);

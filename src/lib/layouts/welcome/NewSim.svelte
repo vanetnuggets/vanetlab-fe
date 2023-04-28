@@ -1,6 +1,6 @@
 <div class="dzia">
   Enter name:
-  <input bind:value={sim_name} placeholder="simulation-name"/>
+  <input bind:value={simName} placeholder="simulation-name"/>
   <button on:click={new_sim} >Create</button>
 </div>
 
@@ -19,14 +19,14 @@ import { scenarioName } from "../../../store/store"
 import { clearAll, initNetworks } from "../../../services/LoadService";
 import { nodes, networks } from "../../../store/scenario";
 
-let sim_name = "";
+let simName = "";
 
 function new_sim() {
   // call API call to check if name is available
   clearAll();
   initNetworks();
-  scenarioName.update(_ => sim_name);
-  push('/app/canvas');
+  scenarioName.update(_ => simName);
+  push(`/app/${simName}/canvas`);
 }
 
 </script>

@@ -36,9 +36,9 @@
   async function loadSim() {
     let content = await simFile.text()
     
-    scenarioName.update(_ => simName);
+    scenarioName.set(simName);
     loadConfig(JSON.parse(content));
-    push('/app/canvas')
+    push(`/app/${simName}/canvas`)
   }
   
   function handleDrop(e) {

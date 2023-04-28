@@ -5,7 +5,7 @@
     </RightDrawer>
   </span>
 
-  <span slot="left">
+  <span slot="left" class="test">
     <LeftDrawer>
       <Networks/>
     </LeftDrawer>
@@ -21,12 +21,8 @@
 
   <span slot="content">
     <Router routes={{
-      '/app/canvas': Canvas,
-      '/app/summary': Summary,
-      '/app/sumo': Sumo,
-      '/app/source/:code': SourceCode,
-      '/app/logs/:code': TraceLogs,
-      '/app/console/:code': ConsoleLogs,
+      '/app/:scenario/canvas': Canvas,
+      '/app/:scenario/summary': Summary,
       '/*': NotFound
     }} />
   </span>
@@ -36,11 +32,6 @@
 import Router from 'svelte-spa-router'
 import NotFound from "../Canvas/NotFound.svelte"
 import Summary from "../../lib/vizualize/Summary.svelte"
-import Sumo from "../../lib/vizualize/Sumo.svelte"
-import SourceCode from "../../lib/vizualize/SourceCode.svelte"
-import TraceLogs from '../../lib/vizualize/TraceLogs.svelte';
-import ConsoleLogs from '../../lib/vizualize/ConsoleLogs.svelte';
-
 import BottomBar from "../../lib/layouts/BottomBar.svelte";
 import TopBar from "../../lib/layouts/TopBar.svelte";
 import LeftDrawer from "../../lib/layouts/LeftDrawer.svelte";

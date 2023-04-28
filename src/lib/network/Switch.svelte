@@ -25,6 +25,7 @@ function handleClick(name){
     <button on:click={() => handleClick("ETH")} class="{switchValue == 'ETH' ? 'clicked' : ''}">ETH</button>
     <button on:click={() => handleClick("LTE")} class="{switchValue == 'LTE' ? 'clicked' : ''}" disabled={$lte_exists}>LTE</button>
     <button on:click={() => handleClick("WIFI")} class="{switchValue == 'WIFI' ? 'clicked' : ''}">WIFI</button>
+    <button on:click={() => handleClick("WAVE")} class="{switchValue == 'WAVE' ? 'clicked' : ''}">WAVE</button>
 </div>
 
 <style>

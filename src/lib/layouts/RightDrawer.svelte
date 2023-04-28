@@ -2,7 +2,7 @@
   import NodeInfo from "../topology/NodeInfo.svelte";
 </script>
 
-<div class=r_drawer>
+<div>
   <slot>
     <NodeInfo></NodeInfo>
   </slot>
