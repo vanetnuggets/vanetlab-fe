@@ -208,7 +208,12 @@
         if (bulldoze_toggle) {
             labels.update(labels => labels.filter(l => l !== label));
             $labels = $labels
-
+        }
+        else if (label_toggle && input_value != "") {
+            // label update text
+            const index = $labels.findIndex(item => item === label);
+            $labels[index] = Object.assign({}, $labels[index], { text: input_value });
+            $labels = $labels
         }
     }
 
