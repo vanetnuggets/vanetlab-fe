@@ -1,5 +1,5 @@
 import { nodes, networks, max_at, connections, labels } from "../store/scenario";
-import { scenarioName } from "../store/store";
+import { labelId, scenarioName } from "../store/store";
 import { current_time, current_node, nextNetworkId, nextNodeId } from "../store/store";
 import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
 import Init from "./initService";
@@ -67,6 +67,7 @@ export function loadConfig(conf) {
   nextNodeId.set(parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
   connections.set(conf.connections);
   if (conf.labels !== undefined) {
+    labelId.set(conf.labels.length);
     labels.set(conf.labels);
   } else {
     labels.set([]);
