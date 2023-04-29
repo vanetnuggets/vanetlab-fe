@@ -1,22 +1,36 @@
 <script>
-import {validator} from "../../store/validation.js"
 
 export let attribute
 export let value
 export let editable
+export let comparator
 
 let valid  = false
 let error_msg =  ""
+let local_value = null
 
-validator.subscribe((n) => {
-  if(attribute != undefined)
-    validate()
-  });
+$:if(value != null || value == null){
+  local_value = value
+  validate()
+}
+
+$: if(comparator != null){
+  validate()
+}
+
+function updateValue(){
+  try {
+    value = local_value.toString()
+  }
+  catch(err) {
+    value = local_value
+  }
+}
 
 function validate() {
-  let result = attribute.validation(value)
-  valid = result.valid;
-  error_msg = result.message;
+  let validation = attribute.validation(value,comparator)
+  valid = validation.valid;
+  error_msg = validation.message;
 }
 </script>
 
@@ -28,22 +42,22 @@ function validate() {
     {#if attribute.type === 'number'}
       <input
         class="my-input"
-        bind:value={value}
+        bind:value={local_value}
         placeholder={attribute.placeholder}
         disabled={!editable}
         type= "number"
         class:field-danger={!valid}
-        on:input={() => validate()}
+        on:input={updateValue}
       />
     {:else if attribute.type === 'text'}
       <input
         class="my-input"
-        bind:value={value}
+        bind:value={local_value}
         placeholder={attribute.placeholder}
         disabled={!editable}
         type= "text"
         class:field-danger={!valid}
-        on:input={() => validate()}
+        on:input={updateValue}
       />
     {/if}
   </div>

@@ -1,10 +1,10 @@
 function buildValidator (...validators) {
-    return function validate (value) {
+    return function validate (value,comparator) {
       if (!validators || validators.length === 0) {
         return { valid: true }
       }
   
-      const failing = validators.find(v => v(value) !== true)
+      const failing = validators.find(v => v(value,comparator) !== true)
   
       return {
         valid: !failing,
