@@ -9,7 +9,7 @@
         lte_exists,
         pgw_exists
     } from "../../store/store.js";
-    import { nodes, networks, connections } from "../../store/scenario";
+    import { nodes, networks, connections, labels } from "../../store/scenario";
     import TimeManagment from "./TimeManagment.svelte";
     import OvsIcon from "../../assets/ovs.png";
     import ApIcon from "../../assets/ap.png";
@@ -22,9 +22,11 @@
     import { checkAndLoad } from "../../services/LoadService.js";
   
     export let params;
+
     let radius = 15;
     let svg;
     let circle;
+    let label;
     let mouse_x = 0;
     let mouse_y = 0;
     let transform_x = 0;
@@ -35,8 +37,11 @@
     let add_sdn_toggle = false;
     let add_p2p_toggle = false;
     let bulldoze_toggle = false;
+    let label_toggle = false;
+    let input_value = ""
     
     $: nodearr = Object.values($nodes);
+    $: label_dict = Object.values($labels);
     $: current_time_string = $current_time.toString() + '.0'
 
     current_time.subscribe(timeRaw => {
@@ -69,10 +74,7 @@
         $nodes = $nodes;
     })
 
-    function started(event) {
-        let x = event.x;
-        let y = event.y;
-        
+    function checkBoundaries(x, y) {
         if(x<8)
             x=8
         if(x>width-15)
@@ -81,6 +83,13 @@
             y=8 
         if(y>height-24)
             y=height-24
+        return [x, y]
+    }
+
+    function started(event) {
+        let x = event.x;
+        let y = event.y;
+        [x, y] = checkBoundaries(x, y)
 
         circle = select(this); // set circle to the element that has been dragged.
         circle.attr("cx", x).attr("cy", y); // move the x/y position
@@ -106,7 +115,19 @@
         $nodes[nodeId].x = x;
         $nodes[nodeId].y = y;
     }
+
+    function started_label(event) {
+        let x = event.x;
+        let y = event.y;
+        [x, y] = checkBoundaries(x, y)
+
+        label = select(this); // set circle to the element that has been dragged.
+        label.attr("x", x).attr("y", y); // move the x/y position
+
+    }
+
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
+    $: dragHandlerLabel = drag().on("drag", started_label);
 
     let bindHandleZoom, bind;
 
@@ -168,6 +189,34 @@
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
+    function addLabel() {
+        let x = mouse_x;
+        let y = mouse_y;
+        if (input_value == "")
+            return
+
+        $labels.push({ "text": input_value, "x": x, "y": y });
+        $labels = $labels
+
+        delay(100).then(() => {
+            svg = select(bind);
+            dragHandlerLabel(svg.selectAll(".label"));
+        });
+    }
+
+    function selectLabel(label) {
+        if (bulldoze_toggle) {
+            labels.update(labels => labels.filter(l => l !== label));
+            $labels = $labels
+        }
+        else if (label_toggle && input_value != "") {
+            // label update text
+            const index = $labels.findIndex(item => item === label);
+            $labels[index] = Object.assign({}, $labels[index], { text: input_value });
+            $labels = $labels
+        }
+    }
+
     function selectNode(node) {
         if (bulldoze_toggle == true)
             remove_node(node)
@@ -184,6 +233,8 @@
             add_node()
         else if (add_sdn_toggle)
             add_node(true)
+        else if (label_toggle)
+            addLabel()
     }
 
     function handle_p2p_conn(node_id) {
@@ -314,17 +365,33 @@
         // otherwise just chill
         checkAndLoad(params.scenario);
 
-
         svg = select(bind);
         dragHandler(svg.selectAll(".myPoint"));
+        dragHandlerLabel(svg.selectAll(".label"));
         check_lte()
     });
+
+    // this fixes ability to move nodes after page refresh
+    window.onload = function() {
+        delay(100).then(() => {
+            svg = select(bind);
+            dragHandler(svg.selectAll(".myPoint"));
+        });
+        delay(100).then(() => {
+            svg = select(bind);
+            dragHandlerLabel(svg.selectAll(".label"));
+        });
+    };
 </script>
 
 <div class="canvas">
     <div class="toolbar">
-        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} first_p2p={first_p2p} vypis={vypis}/>
+        <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} 
+                   first_p2p={first_p2p} vypis={vypis} bind:label_toggle={label_toggle} bind:input_value/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
+        {#if label_toggle}
+            <input type="text" class="in" placeholder="label text" bind:value={input_value}/>
+        {/if}
     </div>
     <!-- height="97%" -->
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
@@ -387,13 +454,20 @@
                     <Iconn icon={PgwIcon} d={d}/> 
                 {/if}
             {/each}
+            {#each label_dict as l}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <text on:click={() => selectLabel(l)}
+                    class="label"
+                    x={l.x}
+                    y={l.y}
+                    style="cursor:pointer"
+                    >{l.text}
+                </text>
+            {/each}
         </g>
     </svg>
     <div class="bottom">
         <TimeManagment/>
-        <div class="tmpshit">
-            Ak ti nejde presuvat nody, tak sa prepni do results a naspat. ak si bombic tak to fixni.    
-        </div>
     </div>
     
 </div>
@@ -406,9 +480,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-    }
-    .tmpshit {
-        background-color: red;
     }
     .id_text {
         cursor:auto;
@@ -431,4 +502,12 @@
         bottom: 23px;
         pointer-events: none;
     }
+    .in {
+        position: absolute;
+        left: 40%;
+        top: 30px;
+        background-color: rgb(233, 233, 231);
+        z-index:1000;
+        pointer-events: all;
+        }
 </style>
