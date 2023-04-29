@@ -20,7 +20,9 @@
     import CanvasBar from "./CanvasBar.svelte";
     import VisualConnections from "./VisualConnections.svelte";
     import { checkAndLoad } from "../../services/LoadService.js";
-  
+    import { labelId } from "../../store/store.js";
+    import { get } from "svelte/store";
+    
     export let params;
 
     let radius = 15;
@@ -124,6 +126,12 @@
         label = select(this); // set circle to the element that has been dragged.
         label.attr("x", x).attr("y", y); // move the x/y position
 
+        let id = this.id;
+        if ($labels[id] === undefined) {
+            return;
+        }
+        $labels[id].x = x;
+        $labels[id].y = y;
     }
 
     $: dragHandler = drag().on("drag", started); // setup a simple dragHandler
@@ -188,15 +196,22 @@
     function delay(time) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
+    let labelID = 0;
 
     function addLabel() {
         let x = mouse_x;
         let y = mouse_y;
         if (input_value == "")
-            return
+            input_value = "Edit me!";
 
-        $labels.push({ "text": input_value, "x": x, "y": y });
+        $labels.push({
+            "id": get(labelId),
+            "text": input_value, 
+            "x": x, 
+            "y": y 
+        });
         $labels = $labels
+        labelId.set(get(labelId) + 1);
 
         delay(100).then(() => {
             svg = select(bind);
@@ -204,16 +219,43 @@
         });
     }
 
-    function selectLabel(label) {
+    function selectLabel(event, label) {
+        let labelReal = event.target;
+        
         if (bulldoze_toggle) {
-            labels.update(labels => labels.filter(l => l !== label));
-            $labels = $labels
-        }
-        else if (label_toggle && input_value != "") {
-            // label update text
-            const index = $labels.findIndex(item => item === label);
-            $labels[index] = Object.assign({}, $labels[index], { text: input_value });
-            $labels = $labels
+            labels.update(labels => labels.filter(l => l.id !== label.id));
+            $labels = $labels;
+        } else {
+            var input = document.createElement("input");
+            input.classList.add("editlabel");
+            input.style.outline = "1px solid black";
+            input.value = label.text;
+            input.addEventListener("click", function(evt) {
+                evt.preventDefault();
+            })
+            input.onkeyup = function(e){
+                if (["Enter", "Escape"].includes(e.key)) {this.blur(); return};
+                label.text = this.value;
+                $labels = $labels;
+            }
+            input.onblur = function(e){       
+                myforeign.remove()
+            }
+
+            var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+            myforeign.setAttribute("width", "100%");
+            myforeign.setAttribute("height", "100%");
+            myforeign.setAttribute("style", "text-align: left;")
+            myforeign.setAttribute("position", "relative");
+            
+            myforeign.setAttribute("x", `${label.x-5}px`);
+            myforeign.setAttribute("y", `${label.y-22}px`);
+            myforeign.append(input);
+            
+            svg = labelReal.parentNode;
+            svg.append(myforeign);
+
+            input.focus()
         }
     }
 
@@ -389,9 +431,6 @@
         <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} 
                    first_p2p={first_p2p} vypis={vypis} bind:label_toggle={label_toggle} bind:input_value/>
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
-        {#if label_toggle}
-            <input type="text" class="in" placeholder="label text" bind:value={input_value}/>
-        {/if}
     </div>
     <!-- height="97%" -->
     <svg on:mousemove={mouseHandler} bind:this={bind} height="100%" width="100%">
@@ -456,10 +495,11 @@
             {/each}
             {#each label_dict as l}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <text on:click={() => selectLabel(l)}
+                <text on:click={(evt) => selectLabel(evt, l)}
                     class="label"
                     x={l.x}
                     y={l.y}
+                    id={l.id}
                     style="cursor:pointer"
                     >{l.text}
                 </text>
@@ -509,5 +549,5 @@
         background-color: rgb(233, 233, 231);
         z-index:1000;
         pointer-events: all;
-        }
+    }
 </style>

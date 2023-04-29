@@ -20,3 +20,5 @@ export const apps = writable({
   "server": [],
   "client": []
 })
+
+export const labelId = writable(0);

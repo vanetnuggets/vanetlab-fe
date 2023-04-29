@@ -1,4 +1,4 @@
-import { nodes, networks, max_at, connections } from "../store/scenario";
+import { nodes, networks, max_at, connections, labels } from "../store/scenario";
 import { scenarioName } from "../store/store";
 import { current_time, current_node, nextNetworkId, nextNodeId } from "../store/store";
 import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
@@ -66,6 +66,11 @@ export function loadConfig(conf) {
   nextNetworkId.set(parseInt(Object.keys(conf.networks).reduce((a, b) => conf.networks[a].id > conf.networks[b].id ? a : b))+1)
   nextNodeId.set(parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
   connections.set(conf.connections);
+  if (conf.labels !== undefined) {
+    labels.set(conf.labels);
+  } else {
+    labels.set([]);
+  }
 }
 
 export function assembleConfig() {
@@ -78,7 +83,8 @@ export function assembleConfig() {
     networks: no_default,
     max_at: get(max_at),
     routing: null,
-    connections: get(connections)
+    connections: get(connections),
+    labels: get(labels)
   };
 }
 
