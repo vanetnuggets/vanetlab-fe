@@ -1,37 +1,11 @@
 <script>
     import { slide } from "svelte/transition";
     import {  nodes } from "../../store/scenario.js";
-
+    import { l3_optional_attributes } from "../../store/validation";
+    import ValidateInputRemove from "../validation/ValidateInputRemove.svelte";
 
     export let node_id;
     export let editable
-
-    const optional_attributes = {
-        udpclient: {
-            interval:{
-                validation : "int",
-                default : "61"
-            },
-            packet_size: {
-                validation : "int",
-                default : "62"
-            },
-            max_packets: {
-                validation : "int",
-                default : "63"
-            },
-        },
-        udpserver: {
-        },
-        tcpclient: {
-            max_bytes: {
-                validation : "int",
-                default : "64"
-            },
-        },
-        tcpserver: {
-        },
-    }
 
     let attributes_input = null;
 
@@ -44,7 +18,7 @@
         if(attributes_input != null){
             if( node.l3conf["attributes"] === undefined)
                 node.l3conf.attributes = {}
-            node.l3conf.attributes[attributes_input] = optional_attributes[node.l3][attributes_input].default
+            node.l3conf.attributes[attributes_input] = null
             $nodes = $nodes
             attributes_input = null
         }
@@ -64,12 +38,12 @@
     <button on:click={toggle_l3_attributes} class="btn-basic">
         Optional attributes
     </button><br />
-    {#if open_l3_attributes && node !== undefined && optional_attributes[node.l3]!== undefined}
+    {#if open_l3_attributes && node !== undefined && $l3_optional_attributes[node.l3]!== undefined}
         <div transition:slide>
             <div class="row">
                 <div class="col">
                     <select bind:value={attributes_input} disabled={!editable}>
-                        {#each Object.keys(optional_attributes[node.l3]) as attribute}
+                        {#each Object.keys($l3_optional_attributes[node.l3]) as attribute}
                             {#if node.l3conf["attributes"] == undefined || !Object.keys(node.l3conf["attributes"]).includes(attribute)}
                             <option value={attribute}>
                                 {attribute}
@@ -85,8 +59,9 @@
             </div>
             {#if node.l3conf["attributes"] !== undefined}
                 {#each Object.keys(node.l3conf.attributes) as attribute}
-                    {#if optional_attributes[node.l3][attribute] !== undefined}
-                        <span>{attribute}</span>
+                    {#if $l3_optional_attributes[node.l3][attribute] !== undefined}
+                        <ValidateInputRemove bind:value={node.l3conf.attributes[attribute]} attribute={$l3_optional_attributes[node.l3][attribute]} remove_l_attributes={remove_l3_attributes} remove = {attribute} editable = {editable} ></ValidateInputRemove><br>
+                        <!-- <span>{attribute}</span>
                         <input
                             class="my-input"
                             bind:value={node.l3conf.attributes[attribute]}
@@ -96,7 +71,7 @@
                             disabled={!editable}
                         />
                         <button class="btn-basic" on:click={() => remove_l3_attributes(attribute)} disabled={!editable}>&times;</button>
-                        <br />
+                        <br /> -->
                     {/if}
                 {/each}
             {/if}

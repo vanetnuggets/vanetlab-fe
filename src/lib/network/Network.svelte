@@ -3,6 +3,8 @@
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks, nodes } from '../../store/scenario.js';
     import { onMount } from "svelte";
+    import { networks_attributes} from "../../store/validation.js"
+    import ValidateInputNetworks from '../validation/ValidateInputNetworks.svelte';
     
     export let network;
 
@@ -100,17 +102,19 @@
                 Network name:
             </div>
             <div class="col">
-                <input class="my-input-l" bind:value={network.ssid} placeholder="example_name">
+                <input class="my-input-l" bind:value={network.ssid} placeholder="example_name" disabled={true}>
             </div>
         </div>
+        <!-- <ValidateInputNetworks bind:value={network.ssid} attribute={$networks_attributes["name"]} comparator={null} ></ValidateInputNetworks><br>   -->
         <div class="row">
             <div class="col">
                 Network address:
             </div>
             <div class="col">
-                <input class="my-input-l" bind:value={network.addr} placeholder="example_address">
+                <input class="my-input-l" bind:value={network.addr} placeholder="example_address" disabled={true}>
             </div>
         </div>
+        <!-- <ValidateInputNetworks bind:value={network.addr} attribute={$networks_attributes["address"]} comparator={null} ></ValidateInputNetworks><br>   -->
         <div class="row">
             <div class="col" style="padding-bottom: 10px;">
                 <ColorPicker bind:rgb bind:hex={network.color}/>

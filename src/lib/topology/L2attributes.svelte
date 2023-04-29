@@ -1,37 +1,13 @@
 <script>
     import { slide } from "svelte/transition";
     import {  nodes } from "../../store/scenario.js";
-
+    import ValidateInputRemove from "../validation/ValidateInputRemove.svelte";
+    import { l2_optional_attributes } from "../../store/validation";
 
     export let node_id;
     export let editable
 
-    const optional_attributes = {
-        wifi: {
-            RxGain : {
-                validation : "double",
-                default : "64.0",
-                end : ""
-            },
-            TxGain : {
-                validation : "double",
-                default : "64.0",
-                end : ""
-            }
-        },
-        eth: {
-            DataRate  : {
-                validation : "int",
-                default : "5",
-                end : "Mbps"
-            },
-            Delay : {
-                validation : "int",
-                default : "2",
-                end : "ms"
-            },
-        }
-    };
+    
 
     let attributes_input = null;
 
@@ -44,7 +20,7 @@
         if(attributes_input != null){
             if( node.l2conf["attributes"] === undefined)
                 node.l2conf.attributes = {}
-            node.l2conf.attributes[attributes_input] = optional_attributes[node.l2][attributes_input].default
+            node.l2conf.attributes[attributes_input] = null
             $nodes = $nodes
             attributes_input = null
         }
@@ -64,12 +40,12 @@
     <button on:click={toggle_l2_attributes} class="btn-basic" >
         Optional attributes
     </button><br />
-    {#if open_l2_attributes && node !== undefined && optional_attributes[node.l2]!== undefined}
+    {#if open_l2_attributes && node !== undefined && $l2_optional_attributes[node.l2]!== undefined}
         <div transition:slide>
             <div class="row">
                 <div class="col">
                     <select bind:value={attributes_input} disabled={!editable}>
-                        {#each Object.keys(optional_attributes[node.l2]) as attribute}
+                        {#each Object.keys($l2_optional_attributes[node.l2]) as attribute}
                             {#if node.l2conf["attributes"] == undefined || !Object.keys(node.l2conf["attributes"]).includes(attribute)}
                             <option value={attribute}>
                                 {attribute}
@@ -84,20 +60,23 @@
                 <br/>
             </div>
             {#if node.l2conf["attributes"] !== undefined}
-                {#each Object.entries(node.l2conf.attributes) as [attribute, value]}
-                    <span>{attribute}</span>
-                    <input
-                        class="my-input"
-                        bind:value={node.l2conf.attributes[attribute]}
-                        placeholder={ optional_attributes[node.l2][attribute]
-                            .validation}
-                        size="10"
-                        disabled={!editable}
-                    />
-                    {optional_attributes[node.l2][attribute].end}
+                {#each Object.keys(node.l2conf.attributes) as attribute}
+                    {#if $l2_optional_attributes[node.l2][attribute] !== undefined}
+                    <ValidateInputRemove bind:value={node.l2conf.attributes[attribute]} attribute={$l2_optional_attributes[node.l2][attribute]} remove_l_attributes={remove_l2_attributes} remove = {attribute} editable = {editable} ></ValidateInputRemove><br>
+                        <!-- <span>{attribute}</span>
+                        <input
+                            class="my-input"
+                            bind:value={node.l2conf.attributes[attribute]}
+                            placeholder={ optional_attributes[node.l2][attribute]
+                                .validation}
+                            size="10"
+                            disabled={!editable}
+                        />
+                        {optional_attributes[node.l2][attribute].end} -->
                     <!-- <span>{value}</span> -->
-                    <button class="btn-basic" on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
-                    <br />
+                    <!-- <button class="btn-basic" on:click={() => remove_l2_attributes(attribute)} disabled={!editable}>&times;</button>
+                    <br /> -->
+                    {/if}
                 {/each}
             {/if}
         </div>

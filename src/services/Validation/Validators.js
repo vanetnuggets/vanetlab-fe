@@ -14,7 +14,7 @@ function positiveFloatValidator () {
   }
 }
   
-function positiveIntegerValidation() {
+function positiveIntegerValidator() {
   return function int (value,comparator) {
     if ( value == null || (Number.isInteger(Number(value)) && Number(value) >= 0)) {
       return true;
@@ -45,15 +45,46 @@ function higherValueValidator() {
   }
 }
 
+function ipAddressValidator() {  
+
+  return function higher (value,comparator) {
+    if ( value == null || /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value)) {
+      return true;
+    } else {
+      return 'Must be valid ip address.' ;
+    }
+  }
+}  
+
+function nameValidator() {  
+
+  return function higher (value,comparator) {
+    let result = true
+    if( value != null ){
+      Object.values(comparator).forEach(network => {
+        console.log(value)
+        console.log(network.ssid)
+        if(network.ssid == value)
+          result = false ;
+      });
+    }
+    if(!result)
+      return 'Must be unique name'
+    else
+      return result
+  }
+}  
+
 
 
   
   export {
     requiredValidator,
-    positiveIntegerValidation,
+    positiveIntegerValidator,
     positiveFloatValidator,
     portValidator,
-    higherValueValidator
-
+    higherValueValidator,
+    ipAddressValidator,
+    nameValidator
   }
   

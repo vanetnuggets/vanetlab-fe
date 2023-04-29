@@ -6,6 +6,8 @@
     import ColorPicker from 'svelte-awesome-color-picker';
     import Switch from "./Switch.svelte";
     import Connections from "./Connections.svelte";
+    import ValidateInputNetworks from "../validation/ValidateInputNetworks.svelte";
+    import { networks_attributes } from "../../store/validation";
 
     let rgb;
     let name = ""
@@ -52,6 +54,8 @@
   function toggle_creation() {
     network_open = !network_open;
   }
+
+  //$: console.log($networks)
 </script>
 
 
@@ -75,7 +79,9 @@
 </button>
 {#if network_open == true}
   <div transition:slide style="padding: 10px;">
-    <div class="row">
+    <ValidateInputNetworks bind:value={name} attribute={$networks_attributes["name"]} comparator={$networks} ></ValidateInputNetworks><br>  
+    <ValidateInputNetworks bind:value={address} attribute={$networks_attributes["address"]} comparator={null} ></ValidateInputNetworks><br> 
+    <!-- <div class="row">
       <div class="col">
         Network name:
       </div>
@@ -90,8 +96,8 @@
       <div class="col">
         <input class="my-input-l" bind:value={address} placeholder="example_address">
       </div>
-    </div>
-    <div class="row">
+    </div>-->
+    <div class="row"> 
         <div class="col">
             <ColorPicker bind:rgb bind:hex={color}/>
         </div>
