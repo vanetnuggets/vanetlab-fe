@@ -6,8 +6,8 @@
 
   import {mobility_attributes} from "../../store/validation.js"
   import ValidateInput from "../validation/ValidateInput.svelte";
-  import { buildValidator } from "../../services/Validation/ValidationSevice.js";
-  import { positiveFloatValidator} from "../../services/Validation/Validators.js"
+  import { buildValidator } from "../../services/validation/ValidationSevice.js";
+  import { positiveIntegerValidation,positiveFloatValidator} from "../../services/validation/Validators.js"
 
   export let node_id;
   export let editable;
@@ -30,12 +30,17 @@
     mobility = n[node_id].mobility;
   });
   
-  const validation =  buildValidator(positiveFloatValidator())
+  const validationFloat =  buildValidator(positiveFloatValidator())
+  const validationInt = buildValidator(positiveIntegerValidation())
   
   $: if ( inputs.time != null && inputs.x != null && inputs.y != null && inputs.z != null){
         valid = true
-        Object.values(inputs).forEach(value => {
-          let result = validation(value)
+        let result = null
+        Object.entries(inputs).forEach(entry => {
+          if(entry[0] == 'time')
+            result = validationInt(entry[1])
+          else
+            result = validationFloat(entry[1])
           if(!result.valid)
             valid = false
         })
@@ -62,9 +67,9 @@
   
   function add_mobility() {
     mobility[inputs.time.toString() + ".0"] = {
-      x: inputs.x,
-      y: inputs.y,
-      z: inputs.z,
+      x: Number(inputs.x).toFixed(2).toString(),
+      y: Number(inputs.y).toFixed(2).toString(),
+      z: Number(inputs.z).toFixed(2).toString(),
     };
     $nodes[node_id].mobility = Object.keys(mobility)
       .sort(function (a, b) {
@@ -110,7 +115,7 @@
           {#if open_add_mobility}
             <div transition:slide>
               {#each Object.entries($mobility_attributes) as [store_name, attribute]}
-                <ValidateInput bind:value={inputs[store_name]} attribute={attribute} editable = {editable} ></ValidateInput><br>
+                <ValidateInput bind:value={inputs[store_name]} attribute={attribute} comparator={null} editable = {editable} ></ValidateInput><br>  
               {/each}
               <br />
               <button
@@ -139,8 +144,8 @@
               {#each Object.entries($nodes[node_id].mobility) as [time, position]}
                 <tr>
                   <td>{time}</td>
-                  <td>{position.x.toFixed(2)}</td>
-                  <td>{position.y.toFixed(2)}</td>
+                  <td>{position.x}</td>
+                  <td>{position.y}</td>
                   <td
                     ><button
                       class="btn-basic"
