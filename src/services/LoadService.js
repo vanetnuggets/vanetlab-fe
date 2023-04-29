@@ -23,6 +23,7 @@ export function clearAll() {
   max_at.set(Init.MAX_AT);
   nextNetworkId.set(0)
   nextNodeId.set(0)
+  labelId.set(0);
 }
 
 
