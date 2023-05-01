@@ -1,11 +1,12 @@
 <script>
+
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
-  import { useForm} from "svelte-use-form";
-  import "../../assets/nodeconf.css";
   import {emailValidator, requiredValidator,integerValidation,floatValidation} from "../../services/Validation/Validators.js"
   import { setValidator } from '../../services/Validation/ValidationSevice.js'
+    import { zip } from "d3";
+    import { subscribe } from "svelte/internal";
 
 
   export let node_id;
@@ -15,35 +16,19 @@
   let mobility;
   let missing = true
 
-  
-
-
-    const form = useForm({
-      Time: { validators: [integerValidation] },
-      X: { validators: [floatValidation] },
-      Y: { validators: [floatValidation] },
-      Z: { validators: [floatValidation] },
-    });
-
-     const validationTime = setValidator(requiredValidator(), emailValidator())
-     const validationX = setValidator(requiredValidator(), emailValidator())
-     const validationY = setValidator(requiredValidator(), emailValidator())
-     const validationZ = setValidator(requiredValidator(), emailValidator())
-     $: console.log(validationTime)
-     const validity = validationTime[0]
-    // const [ X, validate ] = setValidator(requiredValidator(), emailValidator())
-    // const [ Y, validate ] = setValidator(requiredValidator(), emailValidator())
-    // const [ Z, validate ] = setValidator(requiredValidator(), emailValidator())
+    const validation = setValidator(requiredValidator(), emailValidator())
+    const validity = validation[0]
+    const validate = validation[1]
     
+    
+    $: console.log(mobility_attributes.Time.validation[0])
     const mobility_attributes = {
       Time: {
-        v: validationTime[0].subscribe,
-        action: validationTime[1],
+        validation: setValidator(requiredValidator(), emailValidator()),
         name: "Time",
         value: null,
         end: "s",
-        placeholder: "Movement end time",
-        validation: "Positive Integer",
+        placeholder: "Movement end time"
       },
       X: {
         name: "X",
@@ -67,7 +52,13 @@
         validation: "Positive Float",
       },
     };
-    $: console.log(get(mobility_attributes.Time.v))
+    
+
+    $: console.log()
+    function extractFromValid(validation){
+       
+      return validation
+    }
 
     nodes.subscribe((n) => {
       if (n[node_id] === undefined) {
@@ -81,7 +72,6 @@
       missing = false
     } else 
       missing = true
-
 
     let open_mobility = false;
     function toggle_mobility() {
@@ -135,26 +125,27 @@
     let testovaci = ""
 </script>
 
-  <div class="mobility">
-    <div class="row">
-      <div class="col">
-        <label>Testovaci: </label>
-      </div>
-      <div class="col">
-        <input
-          class="my-input"
-          bind:value={testovaci}
-          placeholder="ahoj"
-          class:field-danger={!$validity.valid}
-          use:validate={testovaci}
-        />
-      </div>
+<div class="mobility">
+  <div class="row">
+    <div class="col">
+      <label>Testovaci: </label>
     </div>
-    <div style="color: red;" hidden={$validity.valid}>
-      { $validity.message }
+    <div class="col">
+      <input
+        class="my-input"
+        bind:value={testovaci}
+        placeholder="ahoj"
+        class:field-danger={!$validity.valid}
+        use:validate={testovaci}
+      />
     </div>
+  </div>
+  <div style="color: red;" hidden={$validity.valid}>
+    { $validity.message }
+  </div>
+</div>
 
-    <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
+    <!-- <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
       | Mobility
     </button><br />
     {#if open_mobility && $nodes[node_id] !== undefined}
@@ -267,3 +258,5 @@
 
 <style scoped>
 </style>
+    {/if}
+  </div> -->
