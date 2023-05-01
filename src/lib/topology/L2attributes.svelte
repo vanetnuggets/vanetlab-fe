@@ -1,11 +1,13 @@
 <script>
     import { slide } from "svelte/transition";
     import {  nodes } from "../../store/scenario.js";
-
+    import ValidateInputRemove from "../validation/ValidateInputRemove.svelte";
+    import { l2_optional_attributes } from "../../store/validation";
 
     export let node_id;
     export let editable
 
+<<<<<<< HEAD
     const optional_attributes = {
         wifi: {
             RxGain : {
@@ -44,6 +46,9 @@
             },
         }
     };
+=======
+    
+>>>>>>> 1366d2f (validating everything)
 
     let attributes_input = null;
 
@@ -56,7 +61,7 @@
         if(attributes_input != null){
             if( node.l2conf["attributes"] === undefined)
                 node.l2conf.attributes = {}
-            node.l2conf.attributes[attributes_input] = optional_attributes[node.l2][attributes_input].default
+            node.l2conf.attributes[attributes_input] = null
             $nodes = $nodes
             attributes_input = null
         }

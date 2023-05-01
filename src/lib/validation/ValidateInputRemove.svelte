@@ -3,11 +3,13 @@
 export let attribute
 export let value
 export let editable
-export let comparator
+export let remove_l_attributes
+export let remove
 
 let valid  = false
 let error_msg =  ""
 let local_value = null
+let comparator =null
 
 $:if(value != null || value == null){
   local_value = value
@@ -34,23 +36,22 @@ function validate() {
 }
 </script>
 
-<div class="row">
-  <div class="col">
-    {attribute.name}:
-  </div>
-  <div class="col">
-    <input
-      class="my-input"
-      bind:value={local_value}
-      placeholder={attribute.placeholder}
-      disabled={!editable}
-      type= "number"
-      class:field-danger={!valid}
-      on:input={updateValue}
-    />
-  </div>
+  <span>{attribute.name}: </span><br/>
+
+  <input
+    class="my-input"
+    bind:value={local_value}
+    placeholder={attribute.placeholder}
+    disabled={!editable}
+    type= "number"
+    class:field-danger={!valid}
+    size="5"
+    on:input={updateValue}
+  />
   {attribute.end}
-</div>
-<div style="color: red;" hidden={valid}>
-  {error_msg}
-</div>
+  <button class="btn-basic" on:click={() => remove_l_attributes(remove)} disabled={!editable}>&times;</button>
+
+  <div style="color: red;" hidden={valid}>
+    {error_msg}
+  </div>
+  <br/>

@@ -47,7 +47,25 @@
     
     // $: if ($nodes[node_id].l2 != null && !l2_types[$nodes[node_id].l2].includes($nodes[node_id].l2conf.type))
     //     $nodes[node_id].l2conf={}
-        
+    let network_valid = false 
+    let node_type_valid = false 
+    let standard_valid = false 
+
+    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2id != null && $nodes[node_id].l2 != null)
+            network_valid = true
+        else
+            network_valid = false
+
+    $:  if ($nodes[node_id]!= undefined && ($nodes[node_id].l2conf.type != null || (l2_types[$nodes[node_id].l2]!= undefined && l2_types[$nodes[node_id].l2].lenght == 0)))
+            node_type_valid = true
+        else
+            node_type_valid = false
+
+    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2conf.standard != null)
+            standard_valid = true
+        else
+            standard_valid = false
+
 </script>
 
 <div class="L2">
@@ -64,7 +82,9 @@
                     <select
                         bind:value={$nodes[node_id].l2id}
                         class="dropdown"
-                        disabled={!editable}>
+                        disabled={!editable}
+                        class:field-danger={!network_valid} 
+                        >
                         {#each Object.keys($networks) as l2_t}
                             <option value={$networks[l2_t].id}>
                                 {$networks[l2_t].ssid}
@@ -73,6 +93,9 @@
                     </select>
                 </div>
             </div>
+            <div style="color: red;" hidden={network_valid}>
+                This field is required
+              </div>
             {#if $nodes[node_id].l2 != null}
                 <div transition:slide>
                     {#if l2_types[$nodes[node_id].l2].length > 0}
@@ -81,7 +104,7 @@
                             Node type: <br />
                         </div>
                         <div class="col">
-                            <select class="dropdown" on:change={handlePwg} bind:value={$nodes[node_id].l2conf.type} on:change = {set_default} disabled={!editable}>
+                            <select class="dropdown"   class:field-danger={!node_type_valid}  on:change={handlePwg} bind:value={$nodes[node_id].l2conf.type} on:change = {set_default} disabled={!editable}>
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
                                     <option disabled={$nodes[node_id].l2==="lte" && l2_st==="pgw" && $pgw_exists ? true : false} value={l2_st}>
                                         {l2_st}
@@ -97,7 +120,7 @@
                                 Standart: <br />
                             </div>
                             <div class="col">
-                                <select class="dropdown" bind:value={$nodes[node_id].l2conf.standard} disabled={!editable}>
+                                <select class="dropdown" class:field-danger={!standard_valid} bind:value={$nodes[node_id].l2conf.standard} disabled={!editable}>
                                     {#each wifi_standards as wifi_standart}
                                         <option value={wifi_standart}>
                                             {wifi_standart}
@@ -106,6 +129,9 @@
                                 </select>
                             </div>
                         </div>
+                        <div style="color: red;" hidden={standard_valid}>
+                            This field is required
+                          </div>
                     {/if}
                     <OptionalAttributes node_id={node_id} editable={editable}/>
 

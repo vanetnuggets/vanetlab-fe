@@ -2,7 +2,6 @@
 
 export let attribute
 export let value
-export let editable
 export let comparator
 
 let valid  = false
@@ -39,17 +38,15 @@ function validate() {
     {attribute.name}:
   </div>
   <div class="col">
-    <input
-      class="my-input"
-      bind:value={local_value}
-      placeholder={attribute.placeholder}
-      disabled={!editable}
-      type= "number"
-      class:field-danger={!valid}
-      on:input={updateValue}
-    />
+      <input
+        class="my-input-l"
+        bind:value={local_value}
+        placeholder={attribute.placeholder}
+        type= "text"
+        class:field-danger={!valid}
+        on:input={updateValue}
+      />
   </div>
-  {attribute.end}
 </div>
 <div style="color: red;" hidden={valid}>
   {error_msg}

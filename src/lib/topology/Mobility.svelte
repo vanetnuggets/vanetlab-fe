@@ -7,7 +7,7 @@
   import {mobility_attributes} from "../../store/validation.js"
   import ValidateInput from "../validation/ValidateInput.svelte";
   import { buildValidator } from "../../services/validation/ValidationSevice.js";
-  import { positiveIntegerValidation,positiveFloatValidator} from "../../services/validation/Validators.js"
+  import { positiveIntegerValidator,positiveFloatValidator} from "../../services/validation/Validators.js"
 
   export let node_id;
   export let editable;
@@ -31,7 +31,7 @@
   });
   
   const validationFloat =  buildValidator(positiveFloatValidator())
-  const validationInt = buildValidator(positiveIntegerValidation())
+  const validationInt = buildValidator(positiveIntegerValidator())
   
   $: if ( inputs.time != null && inputs.x != null && inputs.y != null && inputs.z != null){
         valid = true

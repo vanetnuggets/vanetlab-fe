@@ -178,7 +178,7 @@
             y:y
   
         };
-        newNode.mobility['0.0'] = { x: x, y: y, z: 0 };
+        newNode.mobility['0.0'] = { x: x.toFixed(2).toString(), y: y.toFixed(2).toString(), z: (0).toFixed(2).toString() };
         if (sdn){
             newNode.type = "sdn";
             newNode["switch_nodes"] = [];
