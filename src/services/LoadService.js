@@ -62,7 +62,6 @@ export function checkAndLoad(scenario) {
 }
 
 export function loadConfig(conf) {
-  console.log(conf)
   networks.update(_ => conf.networks);
   initNetworks();
   nodes.set(conf.nodes);
