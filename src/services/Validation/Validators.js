@@ -47,31 +47,29 @@ function higherValueValidator() {
 
 function ipAddressValidator() {  
 
-  return function higher (value,comparator) {
-    if ( value == null || /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value)) {
+  return function ipaddress (value,comparator) {
+    if ( value == null || /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(3[0-2]|([1]?|[2]?)[0-9])$/.test(value)) {
       return true;
     } else {
-      return 'Must be valid ip address.' ;
+      return 'Must be valid ip address' ;
     }
   }
 }  
 
 function nameValidator() {  
 
-  return function higher (value,comparator) {
-    let result = true
-    if( value != null ){
+  return function name (value,comparator) {
+    let valid = true
+    if(value != null){
       Object.values(comparator).forEach(network => {
-        console.log(value)
-        console.log(network.ssid)
         if(network.ssid == value)
-          result = false ;
+          valid = false
       });
     }
-    if(!result)
-      return 'Must be unique name'
-    else
-      return result
+    if(!valid){
+      return 'Name must be unique'
+    } else 
+      return true
   }
 }  
 
