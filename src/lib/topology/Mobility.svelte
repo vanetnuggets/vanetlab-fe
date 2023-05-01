@@ -1,4 +1,5 @@
 <script>
+
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
@@ -6,16 +7,20 @@
   import ValidateInput from "../validation/ValidateInput.svelte";
   import { buildValidator } from "../../services/validation/ValidationSevice.js";
   import { positiveIntegerValidator,positiveFloatValidator} from "../../services/validation/Validators.js"
+  
   export let node_id;
   export let editable;
+  
   let mobility;
   let valid = false
+  
   let inputs = {
     time : null,
     x: null,
     y: null,
     z: null
   }
+
   nodes.subscribe((n) => {
     if (n[node_id] === undefined) {
       return {};
@@ -39,7 +44,6 @@
         })
       } else 
         valid = false
-  
   
   let open_mobility = false;
   function toggle_mobility() {
@@ -69,10 +73,12 @@
         return obj;
       }, {});
     $nodes = $nodes;
+
       //update MaxAt
     if (get(max_at) < Number(inputs.time)) {
       max_at.update((_) => Number(inputs.time));
     }
+
     inputs.time = null;
     inputs.x = null;
     inputs.y = null;
@@ -84,6 +90,7 @@
       $nodes = $nodes;
     }
   };
+
 </script>
 
 <div class="mobility">
