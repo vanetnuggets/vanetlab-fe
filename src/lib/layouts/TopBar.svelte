@@ -17,6 +17,8 @@
     loading,
     simData,
   } from "../../store/summary";
+  import {validationCheck} from "../../services/validation/ValidationCheck"
+
   const { addNotification } = getNotificationsContext();
 
   let visible = true;
@@ -28,43 +30,53 @@
   });
 
   async function runSimulation() {
-    let notifText = "";
-    let notifType = "";
-    loading.update((val) => ({
-      ...val,
-      scenario: true,
-    }));
-    addNotification({
-      text: "Simulation started",
-      position: "bottom-center",
-      type: "success",
-      removeAfter: 1500,
-    });
-    simulate(currName)
-      .then((resp) => {
-        let data = resp.data.data;
-        let name = get(scenarioName);
-        notifType = "success";
-        notifText = `Scenario '${name}' queued up for simulation.`;
-      })
-      .catch((err) => {
-        let data = err.response.data.data;
-        errorData.set(data);
-        notifText = `Failed to run simulation.`;
-        notifType = "error";
-      })
-      .finally(() => {
-        addNotification({
-          text: notifText,
-          position: "bottom-center",
-          type: notifType,
-          removeAfter: 1500,
-        });
+    const valid_message = validationCheck()
+    if(valid_message.length == 0){
+      let notifText = "";
+      let notifType = "";
+      loading.update((val) => ({
+        ...val,
+        scenario: true,
+      }));
+      addNotification({
+        text: "Simulation started",
+        position: "bottom-center",
+        type: "success",
+        removeAfter: 1500,
       });
+      simulate(currName)
+        .then((resp) => {
+          let data = resp.data.data;
+          let name = get(scenarioName);
+          notifType = "success";
+          notifText = `Scenario '${name}' queued up for simulation.`;
+        })
+        .catch((err) => {
+          let data = err.response.data.data;
+          errorData.set(data);
+          notifText = `Failed to run simulation.`;
+          notifType = "error";
+        })
+        .finally(() => {
+          addNotification({
+            text: notifText,
+            position: "bottom-center",
+            type: notifType,
+            removeAfter: 1500,
+          });
+        });
 
-    setTimeout(() => {
-      let sock = createSock(currName);
-    }, 100);
+      setTimeout(() => {
+        let sock = createSock(currName);
+      }, 100);
+    } else{
+      addNotification({
+          text: "Some nodes are not in valid form: " + valid_message,
+          position: "bottom-center",
+          type: "error",
+          removeAfter: 5000,
+        });
+    }
   }
 
   async function saveRemote() {
@@ -93,49 +105,59 @@
   }
 
   function validateSimulation() {
-    loading.update((val) => ({
-      ...val,
-      scenario: true,
-    }));
-    let notifType = "";
-    let notifText = "";
+    const valid_message = validationCheck()
+    if(valid_message.length == 0){
+      loading.update((val) => ({
+        ...val,
+        scenario: true,
+      }));
+      let notifType = "";
+      let notifText = "";
 
-    addNotification({
-      text: "Check started",
-      position: "bottom-center",
-      type: "success",
-      removeAfter: 1500,
-    });
-    validate(currName)
-      .then((resp) => {
-        let name = get(scenarioName);
-        isError.set(false);
-        isOk.set(false);
-        isValidated.set(true);
-        notifText = `Scenario '${name}' validated!`;
-        notifType = "success";
-      })
-      .catch((err) => {
-        let data = err.response.data.data;
-        errorData.set(data.split("\n"));
-        isError.set(true);
-        isOk.set(false);
-        isValidated.set(false);
-        notifText = `Errors while validating scenario. See details in 'Result' tab`;
-        notifType = "error";
-      })
-      .finally(() => {
-        loading.update((val) => ({
-          ...val,
-          scenario: false,
-        }));
-        addNotification({
-          text: notifText,
-          position: "bottom-center",
-          type: notifType,
-          removeAfter: 1500,
-        });
+      addNotification({
+        text: "Check started",
+        position: "bottom-center",
+        type: "success",
+        removeAfter: 1500,
       });
+      validate(currName)
+        .then((resp) => {
+          let name = get(scenarioName);
+          isError.set(false);
+          isOk.set(false);
+          isValidated.set(true);
+          notifText = `Scenario '${name}' validated!`;
+          notifType = "success";
+        })
+        .catch((err) => {
+          let data = err.response.data.data;
+          errorData.set(data.split("\n"));
+          isError.set(true);
+          isOk.set(false);
+          isValidated.set(false);
+          notifText = `Errors while validating scenario. See details in 'Result' tab`;
+          notifType = "error";
+        })
+        .finally(() => {
+          loading.update((val) => ({
+            ...val,
+            scenario: false,
+          }));
+          addNotification({
+            text: notifText,
+            position: "bottom-center",
+            type: notifType,
+            removeAfter: 1500,
+          });
+        });
+    } else{
+      addNotification({
+          text: "Some nodes are not in valid form: " + valid_message,
+          position: "bottom-center",
+          type: "error",
+          removeAfter: 5000,
+        });
+    }
   }
 
   function gotoSummary() {
