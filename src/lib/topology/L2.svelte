@@ -4,30 +4,24 @@
     import { nodes, networks } from "../../store/scenario";
     import OptionalAttributes from "./L2attributes.svelte"
     import { pgw_exists, current_node } from '../../store/store';
-
     export let node_id;
     export let editable;
     const l2_types = {
         lte: ["ue", "enb", "pgw"],
         wifi: ["sta", "ap"],
-        eth: [],
-        wave: []
+        eth: []
     };
-
     const wifi_standards = ["802.11b", "802.11a", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be", "802.11p"]
-
     let open_l2 = false;
     function toggle_l2() {
         open_l2 = !open_l2;
     }
-
     function set_default() {
         if($nodes[node_id].l2conf.type == "ap")
             $nodes[node_id].l2conf.standard = "802.11n"
         else
             $nodes[node_id].l2conf = delete $nodes[node_id].l2conf.standard && $nodes[node_id].l2conf;
     }
-
     function handlePwg(event) {
         if (event.target.value==="pgw") {
             pgw_exists.set(true)
@@ -35,7 +29,6 @@
             current_node.update((_) => null)
         } 
     }
-
     $: if ($nodes[node_id] !== undefined){ 
         if($nodes[node_id].l2id == -1) {
             $nodes[node_id].l2 = null;
@@ -50,22 +43,18 @@
     let network_valid = false 
     let node_type_valid = false 
     let standard_valid = false 
-
     $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2id != null && $nodes[node_id].l2 != null)
             network_valid = true
         else
             network_valid = false
-
     $:  if ($nodes[node_id]!= undefined && ($nodes[node_id].l2conf.type != null || (l2_types[$nodes[node_id].l2]!= undefined && l2_types[$nodes[node_id].l2].lenght == 0)))
             node_type_valid = true
         else
             node_type_valid = false
-
     $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2conf.standard != null)
             standard_valid = true
         else
             standard_valid = false
-
 </script>
 
 <div class="L2">
@@ -98,7 +87,6 @@
               </div>
             {#if $nodes[node_id].l2 != null}
                 <div transition:slide>
-                    {#if l2_types[$nodes[node_id].l2].length > 0}
                     <div class="row">
                         <div class="col">
                             Node type: <br />
@@ -113,7 +101,9 @@
                             </select>
                         </div>
                     </div>
-                    {/if}
+                    <div style="color: red;" hidden={node_type_valid}>
+                        This field is required
+                      </div>
                     {#if $nodes[node_id].l2conf.type == "ap"}
                         <div class="row">
                             <div class="col">
