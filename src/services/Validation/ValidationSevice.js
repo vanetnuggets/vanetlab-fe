@@ -8,7 +8,7 @@ function buildValidator (...validators) {
   
       return {
         valid: !failing,
-        message: failing && failing(value)
+        message: failing && failing(value,comparator)
       }
     }
   }

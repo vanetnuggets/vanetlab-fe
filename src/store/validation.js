@@ -31,7 +31,7 @@ export const mobility_attributes = writable({
 
 export const networks_attributes = writable({
   name: {
-    validation: buildValidator(requiredValidator()),
+    validation: buildValidator(requiredValidator(),nameValidator()),
     name: "Network name",
     placeholder: "example_name"
   },

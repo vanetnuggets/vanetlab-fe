@@ -55,7 +55,17 @@
     network_open = !network_open;
   }
 
-  //$: console.log($networks)
+  let valid = false
+  $: if ( name != null && address != null){
+        valid = false
+        let name_validation = $networks_attributes["name"].validation(name,$networks)
+        let address_validation = $networks_attributes["address"].validation(address,$networks)
+        if(name_validation.valid && address_validation.valid)
+          valid = true
+
+      } else 
+        valid = false
+
 </script>
 
 
@@ -81,22 +91,6 @@
   <div transition:slide style="padding: 10px;">
     <ValidateInputNetworks bind:value={name} attribute={$networks_attributes["name"]} comparator={$networks} ></ValidateInputNetworks><br>  
     <ValidateInputNetworks bind:value={address} attribute={$networks_attributes["address"]} comparator={null} ></ValidateInputNetworks><br> 
-    <!-- <div class="row">
-      <div class="col">
-        Network name:
-      </div>
-      <div class="col">
-        <input class="my-input-l" bind:value={name} placeholder="example_name">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        Network address:
-      </div>
-      <div class="col">
-        <input class="my-input-l" bind:value={address} placeholder="example_address">
-      </div>
-    </div>-->
     <div class="row"> 
         <div class="col">
             <ColorPicker bind:rgb bind:hex={color}/>
@@ -110,7 +104,7 @@
           <Switch bind:switchValue={switchValue} networkId={$nextNetworkId}/> 
       </div>
     </div>
-    <button class="btn-basic" on:click={addContainer}>
+    <button class="btn-basic" on:click={addContainer} disabled={!valid}>
         Create
     </button>
   </div>
