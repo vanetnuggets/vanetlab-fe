@@ -1,7 +1,7 @@
 <script>
   import { fade } from "svelte/transition";
   import { push } from "svelte-spa-router";
-  import { current_node, scenarioName } from "../../store/store";
+  import { current_node, scenarioName, scenarioReadOnly } from "../../store/store";
   import { reset_store } from "../../store/scenario";
   import { assembleConfig, saveLocal } from "../../services/LoadService";
   import { saveRemote as saveRemoteScenario, simulate } from "../api/scenarios";
@@ -216,11 +216,16 @@
         >📈 Results</button
       >
       <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
-      <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
+      <button on:click={saveRemote} class="btn r" disabled={$scenarioReadOnly}>☁️ Save remote</button>
     </div>
   {/if}
   <div class="middle">
     {currName}
+    {#if $scenarioReadOnly}
+      <div class="tag" title="Default scenario">
+        DEFAULT
+      </div>
+    {/if}
   </div>
 </div>
 
@@ -238,6 +243,10 @@
   .btn:hover {
     background-color: var(--dark-3);
     outline: 1px solid var(--color-text-1);
+  }
+
+  .btn:disabled {
+    background-color: var(--dark-4);
   }
 
   .middle {
@@ -260,5 +269,13 @@
 
   .r {
     float: right;
+  }
+
+  .tag {
+    margin-left: 10px;
+    background:var(--dark-3);
+    padding:5px;
+    border-radius: 25px;
+    font-weight: 500;
   }
 </style>

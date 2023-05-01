@@ -13,6 +13,7 @@ export const nextNetworkId = writable(0)
 export const nodes = writable([])
 export const nextNodeId = writable(0)
 export const scenarioName = writable("");
+export const scenarioReadOnly = writable(false);
 
 export const containers = writable([])
 export const summary = writable({})

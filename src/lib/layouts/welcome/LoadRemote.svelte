@@ -3,7 +3,7 @@
 
   import { push } from "svelte-spa-router";
   import { getRemote, deleteRemote } from "../../api/scenarios";
-  import { scenarioName } from "../../../store/store";
+  import { scenarioName, scenarioReadOnly } from "../../../store/store";
   import { scenarioList } from "../../../store/welcome";
   import { loadConfig } from "../../../services/LoadService";
   import { getNotificationsContext } from "svelte-notifications";
@@ -16,7 +16,8 @@
     scenarios = val;
   });
 
-  async function loadScenario(name) {
+  async function loadScenario(name, read_only) {
+    scenarioReadOnly.set(read_only)
     let data = await getRemote(name);
     loadConfig(data.data.data); //datadatadata
     scenarioName.set(name);
@@ -57,7 +58,7 @@
     {#each scenarios as s}
       <div class="fill">
         {#if s["read-only"] == false}
-          <button class="f90 selec" on:click={loadScenario(s.name)}
+          <button class="f90 selec" on:click={loadScenario(s.name, false)}
             >{s.name}</button
           >
           <button class="f5 delet" on:click={removeScenario(s.name)}>🚜</button
@@ -70,7 +71,7 @@
     {#each scenarios as s}
       <div class="fill">
         {#if s["read-only"] == true}
-          <button class="f91 selec" on:click={loadScenario(s.name)}
+          <button class="f91 selec" on:click={loadScenario(s.name, true)}
             >{s.name}</button
           >
         {/if}
