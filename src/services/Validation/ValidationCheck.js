@@ -24,7 +24,7 @@ export function validationCheck() {
             } 
             if(!error_nodes.includes(node.id)){   //l3conf
                 Object.entries(node.l3conf).forEach(l3 => {
-                    if(l3[0] != "attributes"){
+                    if(l3[0] != "attributes" && get(l3_attributes)[l3[0]]!= undefined){
                         const result = get(l3_attributes)[l3[0]].validation(l3[1],node.l3conf.start)
                         if (!result.valid && !error_nodes.includes(node.id))
                             error_nodes.push(node.id)

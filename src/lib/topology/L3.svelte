@@ -42,7 +42,7 @@
             {#if $nodes[node_id].l3 != null}
                 <div transition:slide>
                     {#each Object.keys($nodes[node_id].l3conf) as key}
-                        {#if key !== "attributes"}
+                        {#if key !== "attributes" && $l3_attributes[key] != undefined}
                             {#if key === "comm"}
                                 <ValidateSelect bind:value={$nodes[node_id].l3conf[key]} attribute={$l3_attributes[key]} objects = {Object.keys($nodes)}  on_change={null} editable = {editable} ></ValidateSelect>
                             {:else}
