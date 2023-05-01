@@ -2,10 +2,11 @@
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
-  import { useForm, required, minLength, maxLength } from "svelte-use-form";
+  import { useForm} from "svelte-use-form";
   import "../../assets/nodeconf.css";
-  import {integerValidation, floatValidation} from "../../services/ValidationSevice.js"
-  import TimeManagment from "../Canvas/TimeManagment.svelte";
+  import {emailValidator, requiredValidator,integerValidation,floatValidation} from "../../services/Validation/Validators.js"
+  import { setValidator } from '../../services/Validation/ValidationSevice.js'
+
 
   export let node_id;
   export let editable;
@@ -24,8 +25,20 @@
       Z: { validators: [floatValidation] },
     });
 
+     const validationTime = setValidator(requiredValidator(), emailValidator())
+     const validationX = setValidator(requiredValidator(), emailValidator())
+     const validationY = setValidator(requiredValidator(), emailValidator())
+     const validationZ = setValidator(requiredValidator(), emailValidator())
+     $: console.log(validationTime)
+     const validity = validationTime[0]
+    // const [ X, validate ] = setValidator(requiredValidator(), emailValidator())
+    // const [ Y, validate ] = setValidator(requiredValidator(), emailValidator())
+    // const [ Z, validate ] = setValidator(requiredValidator(), emailValidator())
+    
     const mobility_attributes = {
       Time: {
+        v: validationTime[0].subscribe,
+        action: validationTime[1],
         name: "Time",
         value: null,
         end: "s",
@@ -54,6 +67,7 @@
         validation: "Positive Float",
       },
     };
+    $: console.log(get(mobility_attributes.Time.v))
 
     nodes.subscribe((n) => {
       if (n[node_id] === undefined) {
@@ -117,9 +131,29 @@
         $nodes = $nodes;
       }
     };
+
+    let testovaci = ""
 </script>
 
   <div class="mobility">
+    <div class="row">
+      <div class="col">
+        <label>Testovaci: </label>
+      </div>
+      <div class="col">
+        <input
+          class="my-input"
+          bind:value={testovaci}
+          placeholder="ahoj"
+          class:field-danger={!$validity.valid}
+          use:validate={testovaci}
+        />
+      </div>
+    </div>
+    <div style="color: red;" hidden={$validity.valid}>
+      { $validity.message }
+    </div>
+
     <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
       | Mobility
     </button><br />
