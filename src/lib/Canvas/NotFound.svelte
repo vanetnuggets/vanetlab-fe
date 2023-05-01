@@ -3,5 +3,4 @@
 
 <script>
 import wtfIcon from '../../assets/wtf.svg'
-export let params;
 </script>

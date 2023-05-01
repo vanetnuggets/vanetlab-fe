@@ -17,7 +17,7 @@
     loading,
     simData,
   } from "../../store/summary";
-  import {validationCheck} from "../../services/validation/ValidationCheck"
+  import {validationCheck} from "../../services/Validation/ValidationCheck.js"
 
   const { addNotification } = getNotificationsContext();
 
