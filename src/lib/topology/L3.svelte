@@ -6,8 +6,8 @@
     import ValidateInput from "../validation/ValidateInput.svelte";
     import { l3_attributes } from "../../store/validation";
     import ValidateSelect from "../validation/ValidateSelect.svelte";
-    import { requiredValidator } from "../../services/validation/Validators";
-    import { buildValidator } from "../../services/validation/ValidationSevice";
+    import { requiredValidator } from "../../services/Validations/Validators";
+    import { buildValidator } from "../../services/Validations/ValidationSevice";
 
     export let node_id;
     export let editable

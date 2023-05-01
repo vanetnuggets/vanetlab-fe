@@ -1,6 +1,6 @@
-import { requiredValidator, positiveFloatValidator, positiveIntegerValidator, portValidator, higherValueValidator,ipAddressValidator,nameValidator} from "../services/validation/Validators.js"
+import { requiredValidator, positiveFloatValidator, positiveIntegerValidator, portValidator, higherValueValidator,ipAddressValidator,nameValidator} from "../services/Validations/Validators.js"
 import { writable } from "svelte/store";
-import { buildValidator } from "../services/validation/ValidationSevice.js";
+import { buildValidator } from "../services/Validations/ValidationSevice.js";
 
 export const mobility_attributes = writable({
   time: {

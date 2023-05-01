@@ -5,8 +5,8 @@
   import { get } from "svelte/store";
   import {mobility_attributes} from "../../store/validation.js"
   import ValidateInput from "../validation/ValidateInput.svelte";
-  import { buildValidator } from "../../services/validation/ValidationSevice.js";
-  import { positiveIntegerValidator,positiveFloatValidator} from "../../services/validation/Validators.js"
+  import { buildValidator } from "../../services/Validations/ValidationSevice.js";
+  import { positiveIntegerValidator,positiveFloatValidator} from "../../services/Validations/Validators.js"
   
   export let node_id;
   export let editable;
