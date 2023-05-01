@@ -542,12 +542,4 @@
         bottom: 23px;
         pointer-events: none;
     }
-    .in {
-        position: absolute;
-        left: 40%;
-        top: 30px;
-        background-color: rgb(233, 233, 231);
-        z-index:1000;
-        pointer-events: all;
-    }
 </style>
