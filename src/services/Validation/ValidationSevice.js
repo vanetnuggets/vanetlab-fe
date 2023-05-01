@@ -1,28 +1,16 @@
-// toto ani nepouzivam nakoniec ale mozno s tym este cosi planujes
-
-import { writable } from 'svelte/store'
-import { buildValidator } from './BuildValidator.js'
-
-export function setValidator (...validators) {
-  const { subscribe, set } = writable({valid: false, message: null })
-  const validator = buildValidator(validators)
-
-  function action (node, binding) {
-    function validate (value) {
-      const result = validator(value)
-      // @ts-ignore
-      set(result)
-    }
-    
-    validate(binding)
-
-    return {
-      update (value) {
-        validate(value)
+function buildValidator (...validators) {
+    return function validate (value) {
+      if (!validators || validators.length === 0) {
+        return { valid: true }
+      }
+  
+      const failing = validators.find(v => v(value) !== true)
+  
+      return {
+        valid: !failing,
+        message: failing && failing(value)
       }
     }
   }
-
-
-  return [  {subscribe}, action ]
-}
+  
+  export { buildValidator }
