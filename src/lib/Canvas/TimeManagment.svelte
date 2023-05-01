@@ -24,7 +24,7 @@
 	<input type="range" min="0" max={$max_at} bind:value={$current_time} style="width: 80%; padding: 0; margin-bottom: 0; pointer-events: all">
 	<p>Current time: {$current_time}
 		{max}
-		<input type=number bind:value={$max_at} min=0 style="width: 50px; padding: 0; background: transparent; pointer-events: all;" >
+		<input type=number  bind:value={$max_at} min=0 style="border: none; width: 50px; padding: 0; background: transparent; pointer-events: all;" >
 		{end}
 	</p>
 </div>

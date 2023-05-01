@@ -14,6 +14,12 @@
     function toggle_cnt() {
         c_open = !c_open;
     };
+
+    let controller_valid = false 
+    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].controller != "")
+            controller_valid = true
+        else
+            controller_valid = false
 </script>
 
 <div class="Sdn">
@@ -31,6 +37,7 @@
                         class="dropdown"
                         bind:value={$nodes[node_id].controller}
                         disabled={!editable}
+                        class:field-danger={!controller_valid} 
                     >
                         {#each Object.keys(l2_types) as l2_t}
                             <option value={l2_t}>
@@ -39,6 +46,9 @@
                         {/each}
                     </select>
                 </div>
+            </div>
+            <div style="color: red;" hidden={controller_valid}>
+                This field is required
             </div>
         </div>
     {/if}

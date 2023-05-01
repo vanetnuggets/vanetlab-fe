@@ -1,7 +1,7 @@
 <script>
   import { fade } from "svelte/transition";
   import { push } from "svelte-spa-router";
-  import { current_node, scenarioName } from "../../store/store";
+  import { current_node, scenarioName, scenarioReadOnly } from "../../store/store";
   import { reset_store } from "../../store/scenario";
   import { assembleConfig, saveLocal } from "../../services/LoadService";
   import { saveRemote as saveRemoteScenario, simulate } from "../api/scenarios";
@@ -17,6 +17,8 @@
     loading,
     simData,
   } from "../../store/summary";
+  import {validationCheck} from "../../services/validation/ValidationCheck"
+
   const { addNotification } = getNotificationsContext();
 
   let visible = true;
@@ -28,43 +30,53 @@
   });
 
   async function runSimulation() {
-    let notifText = "";
-    let notifType = "";
-    loading.update((val) => ({
-      ...val,
-      scenario: true,
-    }));
-    addNotification({
-      text: "Simulation started",
-      position: "bottom-center",
-      type: "success",
-      removeAfter: 1500,
-    });
-    simulate(currName)
-      .then((resp) => {
-        let data = resp.data.data;
-        let name = get(scenarioName);
-        notifType = "success";
-        notifText = `Scenario '${name}' queued up for simulation.`;
-      })
-      .catch((err) => {
-        let data = err.response.data.data;
-        errorData.set(data);
-        notifText = `Failed to run simulation.`;
-        notifType = "error";
-      })
-      .finally(() => {
-        addNotification({
-          text: notifText,
-          position: "bottom-center",
-          type: notifType,
-          removeAfter: 1500,
-        });
+    const valid_message = validationCheck()
+    if(valid_message.length == 0){
+      let notifText = "";
+      let notifType = "";
+      loading.update((val) => ({
+        ...val,
+        scenario: true,
+      }));
+      addNotification({
+        text: "Simulation started",
+        position: "bottom-center",
+        type: "success",
+        removeAfter: 1500,
       });
+      simulate(currName)
+        .then((resp) => {
+          let data = resp.data.data;
+          let name = get(scenarioName);
+          notifType = "success";
+          notifText = `Scenario '${name}' queued up for simulation.`;
+        })
+        .catch((err) => {
+          let data = err.response.data.data;
+          errorData.set(data);
+          notifText = `Failed to run simulation.`;
+          notifType = "error";
+        })
+        .finally(() => {
+          addNotification({
+            text: notifText,
+            position: "bottom-center",
+            type: notifType,
+            removeAfter: 1500,
+          });
+        });
 
-    setTimeout(() => {
-      let sock = createSock(currName);
-    }, 100);
+      setTimeout(() => {
+        let sock = createSock(currName);
+      }, 100);
+    } else{
+      addNotification({
+          text: "Some nodes are not in valid form: " + valid_message,
+          position: "bottom-center",
+          type: "error",
+          removeAfter: 5000,
+        });
+    }
   }
 
   async function saveRemote() {
@@ -93,49 +105,59 @@
   }
 
   function validateSimulation() {
-    loading.update((val) => ({
-      ...val,
-      scenario: true,
-    }));
-    let notifType = "";
-    let notifText = "";
+    const valid_message = validationCheck()
+    if(valid_message.length == 0){
+      loading.update((val) => ({
+        ...val,
+        scenario: true,
+      }));
+      let notifType = "";
+      let notifText = "";
 
-    addNotification({
-      text: "Check started",
-      position: "bottom-center",
-      type: "success",
-      removeAfter: 1500,
-    });
-    validate(currName)
-      .then((resp) => {
-        let name = get(scenarioName);
-        isError.set(false);
-        isOk.set(false);
-        isValidated.set(true);
-        notifText = `Scenario '${name}' validated!`;
-        notifType = "success";
-      })
-      .catch((err) => {
-        let data = err.response.data.data;
-        errorData.set(data.split("\n"));
-        isError.set(true);
-        isOk.set(false);
-        isValidated.set(false);
-        notifText = `Errors while validating scenario. See details in 'Result' tab`;
-        notifType = "error";
-      })
-      .finally(() => {
-        loading.update((val) => ({
-          ...val,
-          scenario: false,
-        }));
-        addNotification({
-          text: notifText,
-          position: "bottom-center",
-          type: notifType,
-          removeAfter: 1500,
-        });
+      addNotification({
+        text: "Check started",
+        position: "bottom-center",
+        type: "success",
+        removeAfter: 1500,
       });
+      validate(currName)
+        .then((resp) => {
+          let name = get(scenarioName);
+          isError.set(false);
+          isOk.set(false);
+          isValidated.set(true);
+          notifText = `Scenario '${name}' validated!`;
+          notifType = "success";
+        })
+        .catch((err) => {
+          let data = err.response.data.data;
+          errorData.set(data.split("\n"));
+          isError.set(true);
+          isOk.set(false);
+          isValidated.set(false);
+          notifText = `Errors while validating scenario. See details in 'Result' tab`;
+          notifType = "error";
+        })
+        .finally(() => {
+          loading.update((val) => ({
+            ...val,
+            scenario: false,
+          }));
+          addNotification({
+            text: notifText,
+            position: "bottom-center",
+            type: notifType,
+            removeAfter: 1500,
+          });
+        });
+    } else{
+      addNotification({
+          text: "Some nodes are not in valid form: " + valid_message,
+          position: "bottom-center",
+          type: "error",
+          removeAfter: 5000,
+        });
+    }
   }
 
   function gotoSummary() {
@@ -194,11 +216,16 @@
         >📈 Results</button
       >
       <button on:click={saveLocal} class="btn r">🗃️ Save local</button>
-      <button on:click={saveRemote} class="btn r">☁️ Save remote</button>
+      <button on:click={saveRemote} class="btn r" disabled={$scenarioReadOnly}>☁️ Save remote</button>
     </div>
   {/if}
   <div class="middle">
     {currName}
+    {#if $scenarioReadOnly}
+      <div class="tag" title="Default scenario">
+        DEFAULT
+      </div>
+    {/if}
   </div>
 </div>
 
@@ -216,6 +243,10 @@
   .btn:hover {
     background-color: var(--dark-3);
     outline: 1px solid var(--color-text-1);
+  }
+
+  .btn:disabled {
+    background-color: var(--dark-4);
   }
 
   .middle {
@@ -238,5 +269,13 @@
 
   .r {
     float: right;
+  }
+
+  .tag {
+    margin-left: 10px;
+    background:var(--dark-3);
+    padding:5px;
+    border-radius: 25px;
+    font-weight: 500;
   }
 </style>

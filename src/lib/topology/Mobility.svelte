@@ -1,19 +1,25 @@
 <script>
+
   import { slide } from "svelte/transition";
   import { max_at, nodes } from "../../store/scenario.js";
   import { get } from "svelte/store";
-  import "../../assets/nodeconf.css";
-
+  import {mobility_attributes} from "../../store/validation.js"
+  import ValidateInput from "../validation/ValidateInput.svelte";
+  import { buildValidator } from "../../services/validation/ValidationSevice.js";
+  import { positiveIntegerValidator,positiveFloatValidator} from "../../services/validation/Validators.js"
+  
   export let node_id;
   export let editable;
-
-  let time_input = null;
-  let x_input = null;
-  let y_input = null;
-  let z_input = null;
-  let error_message = "";
-
+  
   let mobility;
+  let valid = false
+  
+  let inputs = {
+    time : null,
+    x: null,
+    y: null,
+    z: null
+  }
 
   nodes.subscribe((n) => {
     if (n[node_id] === undefined) {
@@ -21,187 +27,129 @@
     }
     mobility = n[node_id].mobility;
   });
-
+  
+  const validationFloat =  buildValidator(positiveFloatValidator())
+  const validationInt = buildValidator(positiveIntegerValidator())
+  
+  $: if ( inputs.time != null && inputs.x != null && inputs.y != null && inputs.z != null){
+        valid = true
+        let result = null
+        Object.entries(inputs).forEach(entry => {
+          if(entry[0] == 'time')
+            result = validationInt(entry[1])
+          else
+            result = validationFloat(entry[1])
+          if(!result.valid)
+            valid = false
+        })
+      } else 
+        valid = false
+  
   let open_mobility = false;
   function toggle_mobility() {
     open_mobility = !open_mobility;
   }
-
   let open_add_mobility = false;
   function toggle_add_mobility() {
     open_add_mobility = !open_add_mobility;
   }
-
   let open_list_mobility = true;
   function toggle_list_mobility() {
     open_list_mobility = !open_list_mobility;
   }
+  
+  function add_mobility() {
+    mobility[inputs.time.toString() + ".0"] = {
+      x: Number(inputs.x).toFixed(2).toString(),
+      y: Number(inputs.y).toFixed(2).toString(),
+      z: Number(inputs.z).toFixed(2).toString(),
+    };
+    $nodes[node_id].mobility = Object.keys(mobility)
+      .sort(function (a, b) {
+        return +a - +b;
+      })
+      .reduce((obj, key) => {
+        obj[key] = mobility[key];
+        return obj;
+      }, {});
+    $nodes = $nodes;
 
-  function check_format() {
-    if (!Number.isInteger((time_input = Number(time_input)))) {
-      time_input = null;
-      error_message = "Incorrectly entered format. Integer required.";
-      return false;
+      //update MaxAt
+    if (get(max_at) < Number(inputs.time)) {
+      max_at.update((_) => Number(inputs.time));
     }
 
-    if (Number.isNaN((x_input = Number(x_input)))) x_input = null;
-    if (Number.isNaN((y_input = Number(y_input)))) y_input = null;
-    if (Number.isNaN((z_input = Number(z_input)))) z_input = null;
-
-    if (!x_input || !y_input || !z_input) {
-      error_message = "Incorrectly entered format. Float required.";
-      return false;
-    }
-    return true;
-  }
-
-  function check_missing() {
-    if (!time_input || !x_input || !y_input || !z_input) {
-      error_message = "Something is missing";
-      return false;
-    }
-    return true;
-  }
-
-  const add_mobility = () => {
-    if (check_missing() && check_format()) {
-      mobility[
-        time_input.toString() + ".0"
-      ] = { x: x_input, y: y_input, z: z_input };
-      $nodes[node_id].mobility = Object.keys(mobility)
-        .sort(function (a, b) {
-          return +a - +b;
-        })
-        .reduce((obj, key) => {
-          obj[key] = mobility[key];
-          return obj;
-        }, {});
-      $nodes = $nodes;
-
-      // update MaxAt
-      if (get(max_at) < time_input) {
-        max_at.update((_) => time_input);
-      }
-
-      time_input = null;
-      x_input = null;
-      y_input = null;
-      z_input = null;
-      error_message = "";
-    }
+    inputs.time = null;
+    inputs.x = null;
+    inputs.y = null;
+    inputs.z = null;
   };
-
   const remove_mobility = (time) => {
     if (Object.keys(mobility).length !== 1) {
       mobility = delete mobility[time] && mobility;
       $nodes = $nodes;
     }
   };
+
 </script>
 
 <div class="mobility">
-  <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
-    | Mobility
-  </button><br />
-  {#if open_mobility && $nodes[node_id] !== undefined}
-    <div transition:slide>
-      <div class="add_mobility">
-        <button on:click={toggle_add_mobility} class="btn-basic">
-          Toggle
+  
+    <button on:click={toggle_mobility} class="importrant-btn btn-trans full">
+      | Mobility
+    </button><br />
+    {#if open_mobility && $nodes[node_id] !== undefined}
+      <div transition:slide>
+        <div class="add_mobility">
+          <button on:click={toggle_add_mobility} class="btn-basic">
+            Modify
+          </button><br />
+          {#if open_add_mobility}
+            <div transition:slide>
+              {#each Object.entries($mobility_attributes) as [store_name, attribute]}
+                <ValidateInput bind:value={inputs[store_name]} attribute={attribute} comparator={null} editable = {editable} ></ValidateInput><br>  
+              {/each}
+              <br />
+              <button
+                class="btn-basic"
+                on:click={add_mobility}
+                disabled={!editable || !valid}
+                >
+                Add keyframe
+              </button>
+            </div>
+          {/if}
+        </div>
+       
+        <button on:click={toggle_list_mobility} class="btn-basic">
+          List
         </button><br />
-        {#if open_add_mobility}
+        {#if open_list_mobility}
           <div transition:slide>
-            <div class="row">
-              <div class="col">
-                Time: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={time_input}
-                  placeholder="Movement end time"
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                X: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={x_input}
-                  placeholder="Position on x-axis "
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                Y: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={y_input}
-                  placeholder="Position on y-axis"
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                Z: <br />
-              </div>
-              <div class="col">
-                <input
-                  class="my-input"
-                  bind:value={z_input}
-                  placeholder="Speed?"
-                  disabled={!editable}
-                />
-              </div>
-            </div>
-            {error_message}
-            <button class="btn-basic" on:click={add_mobility} disabled={!editable}>
-              Add keyframe
-            </button>
-            <br />
+            <table class="mobility_table">
+              <tr>
+                <th style="width:25%">Time</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Delete</th>
+              </tr>
+              {#each Object.entries($nodes[node_id].mobility) as [time, position]}
+                <tr>
+                  <td>{time}</td>
+                  <td>{position.x}</td>
+                  <td>{position.y}</td>
+                  <td
+                    ><button
+                      class="btn-basic"
+                      disabled={!editable}
+                      on:click={() => remove_mobility(time)}>&times;</button
+                    ></td
+                  >
+                </tr>
+              {/each}
+            </table>
           </div>
         {/if}
       </div>
-      <button on:click={toggle_list_mobility} class="btn-basic">
-        List
-      </button><br />
-      {#if open_list_mobility}
-        <div transition:slide>
-          <table class="mobility_table">
-            <tr>
-              <th style="width:25%">Time</th>
-              <th>X</th>
-              <th>Y</th>
-              <th>Delete</th>
-            </tr>
-            {#each Object.entries($nodes[node_id].mobility) as [time, position]}
-              <tr>
-                <td>{time}</td>
-                <td>{position.x.toFixed(2)}</td>
-                <td>{position.y.toFixed(2)}</td>
-                <td
-                  ><button class="btn-basic"
-                    disabled={!editable}
-                    on:click={() => remove_mobility(time)}>&times;</button
-                  ></td
-                >
-              </tr>
-            {/each}
-          </table>
-        </div>
-      {/if}
-    </div>
-  {/if}
-</div>
-
-<style scoped>
-</style>
+    {/if} 
+  </div>

@@ -27,12 +27,12 @@
 
 input {
   background-color: var(--main-fg-color);
-  border: none;
+  
 }
 
 select {
   background-color: var(--main-fg-color);
-  border: none;
+  /* border: none; */
   text-indent: 13px;
 }
 
@@ -267,4 +267,8 @@ option {
 
 .no_tap {
   pointer-events:none; 
+}
+
+.field-danger {
+  border-color: red;
 }

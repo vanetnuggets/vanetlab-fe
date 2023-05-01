@@ -3,147 +3,55 @@
     import { slide } from "svelte/transition";
     import { nodes } from "../../store/scenario";
     import OptionalAttributes from "./L3attributes.svelte";
+    import ValidateInput from "../validation/ValidateInput.svelte";
+    import { l3_attributes } from "../../store/validation";
+    import ValidateSelect from "../validation/ValidateSelect.svelte";
+    import { requiredValidator } from "../../services/validation/Validators";
+    import { buildValidator } from "../../services/validation/ValidationSevice";
 
     export let node_id;
     export let editable
 
-    const l3_types = {
-        udpclient: {
-            port: "1",
-            start: "0",
-            stop: "0",
-            comm: node_id.toString(),
-        },
-        udpserver: {
-            port: "1",
-            start: "0",
-            stop: "0",
-        },
-        tcpclient: {
-            port: "1",
-            start: "0",
-            stop: "0",
-            comm: node_id.toString(),
-        },
-        tcpserver: {
-            port: "1",
-            start: "0",
-            stop: "0",
-        },
-    };
-        
-    const validation_attributes = {
-        port: {
-            name: "Port",
-            placeholder: "Port from range 1-65535",
-            validation: 1,
-        },
-        start: { name: "Start", placeholder: "unsigned int", validation: 2 },
-        stop: {
-            name: "Stop",
-            placeholder: "unsigned int > start",
-            validation: 3,
-        },
-        comm: {
-            name: "Communication",
-            placeholder: "Pick nodes to communicate with",
-            validation: 0,
-        },
-        interval: {
-            name: "Interval",
-            placeholder: "unsigned int",
-            validation: 2,
-        },
-        packet_size: {
-            name: "Packet size",
-            placeholder: "unsigned int",
-            validation: 2,
-        },
-        max_packets: {
-            name: "Max packets",
-            placeholder: "unsigned int",
-            validation: 2,
-        },
-        max_bytes: {
-            name: "Max bytes",
-            placeholder: "unsigned int",
-            validation: 2,
-        },
-    };
-
+    const l3_types = ['udpclient','udpserver','tcpclient','tcpserver']
+   
     let open_l3 = false;
     function toggle_l3() {
         open_l3 = !open_l3;
     }
 
     function reset_l3conf() {
-        $nodes[node_id].l3conf = l3_types[$nodes[node_id].l3];
+        $nodes[node_id].l3conf = { port: "1",start: "0", stop: "0"};
+        if($nodes[node_id].l3 == 'udpclient' || $nodes[node_id].l3 == 'tcpclient')
+            $nodes[node_id].l3conf.comm = null
+    }
 
-        $nodes = $nodes;
+    const l3_config = {
+        validation: buildValidator(requiredValidator()),
+        name: "Application config",
+        placeholder: "Choose L3 layer"
     }
 </script>
 
 <div class="L3">
-    <button on:click={toggle_l3} class="importrant-btn btn-trans full">
+     <button on:click={toggle_l3} class="importrant-btn btn-trans full">
         | Application config
     </button>
     {#if open_l3 && $nodes[node_id] !== undefined}
         <div transition:slide>
-            <div class="row">
-                <div class="col">
-                    Application: <br />
-                </div>
-                <div class="col">
-                    <select
-                        class="dropdown"
-                        bind:value={$nodes[node_id].l3}
-                        on:change={reset_l3conf}
-                        disabled={!editable}
-                    >
-                        {#each Object.keys(l3_types) as l3_typ}
-                            <option value={l3_typ}>
-                                {l3_typ}
-                            </option>
-                        {/each}
-                    </select>
-                </div>
-            </div>
+            <ValidateSelect bind:value={$nodes[node_id].l3} attribute={l3_config} objects = {l3_types}  on_change={reset_l3conf} editable = {editable} ></ValidateSelect>
             {#if $nodes[node_id].l3 != null}
                 <div transition:slide>
                     {#each Object.keys($nodes[node_id].l3conf) as key}
-                        {#if key !== "attributes"}
-                            <div class="row">
-                                <div class="col">
-                                    {validation_attributes[key].name}: <br />
-                                </div>
-                                <div class="col">
-                                    {#if validation_attributes[key].validation === 0}
-                                        <select
-                                            class="dropdown"
-                                            bind:value={$nodes[node_id].l3conf[key]}
-                                            disabled={!editable}
-                                        >
-                                            {#each Object.keys($nodes) as node}
-                                                <option value={node}>
-                                                    {node}
-                                                </option>
-                                            {/each}
-                                        </select>
-                                    {:else}
-                                        <input
-                                            class="my-input dropdown"
-                                            bind:value={$nodes[node_id].l3conf[key]}
-                                            placeholder={validation_attributes[key]
-                                                .placeholder}
-                                                disabled={!editable}
-                                        />
-                                    {/if}
-                                </div>
-                            </div>
+                        {#if key !== "attributes" && $l3_attributes[key] != undefined}
+                            {#if key === "comm"}
+                                <ValidateSelect bind:value={$nodes[node_id].l3conf[key]} attribute={$l3_attributes[key]} objects = {Object.keys($nodes)}  on_change={null} editable = {editable} ></ValidateSelect>
+                            {:else}
+                                <ValidateInput bind:value={$nodes[node_id].l3conf[key]} attribute={$l3_attributes[key]} comparator={$nodes[node_id].l3conf["start"]} editable = {editable} ></ValidateInput><br>
+                            {/if}
                         {/if}
                     {/each}
                     <OptionalAttributes node_id={node_id} editable={editable} />
-                </div>
+                </div> 
             {/if}
         </div>
     {/if}

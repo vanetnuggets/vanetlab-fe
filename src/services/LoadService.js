@@ -1,11 +1,12 @@
 import { nodes, networks, max_at, connections, labels } from "../store/scenario";
 import { labelId, scenarioName } from "../store/store";
-import { current_time, current_node, nextNetworkId, nextNodeId } from "../store/store";
+import { current_time, current_node, nextNetworkId, nextNodeId, scenarioReadOnly } from "../store/store";
 import { isOk, isValidated, isError, errorData, loading, simData } from "../store/summary";
 import Init from "./initService";
 import { getRemote } from "../lib/api/scenarios";
 
 import { get } from 'svelte/store'
+import { scenarioList } from "../store/welcome";
 // import { max_at } from "../store/store";
 
 export function clearAll() {
@@ -24,6 +25,7 @@ export function clearAll() {
   nextNetworkId.set(0)
   nextNodeId.set(0)
   labelId.set(0);
+  scenarioReadOnly.set(false)
 }
 
 
@@ -60,6 +62,7 @@ export function checkAndLoad(scenario) {
 }
 
 export function loadConfig(conf) {
+  console.log(conf)
   networks.update(_ => conf.networks);
   initNetworks();
   nodes.set(conf.nodes);

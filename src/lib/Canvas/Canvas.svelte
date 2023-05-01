@@ -52,8 +52,8 @@
             let node = $nodes[key];
             
             if (node.mobility[time] !== undefined) {
-                node.x = node.mobility[time].x
-                node.y = node.mobility[time].y 
+                node.x = Number(node.mobility[time].x)
+                node.y = Number(node.mobility[time].y) 
             } else {
                 // vypocitaj;
                 let closest_str = null
@@ -65,8 +65,8 @@
                 }
 
                 if (node.mobility[closest_str] !== undefined) {
-                    node.x = node.mobility[closest_str].x
-                    node.y = node.mobility[closest_str].y
+                    node.x =  Number(node.mobility[closest_str].x)
+                    node.y =  Number(node.mobility[closest_str].y)
                 } else {
                     node.x = 20
                     node.y = 20
@@ -101,9 +101,9 @@
         if ($nodes[nodeId].mobility[current_time_string] === undefined) 
             order = true
         $nodes[nodeId].mobility[current_time_string] = {};
-        $nodes[nodeId].mobility[current_time_string].x = x;
-        $nodes[nodeId].mobility[current_time_string].y = y;
-        $nodes[nodeId].mobility[current_time_string].z = 1;
+        $nodes[nodeId].mobility[current_time_string].x = x.toFixed(2).toString();
+        $nodes[nodeId].mobility[current_time_string].y = y.toFixed(2).toString();
+        $nodes[nodeId].mobility[current_time_string].z = 1.00.toString();
 
         if(order){
             $nodes[nodeId].mobility = Object.keys($nodes[nodeId].mobility).sort(function(a, b){return +a-+b}).reduce(
@@ -178,7 +178,7 @@
             y:y
   
         };
-        newNode.mobility['0.0'] = { x: x, y: y, z: 0 };
+        newNode.mobility['0.0'] = { x: x.toFixed(2).toString(), y: y.toFixed(2).toString(), z: (0).toFixed(2).toString() };
         if (sdn){
             newNode.type = "sdn";
             newNode["switch_nodes"] = [];
