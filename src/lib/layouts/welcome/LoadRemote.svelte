@@ -134,6 +134,7 @@
   }
 
   .outline{
-    border: 1px solid white;
+    background-color: var(--dark-3);  
+    border: 0px solid white;
   }
 </style>

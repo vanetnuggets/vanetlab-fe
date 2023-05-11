@@ -113,8 +113,12 @@ button:disabled {
   pointer-events: none;
 }
 
-.btn-basic:hover:enabled {
-  outline: 2px solid var(--dark-4);
+.btn-basic {
+  border: 1px solid invisible;
+}
+
+.btn-basic:hover {
+  outline: 1px solid white;
 }
 
 .important-btn {

@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="back-toolbar">
-            <button on:click={() => {push('/')}}>🎾Back to menu</button>
+            <button class="btn-basic" on:click={() => {push('/')}}>🎾Back to menu</button>
         </div>
     </div>
     
