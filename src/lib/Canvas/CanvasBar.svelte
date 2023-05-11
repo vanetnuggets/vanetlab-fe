@@ -100,9 +100,8 @@
     >
         <img src={BulldozerIcon} height="28px" alt="map_icon" />
     </button>
-    <button on:click={vypis} class="btn s" style="background-color: grey;"
-        >Vypis</button
-    >
+    <!-- <button on:click={vypis} class="btn s" style="background-color: grey;"
+        >Vypis</button> -->
 </div>
 
 <style scoped>
