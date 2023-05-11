@@ -175,6 +175,9 @@
   function goto_exit(a) {
     current_node.set(null);
     reset_store();
+    simData.set(null);
+    isOk.set(false);
+    isError.set(false);
     goto(a);
   }
 

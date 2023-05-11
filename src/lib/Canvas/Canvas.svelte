@@ -430,6 +430,7 @@
     <div class="toolbar">
         <CanvasBar bind:add_node_toggle={add_node_toggle} bind:add_sdn_toggle={add_sdn_toggle} bind:add_p2p_toggle={add_p2p_toggle} bind:bulldoze_toggle={bulldoze_toggle} 
                    first_p2p={first_p2p} vypis={vypis} bind:label_toggle={label_toggle} bind:input_value/>
+                
         <Coordinates mouse_x={mouse_x} mouse_y={mouse_y}/>
     </div>
     <!-- height="97%" -->

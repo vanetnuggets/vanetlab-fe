@@ -104,34 +104,42 @@ export const l3_optional_attributes = writable({
   },
 });
 
+let rxGain = () => ({
+  validation: buildValidator(requiredValidator(),positiveFloatValidator()),
+  name: "RxGain",
+  end: "",
+  placeholder: "RxGain"
+})
+
+let txGain = () => ({
+  validation: buildValidator(requiredValidator(),positiveFloatValidator()),
+  name: "TxGain",
+  end: "",
+  placeholder: "TxGain"
+})
+
 export const l2_optional_attributes = writable({
   wifi: {
-      RxGain : {
-        validation: buildValidator(requiredValidator(),positiveFloatValidator()),
-        name: "RxGain",
-        end: "",
-        placeholder: "RxGain"
-      },
-      TxGain : {
-        validation: buildValidator(requiredValidator(),positiveFloatValidator()),
-        name: "TxGain",
-        end: "",
-        placeholder: "TxGain"
-      }
+    RxGain : rxGain(),
+    TxGain : txGain(),
+  },
+  wave: {
+    RxGain : rxGain(),
+    TxGain : txGain(),
   },
   eth: {
-      DataRate  : {
-        validation: buildValidator(requiredValidator(),positiveIntegerValidator()),
-        name: "DataRate",
-        end: "Mbps",
-        placeholder: "DataRate"
-      },
-      Delay : {
-        validation: buildValidator(requiredValidator(),positiveIntegerValidator()),
-        name: "Delay",
-        end: "ms",
-        placeholder: "Delay"
-      },
+    DataRate  : {
+      validation: buildValidator(requiredValidator(),positiveIntegerValidator()),
+      name: "DataRate",
+      end: "Mbps",
+      placeholder: "DataRate"
+    },
+    Delay : {
+      validation: buildValidator(requiredValidator(),positiveIntegerValidator()),
+      name: "Delay",
+      end: "ms",
+      placeholder: "Delay"
+    },
   }
 });
 

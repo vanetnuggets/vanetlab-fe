@@ -17,6 +17,11 @@
   import { currentStatus } from "../../store/summary";
   import { onMount } from "svelte"
   import { checkAndLoad } from "../../services/LoadService";
+
+
+  import { getNotificationsContext } from "svelte-notifications";
+  const { addNotification } = getNotificationsContext();
+
   
   export let params;
 
@@ -73,6 +78,23 @@
     // otherwise just chill
     checkAndLoad(params.scenario);
   });
+
+  function fetchPrev() {
+    getSummary(name, params.scenario).then((resp) => {
+      if (resp.data) {
+        simData.set(resp.data.data);
+        isOk.set(true);
+      }
+    }).catch(err => {
+      // mam pici asi nwm
+      addNotification({
+        text: `No previous simulation results saved for ${params.scenario}`,
+        position: "bottom-center",
+        type: "error",
+        removeAfter: 10000,
+      });
+    })
+  }
     
 
 </script>
@@ -103,7 +125,7 @@
   {/if}
   {#if showResult}
     <br />
-    <h1>🥂🎉🥳 Scenario simulated! </h1>
+    <h1> Scenario simulation results 🧐 </h1>
 
     <div class="data-holder">
       You can download the simulation results here:
@@ -148,8 +170,12 @@
         </div>
       </button>
     </div>
-  {:else if validated}
+  {:else}
   <br>
+  <button on:click={fetchPrev}> Try to fetch results from last simulation.</button>
+  {/if}
+  <br>
+  {#if validated}
   Simulation validated but has not been ran yet. <br>
   Simulate the scenario to see output.! <br>
   {/if}
