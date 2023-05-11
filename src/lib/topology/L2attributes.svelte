@@ -2,7 +2,7 @@
     import { slide } from "svelte/transition";
     import {  nodes } from "../../store/scenario.js";
     import ValidateInputRemove from "../validation/ValidateInputRemove.svelte";
-    import { l2_optional_attributes } from "../../store/validation";
+    import { l2_optional_attributes } from "../../store/validation.js";
     export let node_id;
     export let editable
     

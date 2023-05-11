@@ -5,7 +5,7 @@ import { get } from 'svelte/store'
 export function validationCheck() {
     let error_nodes = []
     Object.values(get(nodes)).forEach(node => {
-        if(node.l2id == null || node.l2 == null || node.l3 == null)
+        if(node.l2id == null)
             error_nodes.push(node.id)
         else {
             if(node.l2conf.attributes!= undefined){         // l2conf[attibute]

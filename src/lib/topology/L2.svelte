@@ -43,7 +43,7 @@
     let network_valid = false 
     let node_type_valid = false 
     let standard_valid = false 
-    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2id != null && $nodes[node_id].l2 != null)
+    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2id != null)
             network_valid = true
         else
             network_valid = false

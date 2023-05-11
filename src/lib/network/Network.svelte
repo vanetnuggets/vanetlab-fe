@@ -3,7 +3,7 @@
     import ColorPicker from 'svelte-awesome-color-picker';
     import { networks, nodes } from '../../store/scenario.js';
     import { onMount } from "svelte";
-    import { networks_attributes} from "../../store/validation.js"
+    
     import ValidateInputNetworks from '../validation/ValidateInputNetworks.svelte';
     
     export let network;
