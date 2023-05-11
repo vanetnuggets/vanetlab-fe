@@ -58,9 +58,8 @@
     loading...
   {/if}
   <div class="list">
+    <!-- User scenarions -->
     {#if scenario_toggle}
-      <p>User scenarios</p>
-      <hr />
       {#each scenarios as s}
         <div class="fill">
           {#if s["read-only"] == false}
@@ -73,9 +72,8 @@
         </div>
       {/each}
     {/if}
+    <!-- Default scenarions -->
     {#if !scenario_toggle}
-      <p>Default scenarios</p>
-      <hr />
       {#each scenarios as s}
         <div class="fill">
           {#if s["read-only"] == true}
