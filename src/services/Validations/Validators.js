@@ -51,7 +51,7 @@ function ipAddressValidator() {
     if ( value == null || /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(3[0-2]|([1]?|[2]?)[0-9])$/.test(value)) {
       return true;
     } else {
-      return 'Must be valid ip address' ;
+      return 'Must be ip address in CIDR notation' ;
     }
   }
 }  

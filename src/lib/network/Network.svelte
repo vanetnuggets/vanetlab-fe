@@ -87,7 +87,7 @@
     <div class="child" style="display: flex;">
         <button on:click={clickHandler} class="btn-basic name">
         <div>
-          <span class="span">{Array.from(network.type)[0]}</span>
+          <span class="span">{Array.from(network.type)[0]+Array.from(network.type)[Array.from(network.type).length-1]}</span>
           {network.ssid}
           <span style="color:{network.color}">⬤</span>
         </div>
