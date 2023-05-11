@@ -38,12 +38,6 @@
         ...val,
         scenario: true,
       }));
-      addNotification({
-        text: "Simulation started",
-        position: "bottom-center",
-        type: "success",
-        removeAfter: 1500,
-      });
       simulate(currName)
         .then((resp) => {
           let data = resp.data.data;
@@ -52,9 +46,9 @@
           notifText = `Scenario '${name}' queued up for simulation.`;
         })
         .catch((err) => {
-          let data = err.response.data.data;
+          let data = err.response.data.message;
           errorData.set(data);
-          notifText = `Failed to run simulation.`;
+          notifText = `Failed to run simulation: ${data}`;
           notifType = "error";
         })
         .finally(() => {
