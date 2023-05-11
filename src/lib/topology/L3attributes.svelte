@@ -1,7 +1,7 @@
 <script>
     import { slide } from "svelte/transition";
     import {  nodes } from "../../store/scenario.js";
-    import { l3_optional_attributes } from "../../store/validation";
+    import { l3_optional_attributes } from "../../store/validation.js";
     import ValidateInputRemove from "../validation/ValidateInputRemove.svelte";
 
     export let node_id;

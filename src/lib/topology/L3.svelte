@@ -4,7 +4,7 @@
     import { nodes } from "../../store/scenario";
     import OptionalAttributes from "./L3attributes.svelte";
     import ValidateInput from "../validation/ValidateInput.svelte";
-    import { l3_attributes } from "../../store/validation";
+    import { l3_attributes } from "../../store/validation.js";
     import ValidateSelect from "../validation/ValidateSelect.svelte";
     import { requiredValidator } from "../../services/Validations/Validators";
     import { buildValidator } from "../../services/Validations/ValidationSevice";
@@ -38,7 +38,28 @@
     </button>
     {#if open_l3 && $nodes[node_id] !== undefined}
         <div transition:slide>
-            <ValidateSelect bind:value={$nodes[node_id].l3} attribute={l3_config} objects = {l3_types}  on_change={reset_l3conf} editable = {editable} ></ValidateSelect>
+            <div class="row">
+                <div class="col">
+                  {l3_config.name}:
+                </div>
+                <div class="col">
+                  <select
+                      class="dropdown"
+                      bind:value={$nodes[node_id].l3}
+                      placeholder={l3_config.placeholder}
+                      disabled={!editable}
+                      on:change={reset_l3conf}   
+                  >
+                      {#each l3_types as object}
+                          <option value={object}>
+                              {object}
+                          </option>
+                      {/each}
+                  </select>
+                </div>
+            </div>
+            
+            <!-- <ValidateSelect bind:value={$nodes[node_id].l3} attribute={l3_config} objects = {l3_types}  on_change={reset_l3conf} editable = {editable} ></ValidateSelect> -->
             {#if $nodes[node_id].l3 != null}
                 <div transition:slide>
                     {#each Object.keys($nodes[node_id].l3conf) as key}

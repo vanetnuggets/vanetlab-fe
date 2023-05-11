@@ -9,7 +9,8 @@
     const l2_types = {
         lte: ["ue", "enb", "pgw"],
         wifi: ["sta", "ap"],
-        eth: []
+        wave: ['generic node'],
+        eth: ['generic node']
     };
     const wifi_standards = ["802.11b", "802.11a", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be", "802.11p"]
     let open_l2 = false;
@@ -43,7 +44,7 @@
     let network_valid = false 
     let node_type_valid = false 
     let standard_valid = false 
-    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2id != null && $nodes[node_id].l2 != null)
+    $:  if ($nodes[node_id]!= undefined && $nodes[node_id].l2id != null)
             network_valid = true
         else
             network_valid = false
@@ -93,6 +94,7 @@
                         </div>
                         <div class="col">
                             <select class="dropdown"   class:field-danger={!node_type_valid}  on:change={handlePwg} bind:value={$nodes[node_id].l2conf.type} on:change = {set_default} disabled={!editable}>
+                                
                                 {#each l2_types[$nodes[node_id].l2] as l2_st}
                                     <option disabled={$nodes[node_id].l2==="lte" && l2_st==="pgw" && $pgw_exists ? true : false} value={l2_st}>
                                         {l2_st}

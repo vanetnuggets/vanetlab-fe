@@ -11,6 +11,7 @@
 
   let loading = false;
   let scenarios = [];
+  let scenario_toggle = true;
 
   scenarioList.subscribe((val) => {
     scenarios = val;
@@ -49,34 +50,40 @@
 
 <div>
   Remote scenarios:
+  <div class="btns">
+    <button class="btn-basic {scenario_toggle ? 'outline' : ''}" on:click={() => {scenario_toggle=true}}>User</button>
+    <button class="btn-basic {!scenario_toggle ? 'outline' : ''}" on:click={() => {scenario_toggle=false}}>Default</button>
+  </div>
   {#if loading == true}
     loading...
   {/if}
   <div class="list">
-    <p>User scenarios</p>
-    <hr />
-    {#each scenarios as s}
-      <div class="fill">
-        {#if s["read-only"] == false}
-          <button class="f90 selec" on:click={loadScenario(s.name, false)}
-            >{s.name}</button
-          >
-          <button class="f5 delet" on:click={removeScenario(s.name)}>🚜</button
-          ><br />
-        {/if}
-      </div>
-    {/each}
-    <p>Default scenarios</p>
-    <hr />
-    {#each scenarios as s}
-      <div class="fill">
-        {#if s["read-only"] == true}
-          <button class="f91 selec" on:click={loadScenario(s.name, true)}
-            >{s.name}</button
-          >
-        {/if}
-      </div>
-    {/each}
+    <!-- User scenarions -->
+    {#if scenario_toggle}
+      {#each scenarios as s}
+        <div class="fill">
+          {#if s["read-only"] == false}
+            <button class="f90 selec" on:click={loadScenario(s.name, false)}
+              >{s.name}</button
+            >
+            <button class="f5 delet" on:click={removeScenario(s.name)}>🚜</button
+            ><br />
+          {/if}
+        </div>
+      {/each}
+    {/if}
+    <!-- Default scenarions -->
+    {#if !scenario_toggle}
+      {#each scenarios as s}
+        <div class="fill">
+          {#if s["read-only"] == true}
+            <button class="f91 selec" on:click={loadScenario(s.name, true)}
+              >{s.name}</button
+            >
+          {/if}
+        </div>
+      {/each}
+    {/if}
   </div>
 </div>
 
@@ -91,7 +98,7 @@
   }
 
   .f90 {
-    width: 85%;
+    width: 84%;
   }
 
   .f91 {
@@ -117,6 +124,18 @@
     border: 3px solid var(--dark-2);
     background-color: var(--light-2);
     border-radius: 5px;
-    margin-top: 20px;
+    margin-top: 5px;
+    height: 260px;
+    width: 395px;
+  }
+
+  .btns{
+    margin-top: 5px;
+  }
+
+  .outline{
+    background-color: var(--dark-3);
+    border: 0px solid white;
+    outline: 1px solid white;
   }
 </style>
