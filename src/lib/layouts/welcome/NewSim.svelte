@@ -56,7 +56,9 @@
   <div class="title">
     New simulation
   </div>
-  Create a new, blank simulation scenario from scratch.
+  <div style="margin:5px">
+    Create a new, blank simulation scenario from scratch.
+  </div>
   <input bind:value={simName} placeholder="Enter simulation name" />
   <button on:click={checkAvailable}>Check availability</button>  
 

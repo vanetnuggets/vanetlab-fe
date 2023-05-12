@@ -51,7 +51,9 @@
 </script>
 
 <div>
-  Load remote scenario
+  <div class="title">
+    Load remote scenario
+  </div>
   <div class="btns">
     <button
       class="btn-basic {scenario_toggle ? 'outline' : ''}"
@@ -132,7 +134,7 @@
   }
 
   .list {
-    max-height: 500px;
+    max-height: 220px;
     overflow-y: auto;
     border: 3px solid var(--dark-2);
     background-color: var(--light-2);
