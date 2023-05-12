@@ -76,11 +76,14 @@
 </div>
 {#if networks_toggle}
   <div transition:slide>
-    {#each netarr as n (n.id) }
-        {#if n.id != -1}
-          <Network bind:network={$networks[n.id]}/>
-        {/if}
-      {/each}
+    {#if netarr.length < 2}
+      <p style="padding-top:5px; padding-bottom:10px; font-size:14px">Create your first network down below!</p>
+    {/if}
+    {#each netarr as n (n.id)}
+    {#if n.id != -1}
+        <Network bind:network={$networks[n.id]}/>
+      {/if}
+    {/each}
   </div>  
 {/if}
 

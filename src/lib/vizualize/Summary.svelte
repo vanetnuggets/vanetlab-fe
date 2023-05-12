@@ -80,7 +80,7 @@
   });
 
   function fetchPrev() {
-    getSummary(name, params.scenario).then((resp) => {
+    getSummary(name).then((resp) => {
       if (resp.data) {
         simData.set(resp.data.data);
         isOk.set(true);

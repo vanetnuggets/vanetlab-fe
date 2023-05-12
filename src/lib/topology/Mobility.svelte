@@ -102,7 +102,7 @@
       <div transition:slide>
         <div class="add_mobility">
           <button on:click={toggle_add_mobility} class="btn-basic">
-            Modify
+            Create keyframe
           </button><br />
           {#if open_add_mobility}
             <div transition:slide>
@@ -122,7 +122,7 @@
         </div>
        
         <button on:click={toggle_list_mobility} class="btn-basic">
-          List
+          Keyframe list
         </button><br />
         {#if open_list_mobility}
           <div transition:slide>

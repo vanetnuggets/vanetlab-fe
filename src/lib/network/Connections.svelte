@@ -26,7 +26,7 @@
 {#if show}
     <div transition:slide>
         {#if $connections.length == 0 }
-            No p2p connections
+            <p style="font-size:14px">No p2p connections</p>
         {/if}
         {#each $connections as c, i}
             <div class="row">
