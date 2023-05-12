@@ -9,15 +9,18 @@
   } from "../../store/summary";
   import { ProgressBar } from "carbon-components-svelte";
   import { downloadFile } from "../../services/LoadService";
-  import mapIcon from '../../assets/map.svg';
-  import networkIcon from '../../assets/network.svg';
-  import terminalIcon from '../../assets/terminal.svg';
   import { getFile, getSummary } from "../api/scenarios";
   import { scenarioName } from "../../store/store";
   import { currentStatus } from "../../store/summary";
   import { onMount } from "svelte"
   import { checkAndLoad } from "../../services/LoadService";
 
+  // assets
+  import mapIcon from '../../assets/map.svg';
+  import networkIcon from '../../assets/network.svg';
+  import terminalIcon from '../../assets/terminal.svg';
+  import pcapIcon from '../../assets/wiresharkico.svg';
+  import asciiIcon from '../../assets/logico.svg';
 
   import { getNotificationsContext } from "svelte-notifications";
   const { addNotification } = getNotificationsContext();
@@ -67,10 +70,10 @@
     simulation = val;
   });
 
-  async function download(name, file, ext) {
+  async function download(name, file, downloadName) {
     const resp = await getFile(name, file);
     const blob = resp.data;
-    downloadFile(blob, `${file}.${ext}`);
+    downloadFile(blob, `${name}_${downloadName}`);
   }
 
   onMount(() => {
@@ -131,7 +134,7 @@
       You can download the simulation results here:
     
       <button
-        on:click={() => download(name, 'mobility', 'tcl')}
+        on:click={() => download(name, 'mobility', 'mobility.tcl')}
         class="download-item"
       >
         <div class="data-icon">
@@ -144,7 +147,7 @@
         </div>
       </button>
       <button
-        on:click={() => download(name, 'output', 'txt')}
+        on:click={() => download(name, 'output', 'output.txt')}
         class="download-item"
       >
         <div class="data-icon">
@@ -157,7 +160,7 @@
         </div>
       </button>
       <button
-        on:click={() => download(name, 'trace', 'xml')}
+        on:click={() => download(name, 'trace', 'trace.xml')}
         class="download-item"
       >
         <div class="data-icon">
@@ -167,6 +170,32 @@
           Trace file <br />
           Name: {simulation.trace.name} <br />
           Name: {simulation.trace.size}B <br />
+        </div>
+      </button>
+      <button
+        on:click={() => download(name, `pcap`, 'pcap.zip')}
+        class="download-item"
+      >
+        <div class="data-icon">
+          <img src={pcapIcon} height=64px width=64px alt="network_icon">
+        </div>
+        <div class="data-text">
+          Packet captures <br />
+          Name: {simulation.pcap.name} <br />
+          Name: {simulation.pcap.size}B <br />
+        </div>
+      </button>
+      <button
+        on:click={() => download(name, `ascii`, 'ascii.zip')}
+        class="download-item"
+      >
+        <div class="data-icon">
+          <img src={asciiIcon} height=64px width=64px alt="network_icon">
+        </div>
+        <div class="data-text">
+          Ascii trace logs <br />
+          Name: {simulation.ascii.name} <br />
+          Name: {simulation.ascii.size}B <br />
         </div>
       </button>
     </div>
