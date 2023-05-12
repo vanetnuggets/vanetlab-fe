@@ -1,14 +1,30 @@
 <div>
-  Load XML from SUMO <br>
-  <input class="hm" bind:value={simName} placeholder="Enter scenario name" /><br><br>
+  <div class="desc">
+    <div class="title">
+      Load from SUMO trace<br>
+    </div>
+    To load a SUMO scenario, you need to have a sumoTrace.xml file. It can be generated using the following command<br>
 
+    <div class="codeblock">
+      sumo -c sim.sumocfg --fcd-output sumoTrace.xml
+    </div>
+    <br>
+    <div class="provide-name">
+    Provide a name for your simulation:
+    <input class="hm" bind:value={simName} placeholder="my-sumo-simulation" />
+    <button on:click={checkAvailable}>Check availability</button>
+    <br><br>
+    </div>
+  </div>
   {#if sumoFile == null}
   <div class="test">
-    <Dropzone containerStyles={"background-color:#1a1a1a; border-color:#565656"} on:drop={handleDrop}></Dropzone>
+    <Dropzone accept="text/xml" containerStyles={"background-color:#1a1a1a; border-color:#565656"} on:drop={handleDrop}>
+      <p> Click or drag your sumoTrace.xml file to load the scenario</p>
+    </Dropzone>
   </div>
   {:else}
   <div class="fileload">
-      File to be loaded: <br>
+      Uploaded file: <br>
       <b>{sumoFile.name}</b>
       <button on:click={loadSumo}>Load scenario</button>
   </div>  
@@ -16,10 +32,8 @@
 </div>
 
 <style>
-  .test {
-    color: red;
-    background-color: red;
-  }
+
+
   b {
     margin-top: 7px;
     margin-bottom: 7px;
@@ -33,6 +47,8 @@ import { push } from "svelte-spa-router";
 import { scenarioName } from "../../../store/store";
 import { fromSumo } from "../../api/sumo";
 import { loadConfig } from "../../../services/LoadService";
+import { scenarioExists } from "../../api/scenarios";
+
 
 import { getNotificationsContext } from 'svelte-notifications';
 const { addNotification } = getNotificationsContext();
@@ -64,8 +80,45 @@ async function loadSumo() {
   });
 }
 
+function checkAvailable() {
+  scenarioExists(simName).then((result) => {
+    if (result.data.exists) {
+      addNotification({
+        text: `Scenario with name ${simName} already exists!`,
+        position: 'bottom-center',
+        type: 'error',
+        removeAfter: 5000
+      })
+    } else {
+      addNotification({
+        text: `Scenario with name ${simName} is available!`,
+        position: 'bottom-center',
+        type: 'success',
+        removeAfter: 5000
+      })
+    }
+  }).catch((err) => {
+    addNotification({
+      text: `Failed to check if scenario exists!`,
+      position: 'bottom-center',
+      type: 'error',
+      removeAfter: 5000
+    })
+  })
+}
+
 function handleDrop(e) {
-  sumoFile = e.detail.acceptedFiles[0];
+  if (e.detail.fileRejections.length > 0) {
+    let type = e.detail.fileRejections[0].file.type;
+    addNotification({
+        text: `Incorrect file type. Expected .xml file, not ${type}!`,
+        position: 'bottom-center',
+        type: 'error',
+        removeAfter: 5000
+    });
+  } else {
+    sumoFile = e.detail.acceptedFiles[0];
+  }
 }
 
 </script>

@@ -28,7 +28,6 @@ export function clearAll() {
   scenarioReadOnly.set(false)
 }
 
-
 export function initNetworks() {
   networks.update(val => {
     let tmp = val;
