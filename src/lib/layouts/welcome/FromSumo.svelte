@@ -1,24 +1,30 @@
 <div>
-  From Sumo <br>
-  Name your scenario: <br>
-  <input class="hm" bind:value={simName} placeholder="omg-i-love-ns3" /><br><br>
+  Load XML from SUMO <br>
+  <input class="hm" bind:value={simName} placeholder="Enter scenario name" /><br><br>
 
   {#if sumoFile == null}
   <div class="test">
     <Dropzone on:drop={handleDrop}></Dropzone>
   </div>
   {:else}
-    Loaded file: <br>
-    <b>{sumoFile.name}</b>
-    <button on:click={loadSumo}>Load scenario</button>
+  <div class="fileload">
+      File to be loaded: <br>
+      <b>{sumoFile.name}</b>
+      <button on:click={loadSumo}>Load scenario</button>
+  </div>  
   {/if}
 </div>
 
 <style>
-.test {
-  color: red;
-  background-color: red;
-}
+  .test {
+    color: red;
+    background-color: red;
+  }
+  b {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    font-weight: bolder;
+  }
 </style>
 
 <script>

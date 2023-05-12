@@ -1,16 +1,17 @@
 <div>
-    Load Local <br>
-    Name your scenario: <br>
-    <input class="hm" bind:value={simName} placeholder="omg-i-love-ns3" /><br><br>
+    Load local JSON <br>
+    <input class="hm" bind:value={simName} placeholder="Enter scenario name" /><br><br>
   
     {#if simFile == null}
     <div class="test">
       <Dropzone on:drop={handleDrop}></Dropzone>
     </div>
     {:else}
-      Loaded file: <br>
+    <div class="fileload">
+      File to be loaded: <br>
       <b>{simFile.name}</b>
       <button on:click={loadSim}>Load scenario</button>
+    </div>
     {/if}
   </div>
   
@@ -18,6 +19,11 @@
   .test {
     color: red;
     background-color: red;
+  }
+  b {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    font-weight: bolder;
   }
   </style>
   

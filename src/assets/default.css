@@ -67,6 +67,11 @@ select {
   max-width: 300px;
 }
 
+.fileload{
+  display: flex;
+  flex-direction: column;
+}
+
 .myleft {
   width: 430px;
   background-color: var(--dark-2);

@@ -73,7 +73,6 @@
 <div class="flex-container">
   <div class="flex-item">
     <div class="center-container">
-      VanetLab
       <div class="inside">
         <div class="row">
           <button on:click={click_new_sim} class="btn-basic w"
@@ -82,7 +81,7 @@
         </div>
         <div class="row">
           <button on:click={click_load_sumo} class="btn-basic w"
-            >Load xml from SUMO</button
+            >Load XML from SUMO</button
           >
         </div>
         <div class="row">
@@ -100,7 +99,7 @@
             >About</button>
         </div>
         <div class="row bottom" style="padding-left: 10px;">
-          <p style="padding-left: 10px; text-align: justify; width: 30%;">
+          <p style="padding-left: 10px; text-align: justify; width: 30%; font-size:14px">
             Api key:
           </p>
           <input
@@ -157,8 +156,9 @@
   }
 
   .center-container {
+    height: 360px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background-color: var(--dark-1);
     color: white;
     margin: auto;

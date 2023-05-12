@@ -26,8 +26,10 @@
 </script>
 
 <div class="dzia">
-  Enter name:
-  <input bind:value={simName} placeholder="simulation-name" />
+  <div>
+    New simulation
+  </div>
+  <input bind:value={simName} placeholder="Enter simulation name" />
   <button on:click={new_sim}>Create</button>
 </div>
 

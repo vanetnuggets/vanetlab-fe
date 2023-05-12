@@ -49,7 +49,7 @@
 </script>
 
 <div>
-  Remote scenarios:
+  Load remote scenario
   <div class="btns">
     <button class="btn-basic {scenario_toggle ? 'outline' : ''}" on:click={() => {scenario_toggle=true}}>User</button>
     <button class="btn-basic {!scenario_toggle ? 'outline' : ''}" on:click={() => {scenario_toggle=false}}>Default</button>
