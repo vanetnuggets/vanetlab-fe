@@ -68,10 +68,11 @@ select {
 }
 
 .myleft {
+  width: 430px;
   background-color: var(--dark-2);
   padding: 10px;
   padding-right: 0px;
-  max-width: 440px;
+  max-width: 430px;
 }
 
 .canvas {

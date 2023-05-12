@@ -82,17 +82,17 @@
         </div>
         <div class="row">
           <button on:click={click_load_sumo} class="btn-basic w"
-            >Load from sumo</button
+            >Load xml from SUMO</button
           >
         </div>
         <div class="row">
           <button on:click={click_load_local} class="btn-basic w"
-            >Load local</button
+            >Load local JSON</button
           >
         </div>
         <div class="row">
           <button on:click={click_load_remote} class="btn-basic w"
-            >Load remote</button
+            >Load remote scenario</button
           >
         </div>
         <div class="row">
