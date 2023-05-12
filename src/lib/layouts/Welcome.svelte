@@ -179,7 +179,7 @@
     transition: opacity 0.4s, transform 1s;
     transition: 0.3s;
     justify-content: space-evenly;
-    height: 70vh;
+    height: 80vh;
   }
   .flex-item {
     margin-top: -30vh;
