@@ -10,6 +10,7 @@
   import { validateApiKey } from "../api/scenarios";
   import { getNotificationsContext } from "svelte-notifications";
   import { push } from "svelte-spa-router";
+  import ApiIcon from "../../assets/apikey.svg";
   const { addNotification } = getNotificationsContext();
 
   let curr_option = null;
@@ -73,7 +74,6 @@
 <div class="flex-container">
   <div class="flex-item">
     <div class="center-container">
-      VanetLab
       <div class="inside">
         <div class="row">
           <button on:click={click_new_sim} class="btn-basic w"
@@ -82,17 +82,17 @@
         </div>
         <div class="row">
           <button on:click={click_load_sumo} class="btn-basic w"
-            >Load from sumo</button
+            >Load XML from SUMO</button
           >
         </div>
         <div class="row">
           <button on:click={click_load_local} class="btn-basic w"
-            >Load local</button
+            >Load local JSON</button
           >
         </div>
         <div class="row">
           <button on:click={click_load_remote} class="btn-basic w"
-            >Load remote</button
+            >Load remote scenario</button
           >
         </div>
         <div class="row">
@@ -100,16 +100,18 @@
             >About</button>
         </div>
         <div class="row bottom" style="padding-left: 10px;">
-          <p style="padding-left: 10px; text-align: justify; width: 30%;">
+          <p style="padding-left: 10px; text-align: justify; width: 25%; font-size:14px">
             Api key:
           </p>
           <input
             id="api-key-input"
-            placeholder="api key"
+            placeholder="enter api key"
             bind:value={apiSecret}
-            style="width: 100%;"
+            style="width: 100%; height:28px"
           />
-          <button on:click={setApiKey} class="btn-basic">set</button>
+          <button on:click={setApiKey} class="btn-basic key" title="set api key">
+            <img src={ApiIcon} height="24px" width="24px" alt="map_icon" />
+          </button>
         </div>
       </div>
     </div>
@@ -142,6 +144,11 @@
 </div>
 
 <style>
+  .key{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .inside {
     width: 400px;
     min-height: 300px;
@@ -157,8 +164,9 @@
   }
 
   .center-container {
+    height: 360px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background-color: var(--dark-1);
     color: white;
     margin: auto;
@@ -179,7 +187,7 @@
     transition: opacity 0.4s, transform 1s;
     transition: 0.3s;
     justify-content: space-evenly;
-    height: 70vh;
+    height: 80vh;
   }
   .flex-item {
     margin-top: -30vh;

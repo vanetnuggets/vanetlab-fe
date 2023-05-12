@@ -54,3 +54,9 @@ function validate() {
 <div style="color: red;" hidden={valid}>
   {error_msg}
 </div>
+
+<style scoped>
+  .col{
+    flex: none;
+  }
+</style>

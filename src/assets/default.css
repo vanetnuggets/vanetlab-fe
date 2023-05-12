@@ -67,11 +67,17 @@ select {
   max-width: 300px;
 }
 
+.fileload{
+  display: flex;
+  flex-direction: column;
+}
+
 .myleft {
+  width: 430px;
   background-color: var(--dark-2);
   padding: 10px;
   padding-right: 0px;
-  max-width: 440px;
+  max-width: 430px;
 }
 
 .canvas {
@@ -175,6 +181,30 @@ option {
   flex-direction: column;
   border-bottom: 3px solid var(--dark-2);
   padding: 10px;
+}
+
+.title {
+  margin-top: 0px;
+  padding-top: 0px;
+  margin: 10px;
+  font-size: 20px;
+}
+.hm {
+  height: 28px;
+}
+
+.codeblock {
+  background-color: #1a1a1a;
+border-radius: 4px;
+font-family: 'Roboto Mono', monospace;
+font-size: 13px;
+line-height: 1.5;
+overflow-x: auto;
+padding: 16px;
+text-align: left;
+margin: 12px 0px 12px 0px;
+white-space: pre-wrap;
+  padding: 6px 20px 6px 20px;
 }
 
 .child {

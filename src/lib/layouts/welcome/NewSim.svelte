@@ -3,7 +3,8 @@
   import { scenarioName } from "../../../store/store";
   import { clearAll, initNetworks } from "../../../services/LoadService";
   import { getNotificationsContext } from "svelte-notifications";
-  
+  import { scenarioExists } from "../../api/scenarios";
+
   const { addNotification } = getNotificationsContext();
   let simName = "";
 
@@ -23,17 +24,52 @@
       });
     }
   }
+  function checkAvailable() {
+    scenarioExists(simName).then((result) => {
+      if (result.data.exists) {
+        addNotification({
+          text: `Scenario with name ${simName} already exists!`,
+          position: 'bottom-center',
+          type: 'error',
+          removeAfter: 5000
+        })
+      } else {
+        addNotification({
+          text: `Scenario with name ${simName} is available!`,
+          position: 'bottom-center',
+          type: 'success',
+          removeAfter: 5000
+        })
+      }
+    }).catch((err) => {
+      addNotification({
+        text: `Failed to check if scenario exists!`,
+        position: 'bottom-center',
+        type: 'error',
+        removeAfter: 5000
+      })
+    })
+  }
 </script>
 
 <div class="dzia">
-  Enter name:
-  <input bind:value={simName} placeholder="simulation-name" />
+  <div class="title">
+    New simulation
+  </div>
+  <div style="margin:5px">
+    Create a new, blank simulation scenario from scratch.
+  </div>
+  <input bind:value={simName} placeholder="Enter simulation name" />
+  <button on:click={checkAvailable}>Check availability</button>  
+
   <button on:click={new_sim}>Create</button>
+
 </div>
 
 <style>
   .dzia {
     display: flex;
     flex-direction: column;
+    flex-grow: 5;
   }
 </style>

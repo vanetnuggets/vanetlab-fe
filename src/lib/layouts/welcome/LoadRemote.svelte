@@ -1,5 +1,5 @@
 <script>
-// @ts-nocheck
+  // @ts-nocheck
 
   import { push } from "svelte-spa-router";
   import { getRemote, deleteRemote } from "../../api/scenarios";
@@ -18,7 +18,7 @@
   });
 
   async function loadScenario(name, read_only) {
-    scenarioReadOnly.set(read_only)
+    scenarioReadOnly.set(read_only);
     let data = await getRemote(name);
     loadConfig(data.data.data); //datadatadata
     scenarioName.set(name);
@@ -30,6 +30,8 @@
     let notifType = "";
     deleteRemote(name)
       .then((resp) => {
+        // update local list
+        scenarios = scenarios.filter((item) => item.name !== name);
         notifText = `scenario "${name}" successfully deleted`;
         notifType = "success";
       })
@@ -49,10 +51,22 @@
 </script>
 
 <div>
-  Remote scenarios:
+  <div class="title">
+    Load remote scenario
+  </div>
   <div class="btns">
-    <button class="btn-basic {scenario_toggle ? 'outline' : ''}" on:click={() => {scenario_toggle=true}}>User</button>
-    <button class="btn-basic {!scenario_toggle ? 'outline' : ''}" on:click={() => {scenario_toggle=false}}>Default</button>
+    <button
+      class="btn-basic {scenario_toggle ? 'outline' : ''}"
+      on:click={() => {
+        scenario_toggle = true;
+      }}>User</button
+    >
+    <button
+      class="btn-basic {!scenario_toggle ? 'outline' : ''}"
+      on:click={() => {
+        scenario_toggle = false;
+      }}>Default</button
+    >
   </div>
   {#if loading == true}
     loading...
@@ -66,7 +80,8 @@
             <button class="f90 selec" on:click={loadScenario(s.name, false)}
               >{s.name}</button
             >
-            <button class="f5 delet" on:click={removeScenario(s.name)}>🚜</button
+            <button class="f5 delet" on:click={removeScenario(s.name)}
+              >🚜</button
             ><br />
           {/if}
         </div>
@@ -119,7 +134,7 @@
   }
 
   .list {
-    max-height: 500px;
+    max-height: 220px;
     overflow-y: auto;
     border: 3px solid var(--dark-2);
     background-color: var(--light-2);
@@ -129,11 +144,11 @@
     width: 395px;
   }
 
-  .btns{
+  .btns {
     margin-top: 5px;
   }
 
-  .outline{
+  .outline {
     background-color: var(--dark-3);
     border: 0px solid white;
     outline: 1px solid white;

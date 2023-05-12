@@ -38,3 +38,7 @@ export function getSummary(name) {
 export function validateApiKey() {
   return Api.get("key/check")
 }
+
+export function scenarioExists(name) {
+  return Api.get(`exists/${name}`);
+}
