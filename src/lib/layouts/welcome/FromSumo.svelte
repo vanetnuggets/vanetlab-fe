@@ -4,7 +4,7 @@
 
   {#if sumoFile == null}
   <div class="test">
-    <Dropzone on:drop={handleDrop}></Dropzone>
+    <Dropzone containerStyles={"background-color:#1a1a1a; border-color:#565656"} on:drop={handleDrop}></Dropzone>
   </div>
   {:else}
   <div class="fileload">
