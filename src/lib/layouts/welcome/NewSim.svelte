@@ -4,6 +4,7 @@
   import { clearAll, initNetworks } from "../../../services/LoadService";
   import { getNotificationsContext } from "svelte-notifications";
   import { scenarioExists } from "../../api/scenarios";
+  import { reset_store } from "../../../store/scenario";
 
   const { addNotification } = getNotificationsContext();
   let simName = "";
@@ -12,6 +13,7 @@
     // call API call to check if name is available
     if (simName != "") {
       clearAll();
+      reset_store(); // clear all nefunguje lebo v inite su veci, netusim sice odkial
       initNetworks();
       scenarioName.update((_) => simName);
       push(`/app/${simName}/canvas`);
