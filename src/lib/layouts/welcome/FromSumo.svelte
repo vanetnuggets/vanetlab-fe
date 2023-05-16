@@ -96,7 +96,7 @@
       <div style="margin:5px">
         Provide a name for your simulation:
       </div>
-      <input class="hm" bind:value={simName} placeholder="my-sumo-simulation" />
+      <input class="hm" bind:value={simName} placeholder="Enter scenario name" />
       <button on:click={checkAvailable}>Check availability</button>
       <br /><br />
     </div>
