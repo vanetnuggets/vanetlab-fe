@@ -87,6 +87,7 @@
     inputs.y = null;
     inputs.z = null;
   }
+  
   const remove_mobility = (time) => {
     if (Object.keys(mobility).length !== 1) {
       mobility = delete mobility[time] && mobility;
