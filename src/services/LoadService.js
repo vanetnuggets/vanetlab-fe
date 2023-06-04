@@ -25,7 +25,6 @@ export function clearAll() {
   nextNetworkId.set(0)
   nextNodeId.set(0)
   labelId.set(0);
-  scenarioReadOnly.set(false)
 }
 
 export function initNetworks() {
@@ -66,8 +65,16 @@ export function loadConfig(conf) {
   initNetworks();
   nodes.set(conf.nodes);
   max_at.set(conf.max_at);
-  nextNetworkId.set(parseInt(Object.keys(conf.networks).reduce((a, b) => conf.networks[a].id > conf.networks[b].id ? a : b))+1)
-  nextNodeId.set(parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
+  if (Object.keys(conf.networks).length > 0) {
+    nextNetworkId.set(parseInt(Object.keys(conf.networks).reduce((a, b) => conf.networks[a].id > conf.networks[b].id ? a : b))+1)
+  } else {
+    nextNetworkId.set(0);
+  }
+  if (Object.keys(conf.nodes).length > 0) {
+    nextNodeId.set(parseInt(Object.keys(conf.nodes).reduce((a, b) => conf.nodes[a].id > conf.nodes[b].id ? a : b))+1)
+  } else {
+    nextNodeId.set(0);
+  }
   connections.set(conf.connections);
   if (conf.labels !== undefined) {
     labelId.set(conf.labels.length);

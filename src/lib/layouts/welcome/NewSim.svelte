@@ -6,6 +6,7 @@
   import { scenarioExists } from "../../api/scenarios";
   import { reset_store } from "../../../store/scenario";
   import { checkSimName } from "../../../services/CheckSimName.js";
+  import { scenarioReadOnly } from "../../../store/store";
 
   const { addNotification } = getNotificationsContext();
   let simName = "";
@@ -17,6 +18,7 @@
     reset_store(); // clear all nefunguje lebo v inite su veci, netusim sice odkial
     initNetworks();
     scenarioName.update((_) => simName);
+    scenarioReadOnly.set(false);
     push(`/app/${simName}/canvas`);
   }
   

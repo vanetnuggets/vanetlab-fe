@@ -23,6 +23,8 @@
         $nodes[node_id].l3conf = { port: "1",start: "0", stop: "0"};
         if($nodes[node_id].l3 == 'udpclient' || $nodes[node_id].l3 == 'tcpclient')
             $nodes[node_id].l3conf.comm = null
+        else if($nodes[node_id].l3 == 'none')
+            $nodes[node_id].l3conf = {}
     }
 
     const l3_config = {
@@ -55,12 +57,13 @@
                               {object}
                           </option>
                       {/each}
+                      <option value="none" selected>none</option>
                   </select>
                 </div>
             </div>
             
             <!-- <ValidateSelect bind:value={$nodes[node_id].l3} attribute={l3_config} objects = {l3_types}  on_change={reset_l3conf} editable = {editable} ></ValidateSelect> -->
-            {#if $nodes[node_id].l3 != null}
+            {#if $nodes[node_id].l3 != null && $nodes[node_id].l3 != 'none'}
                 <div transition:slide>
                     {#each Object.keys($nodes[node_id].l3conf) as key}
                         {#if key !== "attributes" && $l3_attributes[key] != undefined}
