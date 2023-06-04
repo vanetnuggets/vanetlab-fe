@@ -61,6 +61,7 @@ export function checkAndLoad(scenario) {
 }
 
 export function loadConfig(conf) {
+  clearAll();
   networks.update(_ => conf.networks);
   initNetworks();
   nodes.set(conf.nodes);
