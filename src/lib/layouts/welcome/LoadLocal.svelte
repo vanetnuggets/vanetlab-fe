@@ -4,6 +4,7 @@
   import { scenarioName } from "../../../store/store";
   import { loadConfig } from "../../../services/LoadService";
   import { scenarioExists } from "../../api/scenarios";
+  import { checkSimName } from "../../../services/CheckSimName.js";
 
   import { getNotificationsContext } from "svelte-notifications";
   const { addNotification } = getNotificationsContext();
@@ -13,7 +14,7 @@
 
   async function loadSim() {
     // check if the inputed simname is in correct format
-    if (checkSimName() == -1)
+    if (checkSimName(simName, addNotification) == -1)
       return
     
     let content = await simFile.text();
@@ -63,28 +64,6 @@
     } else {
       simFile = e.detail.acceptedFiles[0];
     }
-  }
-
-  function checkSimName() {
-    var pattern = /^[A-Za-z0-9-_]+$/;
-    if (simName == "") {
-      addNotification({
-            text: `You have to specify scenario name!`,
-            position: "bottom-center",
-            type: "error",
-            removeAfter: 5000,
-          });
-      return -1
-    } else if (!pattern.test(simName)) {
-      addNotification({
-            text: `Scenario name has to match this regex ${pattern}!`,
-            position: "bottom-center",
-            type: "error",
-            removeAfter: 5000,
-          });
-      return -1
-    }
-    return 1
   }
 </script>
 

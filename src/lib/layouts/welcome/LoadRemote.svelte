@@ -7,6 +7,8 @@
   import { scenarioList } from "../../../store/welcome";
   import { loadConfig } from "../../../services/LoadService";
   import { getNotificationsContext } from "svelte-notifications";
+  import { checkSimName } from "../../../services/CheckSimName.js";
+
   const { addNotification } = getNotificationsContext();
 
   let loading = false;
@@ -18,6 +20,8 @@
   });
 
   async function loadScenario(name, read_only) {
+    if (checkSimName(simName, addNotification) == -1)
+      return
     scenarioReadOnly.set(read_only);
     let data = await getRemote(name);
     loadConfig(data.data.data); //datadatadata

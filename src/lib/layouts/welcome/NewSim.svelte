@@ -5,27 +5,21 @@
   import { getNotificationsContext } from "svelte-notifications";
   import { scenarioExists } from "../../api/scenarios";
   import { reset_store } from "../../../store/scenario";
+  import { checkSimName } from "../../../services/CheckSimName.js";
 
   const { addNotification } = getNotificationsContext();
   let simName = "";
 
   function new_sim() {
-    // call API call to check if name is available
-    if (simName != "") {
-      clearAll();
-      reset_store(); // clear all nefunguje lebo v inite su veci, netusim sice odkial
-      initNetworks();
-      scenarioName.update((_) => simName);
-      push(`/app/${simName}/canvas`);
-    } else {
-      addNotification({
-        text: "You have to specify scenario name!",
-        position: "bottom-center",
-        type: "error",
-        removeAfter: 1500,
-      });
-    }
+    if (checkSimName(simName, addNotification) == -1)
+      return
+    clearAll();
+    reset_store(); // clear all nefunguje lebo v inite su veci, netusim sice odkial
+    initNetworks();
+    scenarioName.update((_) => simName);
+    push(`/app/${simName}/canvas`);
   }
+  
   function checkAvailable() {
     scenarioExists(simName).then((result) => {
       if (result.data.exists) {
