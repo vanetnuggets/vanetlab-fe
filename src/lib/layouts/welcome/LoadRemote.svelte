@@ -20,7 +20,7 @@
   });
 
   async function loadScenario(name, read_only) {
-    if (checkSimName(simName, addNotification) == -1)
+    if (checkSimName(name, addNotification) == -1)
       return
     scenarioReadOnly.set(read_only);
     let data = await getRemote(name);
