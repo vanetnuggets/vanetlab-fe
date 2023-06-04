@@ -71,19 +71,19 @@ export const l3_attributes = writable({
 
 export const l3_optional_attributes = writable({
   udpclient: {
-      interval:{
+      Interval:{
         validation: buildValidator(requiredValidator(),positiveFloatValidator()),
         name: "Interval",
         end: "",
         placeholder: "Interval"
       },
-      packet_size: {
+      PacketSize: {
         validation: buildValidator(requiredValidator(),positiveFloatValidator()),
         name: "Packet size",
         end: "Mb",
         placeholder: "Packet size"
       },
-      max_packets: {
+      MaxPackets: {
         validation: buildValidator(requiredValidator(),positiveIntegerValidator()),
         name: "Max Packets",
         end: "ks",
@@ -93,7 +93,7 @@ export const l3_optional_attributes = writable({
   udpserver: {
   },
   tcpclient: {
-      max_bytes: {
+      MaxBytes: {
         validation: buildValidator(requiredValidator(),positiveIntegerValidator()),
         name: "Max Bytes",
         end: "byte",

@@ -4,6 +4,7 @@
   import { scenarioName } from "../../../store/store";
   import { loadConfig } from "../../../services/LoadService";
   import { scenarioExists } from "../../api/scenarios";
+  import { checkSimName } from "../../../services/CheckSimName.js";
 
   import { getNotificationsContext } from "svelte-notifications";
   const { addNotification } = getNotificationsContext();
@@ -12,8 +13,11 @@
   let simName = "";
 
   async function loadSim() {
+    // check if the inputed simname is in correct format
+    if (checkSimName(simName, addNotification) == -1)
+      return
+    
     let content = await simFile.text();
-
     scenarioName.set(simName);
     loadConfig(JSON.parse(content));
     push(`/app/${simName}/canvas`);
