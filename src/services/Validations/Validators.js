@@ -61,7 +61,10 @@ function nameValidator() {
   return function name (value,comparator) {
     let valid = true
     if(value != null){
-      Object.values(comparator).forEach(network => {
+      if (Array.isArray(comparator) == false) {
+        comparator = Object.values(comparator)
+      }
+      comparator.forEach(network => {
         if(network.ssid == value)
           valid = false
       });

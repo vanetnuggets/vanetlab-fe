@@ -5,6 +5,7 @@
     import { onMount } from "svelte";
     
     import ValidateInputNetworks from '../validation/ValidateInputNetworks.svelte';
+    import { networks_attributes } from "../../store/validation";
     
     export let network;
 
@@ -61,6 +62,26 @@
 
     onMount(() => {
     });
+
+    let valid = false
+    $: if ( network.ssid != undefined && network.ssid != null && network.address != null){
+        valid = false
+        let name_validation = $networks_attributes["name"].validation(network.ssid,$networks)
+        let address_validation = $networks_attributes["address"].validation(network.address,$networks)
+        if(name_validation.valid && address_validation.valid)
+          valid = true
+
+      } else 
+        valid = false
+
+    function networksNotMe() {
+        let a = Object.values($networks).filter(x => {
+            x.ssid != network.ssid
+        });
+        console.log('returning', a);
+        return a;
+    }
+
 </script>
 
 <style>
@@ -97,24 +118,8 @@
     
     {#if open}
     <div>
-        <div class="row">
-            <div class="col">
-                Network name:
-            </div>
-            <div class="col">
-                <input class="my-input-l" bind:value={network.ssid} placeholder="example_name" disabled={true}>
-            </div>
-        </div>
-        <!-- <ValidateInputNetworks bind:value={network.ssid} attribute={$networks_attributes["name"]} comparator={null} ></ValidateInputNetworks><br>   -->
-        <div class="row">
-            <div class="col">
-                Network address:
-            </div>
-            <div class="col">
-                <input class="my-input-l" bind:value={network.addr} placeholder="example_address" disabled={true}>
-            </div>
-        </div>
-        <!-- <ValidateInputNetworks bind:value={network.addr} attribute={$networks_attributes["address"]} comparator={null} ></ValidateInputNetworks><br>   -->
+        <ValidateInputNetworks bind:value={network.ssid} attribute={$networks_attributes["name"]} comparator={networksNotMe()} ></ValidateInputNetworks><br>
+        <ValidateInputNetworks bind:value={network.addr} attribute={$networks_attributes["address"]} comparator={null} ></ValidateInputNetworks><br>
         <div class="row">
             <div class="col" style="padding-bottom: 10px;">
                 <ColorPicker bind:rgb bind:hex={network.color}/>
