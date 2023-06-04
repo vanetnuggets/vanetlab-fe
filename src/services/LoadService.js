@@ -25,7 +25,6 @@ export function clearAll() {
   nextNetworkId.set(0)
   nextNodeId.set(0)
   labelId.set(0);
-  scenarioReadOnly.set(false)
 }
 
 export function initNetworks() {
